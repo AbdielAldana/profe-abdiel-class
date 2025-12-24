@@ -6,7 +6,8 @@ a {
 .active button,
 .active li p,
 a.active,
-.active span {
+.active span,
+.active svg {
   color: #f9aa33 !important;
   font-weight: bold;
 }
