@@ -29,6 +29,7 @@ import { styled } from '@mui/material/styles';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import FondoDecorativo from "../../components/Tablon/FondoDecorativo";
 import Articulo from "../../components/Tablon/Articulo";
+import { GiRupee } from "react-icons/gi";
 
 
 const VisuallyHiddenInput = styled('input')({
@@ -102,10 +103,8 @@ function Perfil() {
         const file = e.target.files[0];
         if (!file) return
 
+        // Optimiza la Imagen, baja resolucion
         const optimized = await resizeImageAuto(file);
-
-        console.log("Original:", file);
-        console.log("Optimizada:", optimized);
 
         setImageFileForm(optimized)
         const reader = new FileReader();
@@ -146,8 +145,12 @@ function Perfil() {
     const xpTotal = usuario?.p_totales ?? 0;
     const { level, progreso, xpFaltante, earnedInLevel, cost } = getLevelData(xpTotal);
 
+    const bolsa = usuario?.p_totales - usuario?.p_gastados
+
     console.log(usuario);
-    // console.log(usuario.inventario);
+    console.log(misionesUsuario);
+    
+    
 
 
     return (
@@ -180,7 +183,7 @@ function Perfil() {
                                 Nivel: {level}
                             </Typography>
                             <Typography variant="body2" gutterBottom textAlign="right">
-                                Pts. Tls: {usuario.p_totales}
+                                 {usuario.p_totales} XP
                             </Typography>
                         </Grid>
                         <Grid size={{ xs: 12, md: 12 }}>
@@ -188,10 +191,16 @@ function Perfil() {
                                 <div className="barLevelCount" style={{ backgroundColor: usuario.color, width: progreso + "%" }}>
                                     <FondoDecorativo fondo={usuario.fondo} />
                                 </div>
-                                <div className="leveltext">{earnedInLevel} / {cost} pts.</div>
+                                <div className="leveltext">{earnedInLevel} / {cost} XP</div>
                             </div>
                             <Typography variant="body1" fontWeight={"bold"} textAlign="right">
-                                Siguiente Nivel: {xpFaltante} pts.
+                                Siguiente Nivel: {xpFaltante} XP
+                            </Typography>
+                        </Grid>
+                        <Grid size={{ xs: 12, md: 12 }} display={"flex"} justifyContent={"center"}>
+                            <GiRupee size={30} color={usuario.color} />
+                            <Typography variant="h6" >
+                                  <b>{bolsa}</b> puntos
                             </Typography>
                         </Grid>
                         <Grid size={{ xs: 12, md: 12 }}>
@@ -255,8 +264,8 @@ function Perfil() {
                             </Grid>
                         </Grid> */}
 
-                        {/* Misiones */}
-
+                        
+                        {/* Inventario */}
                         <Grid size={{ xs: 12, md: 6 }} className={"viewCompletMisions"}>
                             <Grid container spacing={2}>
                                 <Grid size={{ xs: 12, md: 12 }}>
@@ -351,6 +360,8 @@ function Perfil() {
                                 }
                             </Grid>
                         </Grid>
+
+                        {/* Misiones */}
                         <Grid size={{ xs: 12, md: 6 }} className={"viewCompletMisions"}>
                             <Grid container spacing={3}>
                                 <Grid size={{ xs: 12, md: 12 }}>
@@ -361,8 +372,8 @@ function Perfil() {
                                 <Grid size={{ xs: 12, md: 12 }}>
                                     {misionesUsuario !== undefined &&
                                         misionesUsuario
-                                            .sort((a, b) => a.dificultad - b.dificultad)
-                                            .sort((a, b) => a.puntos - b.puntos)
+                                            .sort((a, b) => a.data.dificultad - b.data.dificultad)
+                                            .sort((a, b) => a.data.puntos - b.data.puntos)
                                             .map((mision, i) => {
 
 
@@ -373,11 +384,11 @@ function Perfil() {
                                                             <Typography
                                                                 variant="h6"
 
-                                                                color={difColorName(mision.dificultad)}
+                                                                color={difColorName(mision.data.dificultad)}
                                                                 textAlign="center"
                                                                 className="ellipsis"
                                                             >
-                                                                {mision.nombre}
+                                                                {mision.data.nombre}
                                                             </Typography>
                                                         </div>
                                                         <div>
@@ -387,7 +398,7 @@ function Perfil() {
 
                                                                 textAlign="center"
                                                             >
-                                                                {mision.puntos} pts.
+                                                                {mision.data.puntos} pts.
                                                             </Typography>
                                                         </div>
                                                     </div>

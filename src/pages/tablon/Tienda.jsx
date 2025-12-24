@@ -149,11 +149,11 @@ function Tienda() {
 
     // ===========================================
     // Niveles
-    const xpTotal = usuario?.puntos?.totales ?? 0;
+    const xpTotal = usuario?.p_totales ?? 0;
     const { level } = getLevelData(xpTotal);
 
     const puntos_disponibles =
-        usuario === null ? 0 : usuario.puntos.totales - usuario.puntos.gastados;
+        usuario === null ? 0 : usuario.p_totales - usuario.p_gastados;
 
     // Modal (solo abrir si es activa y no completada)
     const [openData, setOpenData] = React.useState(false);

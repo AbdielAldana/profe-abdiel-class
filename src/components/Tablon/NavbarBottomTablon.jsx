@@ -27,18 +27,21 @@ function NavbarBottomTablon() {
                         icon={<StoreIcon color="primary" />}
                         component={NavLink}
                         to="tienda"
+                        className={({ isActive }) => isActive ? "active" : ""}
                     />
                     <BottomNavigationAction
                         label="Misiones"
                         icon={<AssignmentIcon color="primary" />}
                         component={NavLink}
-                        to="misiones"
+                        to="misiones"  
+                        className={({ isActive }) => isActive ? "active" : ""}
                     />
                     <BottomNavigationAction
                         label="Ranking"
                         icon={<EmojiEventsIcon color="primary" />}
                         component={NavLink}
                         to="ranking"
+                        className={({ isActive }) => isActive ? "active" : ""}
                     />
                 </BottomNavigation>
             </Box>

@@ -44,7 +44,7 @@ const styleModal = {
     left: "50%",
     transform: "translate(-50%, -50%)",
     width: {
-        xs: "400px",
+        xs: "350px",
         sm: "90vw",
         md: "85%",
         // lg: "60vw",
@@ -82,7 +82,7 @@ const style = {
 function Articulo({ articulo }) {
     const { updateUsuario, inventario, usuario, updateInventario } = useTablon();
     let icono = IconArt(articulo.data.icono, articulo.data.clase)
- 
+
     // Alertas
     const notifyError = (txt) =>
         toast.error(txt, { position: "top-center" });
@@ -184,11 +184,11 @@ function Articulo({ articulo }) {
             articulo: articulo
         }
         let respuesta = updateInventario(tempJson)
-        
-        if(!respuesta.state){
+
+        if (!respuesta.state) {
             notifyError(respuesta.msg)
         }
-        if(respuesta.state){
+        if (respuesta.state) {
             handleCloseAction();
             handleOpenData();
             notifySuccess(respuesta.msg)
@@ -240,8 +240,6 @@ function Articulo({ articulo }) {
                         </Typography>
                         <Typography
                             variant="body1"
-                            // fontWeight="bold"
-                            // className="ellipsis"
                             sx={{ m: 0, p: 0 }}
                         >
                             {articulo.data.descripcion}
@@ -254,45 +252,41 @@ function Articulo({ articulo }) {
                             sx={{ m: 0, p: 0 }}
                             textAlign={"right"}
                         >
-                            {articulo.data.tipo} 
+                            {articulo.data.tipo}
                         </Typography>
                         <Typography
                             variant="h5"
                             fontWeight={"bold"}
                             textAlign={"right"}
                             gutterBottom
-                            // className="ellipsis"
                             sx={{ m: 0, p: 0 }}
                         >
                             x{articulo.articulo.cantidad}
                         </Typography>
                     </Grid>
-                    <Grid size={{ xs: 12 }}>
-                        {articulo.articulo.estado === 1 && articulo.data.uso === "Temporal" &&
-                            <Typography
-                                variant="subtitle1"
-                                fontWeight={"bold"}
-                                textAlign={"center"}
-                                // gutterBottom
-                                // className="ellipsis"
-                                sx={{ m: 0, p: 0 }}
-                            >
-                                Termina en: {tiempoRestante}
-                            </Typography>
-                        }
-                        {articulo.articulo.estado === 4 && articulo.data.uso === "Temporal" &&
-                            <Typography
-                                variant="subtitle1"
-                                // fontWeight={"bold"}
-                                textAlign={"center"}
-                                // gutterBottom
-                                // className="ellipsis"
-                                sx={{ m: 0, p: 0 }}
-                            >
-                                Entregado el: {articulo.articulo.fecha_inicio}
-                            </Typography>
-                        }
-                    </Grid>
+                    {articulo.data.uso === "Temporal" &&
+                        <Grid size={{ xs: 12 }}>
+                            {articulo.articulo.estado == 1 && articulo.data.uso === "Temporal" &&
+                                <Typography
+                                    variant="subtitle1"
+                                    fontWeight={"bold"}
+                                    textAlign={"center"}
+                                    sx={{ m: 0, p: 0 }}
+                                >
+                                    Termina en: {tiempoRestante}
+                                </Typography>
+                            }
+                            {articulo.articulo.estado == 4 && articulo.data.uso === "Temporal" &&
+                                <Typography
+                                    variant="subtitle1"
+                                    textAlign={"center"}
+                                    sx={{ m: 0, p: 0 }}
+                                >
+                                    Entregado el: {articulo.articulo.fecha_inicio}
+                                </Typography>
+                            }
+                        </Grid>
+                    }
                 </Grid>
             </Paper>
 
@@ -302,6 +296,7 @@ function Articulo({ articulo }) {
                 onClose={handleOpenData}
                 aria-labelledby="articulo-modal"
                 aria-describedby="articulo-modal"
+                aria-hidden="false"
             >
                 <Card sx={styleModal} style={{ border: "solid 1px" + ViewType(articulo.data.clase).color, boxShadow: "0 0 5px" + ViewType(articulo.data.clase).color }}>
                     <CardHeader
@@ -374,34 +369,34 @@ function Articulo({ articulo }) {
                         </Grid>
                     </CardContent>
 
-                    {articulo.articulo.estado === 0 &&
+                    {articulo.articulo.estado == 0 &&
                         <CardActions style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <Button size="small" variant="outlined" color={"primary"} onClick={() => handleOpenAction("donar")}>Donar</Button>
                             <Button size="small" variant="contained" color={"primary"} onClick={() => handleOpenAction("vender")}>Vender</Button>
                             <Button size="small" variant="contained" color={"secondary"} onClick={() => handleOpenAction("usar")}>Usar</Button>
                         </CardActions>
                     }
-                    {articulo.articulo.estado === 1 && articulo.data.uso === "Fijo" &&
+                    {articulo.articulo.estado == 1 && articulo.data.uso == "Fijo" &&
                         <CardActions style={{ display: 'flex', justifyContent: 'flex-end' }}>
                             <Button size="small" variant="contained" color={"secondary"} onClick={() => handleOpenAction("quitar")}>Quitar</Button>
                         </CardActions>
                     }
-                    {articulo.articulo.estado === 1 && articulo.data.uso === "Temporal" &&
+                    {articulo.articulo.estado == 1 && articulo.data.uso == "Temporal" &&
                         <CardActions style={{ display: 'flex', justifyContent: 'center' }}>
                             Termina en: {tiempoRestante}
                         </CardActions>
                     }
-                    {articulo.articulo.estado === 2 &&
+                    {articulo.articulo.estado == 2 &&
                         <CardActions style={{ display: 'flex', justifyContent: 'flex-end' }}>
                             <Button size="small" variant="contained" color={"secondary"} onClick={() => handleOpenAction("retirar")}>Retirar</Button>
                         </CardActions>
                     }
-                    {articulo.articulo.estado === 3 &&
+                    {articulo.articulo.estado == 3 &&
                         <CardActions style={{ display: 'flex', justifyContent: 'center' }}>
                             Usado el: {articulo.articulo.fecha_inicio}
                         </CardActions>
                     }
-                    {articulo.articulo.estado === 4 &&
+                    {articulo.articulo.estado == 4 &&
                         <CardActions style={{ display: 'flex', justifyContent: 'center' }}>
                             Entregado el: {articulo.articulo.fecha_inicio}
                         </CardActions>
@@ -411,43 +406,26 @@ function Articulo({ articulo }) {
 
 
             {/* Ventana de Confirmacion */}
+
             <Dialog
                 open={openAction}
                 onClose={handleCloseAction}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">
-                    {typeAction === "donar" && "Seguro que quieres Donar?"}
-                    {typeAction === "vender" && "Estas a punto de Vender tu articulo"}
-                    {typeAction === "usar" && "Usaras este articulo, seguro?"}
-                    {typeAction === "quitar" && "Te desequiparas un objeto."}
-
-                </DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description" style={{ marginBottom: '10px' }}>
-                        {typeAction === "donar" && "Asegurate de escribir correctamente la Matricula de a quien donaras. El articulo pasara inmediatamente a esa persona."}
-                        {typeAction === "vender" && "Puedes venderlo directamente al 'Comerciante' o ponerlo a la venta en el Mercado."}
-                        {typeAction === "usar" && articulo.data.uso === "Fijo" && "Se Activara este articulo y se pondra en la parte de 'Equipado / Activo', si existe un Marco o Fondo Activo, este sera reemplazado. No perderas ningun articulo."}
-                        {typeAction === "usar" && articulo.data.uso === "Temporal" && "Se iniciara el uso de este articulo, este pasara a la parte 'Equipado / Activo del inventario. La duracion del efecto aparecera debajo del articulo."}
-                        {typeAction === "usar" && articulo.data.uso === "Consumible" && "Gastaras este Articulo, este aparecera en la seccion de 'Consumidos'. El efecto solo sera valido en la fecha que marca debajo del articulo."}
-                        {typeAction === "quitar" && articulo.data.uso === "Fijo" && "Al quitar un Cosmetico este pasara a la seccion Disponibles."}
-                    </DialogContentText>
-                    {typeAction === "vender" &&
-                        <DialogContentText id="alert-dialog-description" style={{ marginBottom: '15px' }}>
-                            <hr />
-                            El comerciante te cobrar el 15% de comision sobre el precio original. <br />
-                            Precio Original: {articulo.data.costo} <br />
-                            Precio de Compra: {articulo.data.costo - (articulo.data.costo * 0.15)} <br /> <hr />
-                            En el mercado solo puedes venderlo con un margen de 50% mas caro o mas barato del precio original. <br />
-                            Costo Minimo: {articulo.data.costo - (articulo.data.costo * 0.50)} <br />
-                            Costo Maximo: {articulo.data.costo + (articulo.data.costo * 0.50)} <br />
+                {typeAction == "donar" && <>
+                    <DialogTitle id="alert-dialog-title">
+                        Seguro que quieres Donar?
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Asegurate de escribir correctamente la Matricula de a quien donaras.
                         </DialogContentText>
-                    }
-                    {typeAction === "donar" &&
+                        <DialogContentText id="alert-dialog-description">
+                            El articulo pasara inmediatamente a esa persona.
+                        </DialogContentText>
                         <form onSubmit={handleSubmit} id="donacion-form">
                             <TextField
-                                // autoFocus
                                 required
                                 margin="dense"
                                 id="matriculaReceptor"
@@ -458,65 +436,153 @@ function Articulo({ articulo }) {
                                 variant="standard"
                             />
                         </form>
-                    }
-                    {typeAction === "vender" &&
-                        <>
-                            <Grid container spacing={1}>
-                                <Grid size={{ xs: 6 }} alignSelf={"end"}>
-
-
-                                    <FormControl fullWidth>
-                                        <InputLabel id="destino">Destino</InputLabel>
-                                        <Select
-                                            variant="standard"
-                                            required
-                                            // margin="dense"
-                                            labelId="destino"
-                                            id="destinoSelect"
-                                            value={destinoVenta}
-                                            label="Destino"
-                                            onChange={handleChangeDestinoVenta}
-                                        >
-                                            <MenuItem value={0}>Comerciante</MenuItem>
-                                            <MenuItem value={1}>Mercado</MenuItem>
-                                        </Select>
-                                    </FormControl>
-                                </Grid>
-                                <Grid size={{ xs: 6 }} alignSelf={"end"}>
-                                    <TextField
-                                        required
-                                        disabled={destinoVenta === 0 ? true : false}
-                                        // margin="dense"
-                                        id="precioVenta"
-                                        name="Precio"
-                                        label="Precio"
-                                        type="number"
-                                        fullWidth
-                                        variant="standard"
-                                        value={precioVenta}
-                                        onChange={hanndlePrecioVenta}
-                                        onBlur={handleBlurPrecio}
-                                    />
-                                </Grid>
-                            </Grid>
-                        </>
-                    }
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleCloseAction}>
-                        Cancelar
-                    </Button>
-                    {typeAction === "donar" &&
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleCloseAction}> Cancelar </Button>
                         <Button type="submit" form="donacion-form">Donar</Button>
-                    }                    
-                    {typeAction === "vender" && 
-                        <Button onClick={handleVender} >Donar</Button>
-                    }
-                    {typeAction === "usar" && articulo.data.uso === "Fijo" && "Se Activara este articulo y se pondra en la parte de 'Equipado / Activo', si existe un Marco o Fondo Activo, este sera reemplazado. No perderas ningun articulo."}
-                    {typeAction === "usar" && articulo.data.uso === "Temporal" && "Se iniciara el uso de este articulo, este pasara a la parte 'Equipado / Activo del inventario. La duracion del efecto aparecera debajo del articulo."}
-                    {typeAction === "usar" && articulo.data.uso === "Consumible" && "Gastaras este Articulo, este aparecera en la seccion de 'Consumidos'. El efecto solo sera valido en la fecha que marca debajo del articulo."}
-                    {typeAction === "quitar" && articulo.data.uso === "Fijo" && "Al quitar un Cosmetico este pasara a la seccion Disponibles."}
-                </DialogActions>
+                    </DialogActions>
+                </>}
+                {typeAction == "vender" && <>
+                    <DialogTitle id="alert-dialog-title">
+                        Estas a punto de Vender tu articulo
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Puedes venderlo directamente al 'Comerciante' o ponerlo a la venta en el Mercado.
+                        </DialogContentText>
+                        <Divider sx={{my: 1}} />
+                        <DialogContentText id="alert-dialog-description1">
+                            El <b>Comerciante</b> te cobrar el 15% de comision sobre el precio original.
+                        </DialogContentText>
+                        <DialogContentText id="alert-dialog-description2">
+                            Precio Original: <b>{articulo.data.costo} puntos</b>
+                            <br />
+                            Precio de Compra: <b>{articulo.data.costo - (articulo.data.costo * 0.15)} puntos</b>
+                        </DialogContentText>
+                        <DialogContentText id="alert-dialog-description6">
+                            La compra es inmediata
+                        </DialogContentText>
+                        <Divider sx={{my: 1}} />
+                        <DialogContentText id="alert-dialog-description3">
+                            En el <b>Mercado</b> solo puedes venderlo con un margen de 50% mas caro o mas barato del precio original.
+                        </DialogContentText>
+                        <DialogContentText id="alert-dialog-description4">
+                            Costo Minimo: <b>{articulo.data.costo - (articulo.data.costo * 0.50)} puntos</b>
+                            <br />
+                            Costo Maximo: <b>{parseInt(articulo.data.costo) + (articulo.data.costo * 0.50)} puntos</b>
+                        </DialogContentText>
+                        <DialogContentText id="alert-dialog-description5">
+                            Tendras que esperar a que alguien te lo compre.
+                        </DialogContentText>
+                        <Divider sx={{my: 1}} />
+                        <Grid container spacing={1}>
+                            <Grid size={{ xs: 12 }} alignSelf={"end"}>
+                                <FormControl fullWidth>
+                                    <InputLabel id="destino">Destino</InputLabel>
+                                    <Select
+                                        variant="standard"
+                                        required
+                                        labelId="destino"
+                                        id="destinoSelect"
+                                        value={destinoVenta}
+                                        label="Destino"
+                                        onChange={handleChangeDestinoVenta}
+                                    >
+                                        <MenuItem value={0}>Comerciante</MenuItem>
+                                        <MenuItem value={1}>Mercado</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </Grid>
+                            <Grid size={{ xs: 12 }} alignSelf={"end"}>
+                                <TextField
+                                    required
+                                    disabled={destinoVenta == 0 ? true : false}
+                                    id="precioVenta"
+                                    name="Precio"
+                                    label="Precio"
+                                    type="number"
+                                    fullWidth
+                                    variant="standard"
+                                    value={precioVenta}
+                                    onChange={hanndlePrecioVenta}
+                                    onBlur={handleBlurPrecio}
+                                />
+                            </Grid>
+                        </Grid>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleCloseAction}> Cancelar </Button>
+                        <Button onClick={handleVender} >Vender</Button>
+                    </DialogActions>
+                </>}
+                {typeAction == "usar" && articulo.data.uso == "Fijo" && <>
+                    <DialogTitle id="alert-dialog-title">
+                        Te estas Equipando este Articulo
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Este articulo se pondra en la parte de 'Equipado / Activo'.
+                        </DialogContentText>                        
+                        <DialogContentText id="alert-dialog-description2">
+                             Si existe un Marco o Fondo Activo, este sera reemplazado.
+                        </DialogContentText>
+                        <DialogContentText id="alert-dialog-description3">
+                            No perderas ningun articulo.
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleCloseAction}> Cancelar </Button>
+                        <Button onClick={handleVender} >Equipar</Button>
+                    </DialogActions>
+                </>}
+                {typeAction == "usar" && articulo.data.uso == "Temporal" &&  <>
+                    <DialogTitle id="alert-dialog-title">
+                        Activaras este Articulo
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Se iniciara el uso de este articulo, este pasara a la parte 'Equipado / Activo del inventario.
+                        </DialogContentText>                        
+                        <DialogContentText id="alert-dialog-description2">
+                             La duracion del efecto aparecera debajo del articulo.
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleCloseAction}> Cancelar </Button>
+                        <Button onClick={handleVender} >Activar</Button>
+                    </DialogActions>
+                </>}
+                {typeAction == "usar" && articulo.data.uso == "Consumible" && <>
+                    <DialogTitle id="alert-dialog-title">
+                        Usaras este Articulo
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Gastaras este Articulo, este aparecera en la seccion de 'Consumidos'.
+                        </DialogContentText>                        
+                        <DialogContentText id="alert-dialog-description2">
+                             El efecto solo será valido en la fecha que marca debajo del articulo.
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleCloseAction}> Cancelar </Button>
+                        <Button onClick={handleVender} >Usar</Button>
+                    </DialogActions>
+                </>}
+                {typeAction == "quitar" && articulo.data.uso == "Fijo" &&  <>
+                    <DialogTitle id="alert-dialog-title">
+                        Usaras este Articulo
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Al quitar un Cosmetico este pasara a la seccion Disponibles.
+                        </DialogContentText>                        
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleCloseAction}> Cancelar </Button>
+                        <Button onClick={handleVender} >Quiar</Button>
+                    </DialogActions>
+                </>}
             </Dialog>
         </>
     )

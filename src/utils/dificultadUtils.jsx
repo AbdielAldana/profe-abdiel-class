@@ -8,16 +8,16 @@ const dificultad = [
 ];
 
 export const difName = (difMision) => {
-    let item = dificultad.find((d) => d.id === difMision)
+    let item = dificultad.find((d) => d.id == difMision)
     return item ? item.nombre : "Desconocida";
 }
 
 export const difColorName = (difMision) => {
-    let item = dificultad.find((d) => d.id === difMision)
+    let item = dificultad.find((d) => d.id == difMision)
     return item ? item.colorName : "Desconocida";
 }
 
 export const difColor = (difMision) => {
-    let item = dificultad.find((d) => d.id === difMision)
+    let item = dificultad.find((d) => d.id == difMision)
     return item ? item.color : "Desconocida";
 }
