@@ -28,6 +28,7 @@ import {
     GiWoodAxe,
 } from "react-icons/gi";
 
+// Lista de Iconos Disponibles
 const ICON_MAP = {
     GiBookAura,
     GiBookPile,
@@ -57,11 +58,13 @@ const ICON_MAP = {
     GiWoodAxe,
 };
 
+// Construye el Icono del Articulo con el color correspondiente Segun ViewType color = 0, 1, 2 , 3
 export const IconArt = (c, color) => {
     const IconComp = ICON_MAP[c];
     return (<IconComp size={50} style={{ color: ViewType(color).color }} />)
 }
 
+// Devuelve el color segun el tipo de Rareza del Articulo
 export const ViewType = (c) => {
     let temp = { color: "#fff" };
 
@@ -78,7 +81,7 @@ export const ViewType = (c) => {
     return temp;
 };
 
-
+// Regresa el Nombre de la clase segun el dato de la DB
 export const claseName = (x) => {
     let tempClase = ""
     switch (x) {
@@ -101,7 +104,7 @@ export const claseName = (x) => {
     return (tempClase)
 }
 
-
+// Setea el Tiempo restante, tener en cuenta que ocupa un Tick en useeffecs
 export const getTiempoRestante = (fechaFinGlobal) => {
     const fin = new Date(fechaFinGlobal.replace(" ", "T")).getTime();
     const ahora = Date.now();
@@ -115,5 +118,25 @@ export const getTiempoRestante = (fechaFinGlobal) => {
     const segundos = Math.floor((diff / 1000) % 60);
 
     return `${dias}d ${horas}h ${minutos}m ${segundos}s`;
+};
+
+// Comprueba si esta disponible para la compra para devolver el txt para comprobaciones
+export const getEstadoRecompensa = (re, puntos_disponibles, level) => {
+    const faltaPuntos = re.costo > puntos_disponibles;
+    const nivelBajo = re.nivel_min > level;
+
+    if (!faltaPuntos && !nivelBajo)     return 0; //"OK"
+    if (faltaPuntos && !nivelBajo)      return 1; //"FALTAN_PUNTOS"
+    if (!faltaPuntos && nivelBajo)      return 2; //"NIVEL_BAJO"
+    if (faltaPuntos && nivelBajo)       return 3; //"AMBOS"
+    return 0; //"AMBOS"
+};
+
+
+export const getMensajeEstado = (estado) => {
+    if (estado === 1) return "FALTAN PUNTOS";
+    if (estado === 2) return "NIVEL BAJO";
+    if (estado === 3) return "NIVEL BAJO Y FALTAN PUNTOS";
+    return null;
 };
 

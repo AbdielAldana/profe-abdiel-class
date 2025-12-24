@@ -60,7 +60,7 @@ function Perfil() {
         toast.success(txt, { position: "top-center" });
 
 
-    // Manejo de Sesion
+    // Manejo de inicio de Sesion
     const [user, setUser] = useState(matricula ? matricula : "")
 
     // Inicio de Sesion
@@ -85,7 +85,7 @@ function Perfil() {
     };
 
     const handleChangeFondo = (t) => {
-        let array = { fondo: t }
+        let array = { fondo: t } 
         updateUsuario(array)
     };
 
@@ -147,8 +147,8 @@ function Perfil() {
 
     const bolsa = usuario?.p_totales - usuario?.p_gastados
 
-    console.log(usuario);
-    console.log(misionesUsuario);
+    // console.log(usuario);
+
     
     
 
@@ -349,6 +349,23 @@ function Perfil() {
                                 {usuario.inventario &&
                                     usuario.inventario
                                         .filter(inv => inv.articulo.estado == 4)
+                                        .sort((a, b) => a.data.clase - b.data.clase)
+                                        .map((inv, e) => {
+                                            return (
+                                                <Grid key={e} size={{ xs: 12 }}>
+                                                    <Articulo articulo={inv} />
+                                                </Grid>
+                                            )
+                                        })
+                                }
+                                <Grid size={{ xs: 12, md: 12 }}>
+                                    <Typography variant="h6" fontWeight={"bold"} >
+                                        Vendidos
+                                    </Typography>
+                                </Grid>
+                                {usuario.inventario &&
+                                    usuario.inventario
+                                        .filter(inv => inv.articulo.estado == 5)
                                         .sort((a, b) => a.data.clase - b.data.clase)
                                         .map((inv, e) => {
                                             return (

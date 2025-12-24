@@ -80,7 +80,7 @@ const style = {
 };
 
 function Articulo({ articulo }) {
-    const { updateUsuario, inventario, usuario, updateInventario } = useTablon();
+    const { usuario, postDonacion, postVenta, updateInventario } = useTablon();
     let icono = IconArt(articulo.data.icono, articulo.data.clase)
 
     // Alertas
@@ -129,6 +129,7 @@ function Articulo({ articulo }) {
         }
     }
 
+    // Setea el precio a vender
     const hanndlePrecioVenta = (e) => {
         const value = e.target.value;
 
@@ -155,6 +156,7 @@ function Articulo({ articulo }) {
         setPrecioVenta(val);
     };
 
+    // Corrige el precio si se pone de mas o menos al permitido
     const handleBlurPrecio = () => {
         if (precioVenta === "") return;
 
@@ -166,32 +168,52 @@ function Articulo({ articulo }) {
         setPrecioVenta(clamped);
     };
 
-    const handleVender = () => {
+    const handleVender = async () => {
+        let tempEstado = destinoVenta == 0 ? 5 : 2
+
+        let tempJson = {
+            estado: tempEstado, 
+            matricula: usuario.matricula,
+            inv_id: articulo.articulo.id,
+            precio: precioVenta,
+            precio_original: articulo.data.costo
+        }
+        try {
+            const call = await postVenta(tempJson)
+            
+            if (call) {
+                handleCloseAction()
+                handleOpenData()
+            }
+        } catch (err) {
+            console.error(err);
+            // aquí puedes mostrar un notifyError si quieres
+        }
 
     }
 
-
     // DONACION 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
         const formJson = Object.fromEntries(formData.entries());
         const matricula = formJson.Matricula;
         let tempJson = {
-            accion: 4, //Dono Articulo 
+            estado: 4, //Dono Articulo 
             matriculaReceptor: matricula,
-            matriculaDonador: usuario.matricula,
-            articulo: articulo
+            matricula: usuario.matricula,
+            inv_id: articulo.articulo.id
         }
-        let respuesta = updateInventario(tempJson)
-
-        if (!respuesta.state) {
-            notifyError(respuesta.msg)
-        }
-        if (respuesta.state) {
-            handleCloseAction();
-            handleOpenData();
-            notifySuccess(respuesta.msg)
+        try {
+            const call = await postDonacion(tempJson)
+            
+            if (call) {
+                handleCloseAction()
+                handleOpenData()
+            }
+        } catch (err) {
+            console.error(err);
+            // aquí puedes mostrar un notifyError si quieres
         }
     };
 
@@ -201,12 +223,8 @@ function Articulo({ articulo }) {
     const [tipoCosmetico, idCosmetico] = articulo.data.tipo === "Cosmetico" ? articulo.data.descripcion.split(" ") : "";
 
     // Tiempo
-
     let tiempoRestante = articulo.articulo.fecha_fin === null ? "" : getTiempoRestante(articulo.articulo.fecha_fin ? articulo.articulo.fecha_fin : "2030/12/10 00:00:00")
-
     const [_, setTick] = useState(0);
-
-
     useEffect(() => {
         const i = setInterval(() => setTick(t => t + 1), 1000);
         return () => clearInterval(i);
@@ -276,7 +294,7 @@ function Articulo({ articulo }) {
                                     Termina en: {tiempoRestante}
                                 </Typography>
                             }
-                            {articulo.articulo.estado == 4 && articulo.data.uso === "Temporal" &&
+                            {/* {articulo.articulo.estado == 4 && articulo.data.uso === "Temporal" &&
                                 <Typography
                                     variant="subtitle1"
                                     textAlign={"center"}
@@ -284,7 +302,7 @@ function Articulo({ articulo }) {
                                 >
                                     Entregado el: {articulo.articulo.fecha_inicio}
                                 </Typography>
-                            }
+                            } */}
                         </Grid>
                     }
                 </Grid>
@@ -398,7 +416,7 @@ function Articulo({ articulo }) {
                     }
                     {articulo.articulo.estado == 4 &&
                         <CardActions style={{ display: 'flex', justifyContent: 'center' }}>
-                            Entregado el: {articulo.articulo.fecha_inicio}
+                            Donado el: {articulo.articulo.fecha_fin}
                         </CardActions>
                     }
                 </Card>
@@ -450,7 +468,7 @@ function Articulo({ articulo }) {
                         <DialogContentText id="alert-dialog-description">
                             Puedes venderlo directamente al 'Comerciante' o ponerlo a la venta en el Mercado.
                         </DialogContentText>
-                        <Divider sx={{my: 1}} />
+                        <Divider sx={{ my: 1 }} />
                         <DialogContentText id="alert-dialog-description1">
                             El <b>Comerciante</b> te cobrar el 15% de comision sobre el precio original.
                         </DialogContentText>
@@ -462,7 +480,7 @@ function Articulo({ articulo }) {
                         <DialogContentText id="alert-dialog-description6">
                             La compra es inmediata
                         </DialogContentText>
-                        <Divider sx={{my: 1}} />
+                        <Divider sx={{ my: 1 }} />
                         <DialogContentText id="alert-dialog-description3">
                             En el <b>Mercado</b> solo puedes venderlo con un margen de 50% mas caro o mas barato del precio original.
                         </DialogContentText>
@@ -474,7 +492,7 @@ function Articulo({ articulo }) {
                         <DialogContentText id="alert-dialog-description5">
                             Tendras que esperar a que alguien te lo compre.
                         </DialogContentText>
-                        <Divider sx={{my: 1}} />
+                        <Divider sx={{ my: 1 }} />
                         <Grid container spacing={1}>
                             <Grid size={{ xs: 12 }} alignSelf={"end"}>
                                 <FormControl fullWidth>
@@ -522,9 +540,9 @@ function Articulo({ articulo }) {
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
                             Este articulo se pondra en la parte de 'Equipado / Activo'.
-                        </DialogContentText>                        
+                        </DialogContentText>
                         <DialogContentText id="alert-dialog-description2">
-                             Si existe un Marco o Fondo Activo, este sera reemplazado.
+                            Si existe un Marco o Fondo Activo, este sera reemplazado.
                         </DialogContentText>
                         <DialogContentText id="alert-dialog-description3">
                             No perderas ningun articulo.
@@ -535,16 +553,16 @@ function Articulo({ articulo }) {
                         <Button onClick={handleVender} >Equipar</Button>
                     </DialogActions>
                 </>}
-                {typeAction == "usar" && articulo.data.uso == "Temporal" &&  <>
+                {typeAction == "usar" && articulo.data.uso == "Temporal" && <>
                     <DialogTitle id="alert-dialog-title">
                         Activaras este Articulo
                     </DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
                             Se iniciara el uso de este articulo, este pasara a la parte 'Equipado / Activo del inventario.
-                        </DialogContentText>                        
+                        </DialogContentText>
                         <DialogContentText id="alert-dialog-description2">
-                             La duracion del efecto aparecera debajo del articulo.
+                            La duracion del efecto aparecera debajo del articulo.
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
@@ -559,9 +577,9 @@ function Articulo({ articulo }) {
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
                             Gastaras este Articulo, este aparecera en la seccion de 'Consumidos'.
-                        </DialogContentText>                        
+                        </DialogContentText>
                         <DialogContentText id="alert-dialog-description2">
-                             El efecto solo será valido en la fecha que marca debajo del articulo.
+                            El efecto solo será valido en la fecha que marca debajo del articulo.
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
@@ -569,14 +587,14 @@ function Articulo({ articulo }) {
                         <Button onClick={handleVender} >Usar</Button>
                     </DialogActions>
                 </>}
-                {typeAction == "quitar" && articulo.data.uso == "Fijo" &&  <>
+                {typeAction == "quitar" && articulo.data.uso == "Fijo" && <>
                     <DialogTitle id="alert-dialog-title">
                         Usaras este Articulo
                     </DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
                             Al quitar un Cosmetico este pasara a la seccion Disponibles.
-                        </DialogContentText>                        
+                        </DialogContentText>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleCloseAction}> Cancelar </Button>

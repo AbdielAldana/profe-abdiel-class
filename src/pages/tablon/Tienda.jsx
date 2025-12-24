@@ -1,5 +1,5 @@
 // ReactJS
-import React from "react";
+import React, { useEffect } from "react";
 
 // Material UI
 import {
@@ -21,6 +21,8 @@ import { ToastContainer, toast } from "react-toastify";
 
 // Utils
 import { getLevelData } from "../../utils/levelUtils";
+import { ViewType, IconArt, claseName, getTiempoRestante, getEstadoRecompensa, getMensajeEstado } from "../../utils/articuloTypeUtils"
+import FondoDecorativo from "../../components/Tablon/FondoDecorativo";
 
 // MUI Icons
 import FrontHandIcon from "@mui/icons-material/FrontHand";
@@ -94,51 +96,17 @@ const style = {
     position: "relative",
 };
 
-const ViewType = (c) => {
-    let temp = { color: "#fff", icon: <FrontHandIcon /> };
-
-    if (c === 0) {
-        temp.color = "#4CAF50";
-        temp.icon = <FrontHandIcon />;
-    } else if (c === 1) {
-        temp.color = "#2196F3";
-        temp.icon = <RocketLaunchIcon />;
-    } else if (c === 2) {
-        temp.color = "#9C27B0";
-        temp.icon = <ThumbUpAltIcon />;
-    } else if (c === 3) {
-        temp.color = "#FF9800";
-        temp.icon = <VerifiedIcon />;
-    }
-
-    return temp;
-};
-
-const getEstadoRecompensa = (re, puntos_disponibles, level) => {
-    const faltaPuntos = re.costo > puntos_disponibles;
-    const nivelBajo = re.nivel_min > level;
-
-    if (!faltaPuntos && !nivelBajo) return "OK";
-    if (faltaPuntos && !nivelBajo) return "FALTAN_PUNTOS";
-    if (!faltaPuntos && nivelBajo) return "NIVEL_BAJO";
-    if (faltaPuntos && nivelBajo) return "AMBOS";
-    return "AMBOS";
-};
-
-const getMensajeEstado = (estado) => {
-    if (estado === "FALTAN_PUNTOS") return "FALTAN PUNTOS";
-    if (estado === "NIVEL_BAJO") return "NIVEL BAJO";
-    if (estado === "AMBOS") return "NIVEL BAJO Y FALTAN PUNTOS";
-    return null;
-};
-
 const getColorCosto = (estado) => {
     return estado === "FALTAN_PUNTOS" || estado === "AMBOS" ? "error" : "inherit";
 };
 
 function Tienda() {
-    const { usuario, recompensas } = useTablon();
+    const { usuario, recompensas, getRecompensas, matricula } = useTablon();
     const [cookies] = useCookies(["matricula_actual"]);
+
+    useEffect(()=> {
+        if(recompensas === null) {getRecompensas()}
+    },[])
 
     // Alertas
     const notifyError = (txt) =>
@@ -164,7 +132,6 @@ function Tienda() {
         setArticulo(re)
         setIcon(icon)
     };
-    console.log(icon);
 
     const sendAlert = () => {
         notifyError("No disponible")
@@ -184,6 +151,7 @@ function Tienda() {
                 />
             }
 
+            {/* Barra Abajo */}
             <div className="dataBotomUser">
                 <div className="dataPuntos">
                     <Typography
@@ -207,6 +175,7 @@ function Tienda() {
                 </div>
             </div>
 
+            {/* Titulo */}
             <Grid size={{ xs: 12 }}>
                 <Typography variant="h5" fontWeight="bold" gutterBottom textAlign="center">
                     Mercado
@@ -216,20 +185,16 @@ function Tienda() {
             {recompensas !== null &&
                 recompensas
                     .filter((r) => r.visible !== false)
-                    .sort((a, b) => a.clase - b.clase)
                     .sort((a, b) => a.costo - b.costo)
                     .sort((a, b) => a.nivel_min - b.nivel_min)
+                    .sort((a, b) => a.clase - b.clase)
                     .map((re, i) => {
                         const estado = usuario
                             ? getEstadoRecompensa(re, puntos_disponibles, level)
-                            : "SIN_USUARIO";
+                            : 5;
 
                         const IconComp = ICON_MAP[re.icono];
                         const msg = getMensajeEstado(estado);
-
-                        console.log(IconComp);
-
-
                         return (
                             <Grid
                                 key={i}
@@ -237,42 +202,28 @@ function Tienda() {
                                 className={ "misionSelectF"}
                             >
                                 <Paper
-                                    onClick={!cookies.matricula_actual || msg ? () => sendAlert() : () => handleOpenData(re, IconComp)}
+                                    onClick={!matricula || msg ? () => sendAlert() : () => handleOpenData(re, IconComp)}
                                     sx={style}
                                     style={{
                                         border: "solid 2px " + ViewType(re.clase).color,
-                                        boxShadow: !cookies.matricula_actual || msg ? "0 0 5px  gray" : "0 0 5px " + ViewType(re.clase).color,
+                                        boxShadow: !matricula || msg ? "0 0 5px  gray" : "0 0 5px " + ViewType(re.clase).color,
                                     }}
                                 >
-
                                     <Grid container spacing={1}>
                                         <Grid size={{ xs: 7 }}>
-                                            <div
-                                                style={{
-                                                    display: "flex",
-                                                    alignItems: "center",
-                                                    width: "100%",
-                                                }}
-                                            >
-                                                <div
-                                                    style={{ width: "50px" }}>
-                                                    <IconComp size={50} style={{ color: !cookies.matricula_actual || msg ? "gray" : ViewType(re.clase).color }} />
+                                            <div style={{ display: "flex", alignItems: "center", width: "100%",}} >
+                                                <div style={{ width: "50px" }}>
+                                                    <IconComp size={50} style={{ color: !matricula || msg ? "gray" : ViewType(re.clase).color }} />
                                                 </div>
 
                                                 <div style={{ paddingLeft: "10px", width: "100%" }}>
-                                                    <Typography
-                                                        variant="h6"
-                                                        fontWeight="bold"
-                                                        className="ellipsis"
-                                                        sx={{ m: 0, p: 0 }}
-                                                    >
+                                                    <Typography variant="h6" fontWeight="bold" className="ellipsis" sx={{ m: 0, p: 0 }} >
                                                         {re.nombre}
                                                     </Typography>
 
-                                                    <Typography
-                                                        variant="body2"
+                                                    <Typography variant="body2"
                                                         color={
-                                                            estado === "NIVEL_BAJO" || estado === "AMBOS"
+                                                            estado === 2 || estado === 3
                                                                 ? "error"
                                                                 : "inherit"
                                                         }
@@ -287,7 +238,6 @@ function Tienda() {
                                             <Typography
                                                 variant="h5"
                                                 fontWeight="bold"
-                                                // gutterBottom
                                                 textAlign="right"
                                                 color={getColorCosto(estado)}
                                             >

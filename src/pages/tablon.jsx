@@ -73,7 +73,7 @@ function Tablon() {
 
     return (
         <div>
-            <Grid container spacing={2}>
+            {/* <Grid container spacing={2}>
                 <Grid size={{ xs: 12, md: 12 }}>
                     <Typography
                         variant="h5"
@@ -89,7 +89,7 @@ function Tablon() {
                 <Grid size={{ xs: 12, md: 12 }}>
                     <Divider style={{margin: "0px 0 20px 0"}}/>
                 </Grid>
-            </Grid>
+            </Grid> */}
 
             <TablonProvider
                 initial={{

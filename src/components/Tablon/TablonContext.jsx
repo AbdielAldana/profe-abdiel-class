@@ -1012,6 +1012,7 @@ export function TablonProvider({ children, initial }) {
         String(now.getMinutes()).padStart(2, "0") + ":" +
         String(now.getSeconds()).padStart(2, "0");
 
+    // Ya jala
     // GET Usuario
     const getUsuario = async (ma, okMa) => {
         try {
@@ -1021,9 +1022,9 @@ export function TablonProvider({ children, initial }) {
                     { params: { matricula: ma } }
                 ),
                 {
-                    pending: "Iniciando sesión...",
-                    success: "Sesión iniciada",
-                    error: "No se pudo iniciar sesión",
+                    pending: "Cargando usuario...",
+                    success: "Usuario Cargado",
+                    error: "No se pudo :(",
                 },
                 { position: "top-center" }
             );
@@ -1050,18 +1051,128 @@ export function TablonProvider({ children, initial }) {
         }
     };
 
+    // Ya Jala
+    // POST Donacion
+    const postDonacion = async (data) => {
+        try {
+            const res = await toast.promise(
+                axios.post(
+                    `${process.env.REACT_APP_GREMIO_API_URL}/post_donar.php`,
+                    data
+                ),
+                {
+                    pending: "Procesando...",
+                    success: "Donacion Exitosa",
+                    error: "No se pudo :(",
+                },
+                { position: "top-center" }
+            );
 
-    // SET Misiones Usuario (Probablemente Temporal)
-    const getMisionesUsuario = (us_ma, mis) => {
-        const usuario = usersJson.find(u => u.matricula === us_ma);
-        if (!usuario) return [];
+            // notifySuccess(res.data.msg);
+            getUsuario(matricula)
 
-        const tempMisionesUsuario = usuario.misionesCompletadas
-            .map(id => mis.find(m => m.id_mision === id))
-            .filter(Boolean); // quita undefined si no encuentra la misión
+            return res.data.ok; // opcional
+        } catch (err) {
+            console.log("Error:", err?.response?.data || err.message);
+            notifyError(err?.response?.data?.msg || "Error al crear usuario");
+            return err?.response?.data.ok;
+        }
+    };
 
-        console.log(tempMisionesUsuario);
-        return tempMisionesUsuario;
+    // Ya Jala
+    // POST Venta
+    const postVenta = async (data) => {
+        try {
+            const res = await toast.promise(
+                axios.post(
+                    `${process.env.REACT_APP_GREMIO_API_URL}/post_venta.php`,
+                    data
+                ),
+                {
+                    pending: "Procesando...",
+                    success: "Donacion Exitosa",
+                    error: "No se pudo :(",
+                },
+                { position: "top-center" }
+            );
+
+            getUsuario(matricula)
+
+            return res.data.ok; // opcional
+        } catch (err) {
+            console.log("Error:", err?.response?.data || err.message);
+            notifyError(err?.response?.data?.msg || "Error al crear usuario");
+            return err?.response?.data.ok;
+        }
+    };
+
+    // Ya Jala
+    // GET Inentario
+    const getRecompensas = async () => {
+        try {
+            const res = await toast.promise(
+                axios.get(
+                    `${process.env.REACT_APP_GREMIO_API_URL}/get_recompensas.php`
+                ),
+                {
+                    pending: "Cargando Tienda",
+                    success: "Tienda Cargada",
+                    error: "No se pudo :(",
+                },
+                { position: "top-center" }
+            );
+
+            // notifySuccess("Sesion Iniciada");
+            setRecompensas(res.data.recompensas);
+
+            return res.data;
+        } catch (err) {
+            console.log("Error:", err?.response?.data || err.message);
+            notifyError(err?.response?.data?.msg || "Algo salio mal");
+            return { ok: false };
+        }
+    };
+
+    // Ya Jala
+    // POST Usuario Nuevo
+    const postUsuarioNuevo = async (data) => {
+        try {
+            const fd = new FormData();
+            fd.append("matricula", data.matricula);
+            fd.append("nombre", data.nombre);
+            fd.append("nickname", data.nickname);
+            fd.append("color", data.color);
+
+            // data.imagen debe ser File (de input type="file")
+            fd.append("imagen", data.imagen);
+
+            const res = await toast.promise(
+                axios.post(
+                    `${process.env.REACT_APP_GREMIO_API_URL}/post_usuario.php`,
+                    fd
+                ),
+                {
+                    pending: "Creando Usuario...",
+                    success: "Usuario Creado",
+                    error: "No se pudo crear usuario",
+                },
+                { position: "top-center" }
+            );
+
+            // notifySuccess(res.data.msg);
+            setUsuario(res.data.usuario);
+            setMatricula(res.data.usuario.matricula);
+            setCookie("matricula_actual", res.data.usuario.matricula, {
+                path: "/",
+                maxAge: 60 * 60 * 24,
+            });
+
+            return res.data; // opcional
+        } catch (err) {
+            console.log("Error:", err?.response?.data || err.message);
+            notifyError(err?.response?.data?.msg || "Error al crear usuario");
+            return { ok: false };
+        }
     };
 
     // UPDATE Usuario
@@ -1112,63 +1223,26 @@ export function TablonProvider({ children, initial }) {
 
     }
 
-    // Ya Jala
-    // POST Usuario Nuevo
-    const postUsuarioNuevo = async (data) => {
-        try {
-            const fd = new FormData();
-            fd.append("matricula", data.matricula);
-            fd.append("nombre", data.nombre);
-            fd.append("nickname", data.nickname);
-            fd.append("color", data.color);
 
-            // data.imagen debe ser File (de input type="file")
-            fd.append("imagen", data.imagen);
-
-            const res = await toast.promise(
-                axios.post(
-                    `${process.env.REACT_APP_GREMIO_API_URL}/post_usuario.php`,
-                    fd
-                ),
-                {
-                    pending: "Creando Usuario...",
-                    success: "Usuario Creado",
-                    error: "No se pudo crear usuario",
-                },
-                { position: "top-center" }
-            );
-
-            // notifySuccess(res.data.msg);
-            setUsuario(res.data.usuario);
-            setMatricula(res.data.usuario.matricula);
-            setCookie("matricula_actual", res.data.usuario.matricula, {
-                path: "/",
-                maxAge: 60 * 60 * 24,
-            });
-
-            return res.data; // opcional
-        } catch (err) {
-            console.log("Error:", err?.response?.data || err.message);
-            notifyError(err?.response?.data?.msg || "Error al crear usuario");
-            return { ok: false };
-        }
-    };
 
     // Actualiza Los datos
     const value = React.useMemo(() => ({
         // Universales
-        matricula, setMatricula,
+        usuario, setUsuario,                    // ok
+        matricula, setMatricula,                // ok
+        misionesUsuario, setMisionesUsuario,    // ok
+        inventario, setInventario,              // ok
+        recompensas, setRecompensas,            // ok
         misiones, setMisiones,
-        misionesUsuario, setMisionesUsuario,
         usuarios, setUsuarios,
-        usuario, setUsuario,
-        recompensas, setRecompensas,
-        inventario, setInventario,
 
         // Api Calls Functions
-        getUsuario,
+        getUsuario,         //ok
+        postUsuarioNuevo,   //ok
+        getRecompensas,     //ok
+        postDonacion,       //ok
+        postVenta,
         updateUsuario,
-        postUsuarioNuevo,
         updateInventario,
 
         // Estaticos
