@@ -46,7 +46,7 @@ const VisuallyHiddenInput = styled('input')({
 
 function Perfil() {
     // Informacion Principal
-    const { usuario, setUsuario, matricula, setMatricula, getUsuario, updateUsuario, postUsuarioNuevo, misionesUsuario, inventario } = useTablon();
+    const { usuario, setUsuario, matricula, setMatricula, getUsuario, postUsuarioNuevo, misionesUsuario } = useTablon();
     const [cookies, setCookie] = useCookies(["matricula_actual"]);
     const base = process.env.REACT_APP_GREMIO_API_URL;
 
@@ -65,7 +65,7 @@ function Perfil() {
 
     // Inicio de Sesion
     const handleUserSelect = () => {
-        getUsuario(user, false)
+        getUsuario(user, false, false)
         setUser("")
     }
 
@@ -77,17 +77,6 @@ function Perfil() {
         notifySuccess("Sesion Cerrada con Exito")
     }
 
-    // Modificacion de Usuario
-
-    const handleChangeMarco = (t) => {
-        let array = { marco: t }
-        updateUsuario(array)
-    };
-
-    const handleChangeFondo = (t) => {
-        let array = { fondo: t } 
-        updateUsuario(array)
-    };
 
     // Registro de Usuario
 
@@ -118,7 +107,24 @@ function Perfil() {
         }
     };
 
-    const handleRegistrarUsuario = () => {
+    const [errorMatriculaMsg, setErrorMatriculaMsg] = useState("")
+
+    const handleRegistrarUsuario = async () => {
+        if (!imageFileForm)
+            return setErrorMatriculaMsg("Falta una Imagen")
+        if (registroMatricula.length == 0 || registroMatricula == "")
+            return setErrorMatriculaMsg("Falta Matricula")
+        if (registroMatricula.length <= 6)
+            return setErrorMatriculaMsg("Matricula no Valida")
+        if (registroNombre.length == 0 || registroNombre == "")
+            return setErrorMatriculaMsg("Falta tu Nombre")
+        if (registroNombre.length <= 5)
+            return setErrorMatriculaMsg("Nombre muy corto")
+        if (registroNick.length == 0 || registroNick == "")
+            return setErrorMatriculaMsg("Falta tu Nickname")
+        if (registroNick.length <= 5)
+            return setErrorMatriculaMsg("Nickname muy corto")
+
         let tempData = {
             nombre: registroNombre,
             matricula: registroMatricula,
@@ -127,7 +133,9 @@ function Perfil() {
             imagen: imageFileForm,
         }
 
-        postUsuarioNuevo(tempData)
+        const resp = await postUsuarioNuevo(tempData)
+        if (!resp.ok) { setErrorMatriculaMsg(resp.msg) }
+
     }
 
     // Misiones
@@ -149,8 +157,8 @@ function Perfil() {
 
     // console.log(usuario);
 
-    
-    
+
+
 
 
     return (
@@ -170,7 +178,7 @@ function Perfil() {
                                 </div>
                             </div>
                             <div className="adorno" style={{ backgroundColor: usuario.color }}>
-                                <FondoDecorativo fondo={usuario.fondo} />
+                                <FondoDecorativo fondo={parseInt(usuario.fondo)} />
                             </div>
                         </Grid>
                         <Grid size={{ xs: 8, md: 6 }} display="flex" alignItems="center">
@@ -183,13 +191,13 @@ function Perfil() {
                                 Nivel: {level}
                             </Typography>
                             <Typography variant="body2" gutterBottom textAlign="right">
-                                 {usuario.p_totales} XP
+                                {usuario.p_totales} XP
                             </Typography>
                         </Grid>
                         <Grid size={{ xs: 12, md: 12 }}>
                             <div className="barLevel">
                                 <div className="barLevelCount" style={{ backgroundColor: usuario.color, width: progreso + "%" }}>
-                                    <FondoDecorativo fondo={usuario.fondo} />
+                                    <FondoDecorativo fondo={parseInt(usuario.fondo)} />
                                 </div>
                                 <div className="leveltext">{earnedInLevel} / {cost} XP</div>
                             </div>
@@ -200,7 +208,7 @@ function Perfil() {
                         <Grid size={{ xs: 12, md: 12 }} display={"flex"} justifyContent={"center"}>
                             <GiRupee size={30} color={usuario.color} />
                             <Typography variant="h6" >
-                                  <b>{bolsa}</b> puntos
+                                <b>{bolsa}</b> puntos
                             </Typography>
                         </Grid>
                         <Grid size={{ xs: 12, md: 12 }}>
@@ -264,7 +272,7 @@ function Perfil() {
                             </Grid>
                         </Grid> */}
 
-                        
+
                         {/* Inventario */}
                         <Grid size={{ xs: 12, md: 6 }} className={"viewCompletMisions"}>
                             <Grid container spacing={2}>
@@ -273,11 +281,13 @@ function Perfil() {
                                         Inventario
                                     </Typography>
                                 </Grid>
-                                <Grid size={{ xs: 12, md: 12 }}>
-                                    <Typography variant="h6" fontWeight={"bold"} >
-                                        Equipado / Activo
-                                    </Typography>
-                                </Grid>
+                                {usuario.inventario.filter(inv => inv.articulo.estado == 1).length > 0 &&
+                                    <Grid size={{ xs: 12, md: 12 }}>
+                                        <Typography variant="h6" fontWeight={"bold"} >
+                                            Equipado / Activo
+                                        </Typography>
+                                    </Grid>
+                                }
                                 {usuario.inventario &&
                                     usuario.inventario
                                         .filter(inv => inv.articulo.estado == 1)
@@ -290,11 +300,13 @@ function Perfil() {
                                             )
                                         })
                                 }
-                                <Grid size={{ xs: 12, md: 12 }}>
-                                    <Typography variant="h6" fontWeight={"bold"} >
-                                        Disponibles
-                                    </Typography>
-                                </Grid>
+                                {usuario.inventario.filter(inv => inv.articulo.estado == 0).length > 0 &&
+                                    <Grid size={{ xs: 12, md: 12 }}>
+                                        <Typography variant="h6" fontWeight={"bold"} >
+                                            Disponibles
+                                        </Typography>
+                                    </Grid>
+                                }
                                 {usuario.inventario &&
                                     usuario.inventario
                                         .filter(inv => inv.articulo.estado == 0)
@@ -307,11 +319,13 @@ function Perfil() {
                                             )
                                         })
                                 }
-                                <Grid size={{ xs: 12, md: 12 }}>
-                                    <Typography variant="h6" fontWeight={"bold"} >
-                                        En Venta
-                                    </Typography>
-                                </Grid>
+                                {usuario.inventario.filter(inv => inv.articulo.estado == 2).length > 0 &&
+                                    <Grid size={{ xs: 12, md: 12 }}>
+                                        <Typography variant="h6" fontWeight={"bold"} >
+                                            En Venta
+                                        </Typography>
+                                    </Grid>
+                                }
                                 {usuario.inventario &&
                                     usuario.inventario
                                         .filter(inv => inv.articulo.estado == 2)
@@ -324,11 +338,13 @@ function Perfil() {
                                             )
                                         })
                                 }
-                                <Grid size={{ xs: 12, md: 12 }}>
-                                    <Typography variant="h6" fontWeight={"bold"} >
-                                        Usados
-                                    </Typography>
-                                </Grid>
+                                {usuario.inventario.filter(inv => inv.articulo.estado == 3).length > 0 &&
+                                    <Grid size={{ xs: 12, md: 12 }}>
+                                        <Typography variant="h6" fontWeight={"bold"} >
+                                            Usados
+                                        </Typography>
+                                    </Grid>
+                                }
                                 {usuario.inventario &&
                                     usuario.inventario
                                         .filter(inv => inv.articulo.estado == 3)
@@ -341,11 +357,13 @@ function Perfil() {
                                             )
                                         })
                                 }
-                                <Grid size={{ xs: 12, md: 12 }}>
-                                    <Typography variant="h6" fontWeight={"bold"} >
-                                        Entregados
-                                    </Typography>
-                                </Grid>
+                                {usuario.inventario.filter(inv => inv.articulo.estado == 4).length > 0 &&
+                                    <Grid size={{ xs: 12, md: 12 }}>
+                                        <Typography variant="h6" fontWeight={"bold"} >
+                                            Donados
+                                        </Typography>
+                                    </Grid>
+                                }
                                 {usuario.inventario &&
                                     usuario.inventario
                                         .filter(inv => inv.articulo.estado == 4)
@@ -358,11 +376,13 @@ function Perfil() {
                                             )
                                         })
                                 }
-                                <Grid size={{ xs: 12, md: 12 }}>
-                                    <Typography variant="h6" fontWeight={"bold"} >
-                                        Vendidos
-                                    </Typography>
-                                </Grid>
+                                {usuario.inventario.filter(inv => inv.articulo.estado == 5).length > 0 &&
+                                    <Grid size={{ xs: 12, md: 12 }}>
+                                        <Typography variant="h6" fontWeight={"bold"} >
+                                            Vendidos
+                                        </Typography>
+                                    </Grid>
+                                }
                                 {usuario.inventario &&
                                     usuario.inventario
                                         .filter(inv => inv.articulo.estado == 5)
@@ -482,7 +502,7 @@ function Perfil() {
                             </Grid>
                             <Grid size={{ xs: 12, md: 12 }}>
                                 <Grid container spacing={3}>
-                                    <Grid size={{ xs: 12, md: 4 }}>
+                                    <Grid size={{ xs: 12, md: 4  }}>
                                         <Grid container spacing={1}>
                                             <Grid size={{ xs: 12, md: 12 }} style={{ display: 'flex', justifyContent: 'center' }}>
                                                 <div className="imagenPerfil" style={{ border: "solid 1px" + registoColor, boxShadow: "0 0 5px" + registoColor }}>
@@ -517,6 +537,9 @@ function Perfil() {
                                     </Grid>
                                     <Grid size={{ xs: 12, md: 8 }} style={{ alignSelf: 'center' }}>
                                         <Grid container spacing={3}>
+                                            <Grid size={{ xs: 12, md: 12 }}>
+                                                <Typography variant="h6" color="error" fontWeight={"bold"} textAlign={"center"}>{errorMatriculaMsg}</Typography>
+                                            </Grid>
                                             <Grid size={{ xs: 12, md: 6 }}>
                                                 <TextField
                                                     id="re_matricula"
@@ -568,6 +591,7 @@ function Perfil() {
                                                 />
                                             </Grid>
 
+
                                             <Grid size={{ xs: 12, md: 12 }} style={{ display: 'flex', justifyContent: 'flex-end' }}>
                                                 <Button
                                                     style={{ justifySelf: "flex-end" }}
@@ -577,6 +601,7 @@ function Perfil() {
                                                     onClick={handleRegistrarUsuario}
                                                 > Registrarme </Button>
                                             </Grid>
+
                                         </Grid>
                                     </Grid>
                                 </Grid>

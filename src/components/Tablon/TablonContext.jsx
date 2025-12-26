@@ -998,9 +998,9 @@ export function TablonProvider({ children, initial }) {
 
     useEffect(() => {
         if (cookies.matricula_actual) {
-            getUsuario(cookies.matricula_actual, true)
+            getUsuario(cookies.matricula_actual, true, false)
         }
-    }, [cookies.matricula_actual])
+    }, [])
 
     const now = new Date();
 
@@ -1014,7 +1014,11 @@ export function TablonProvider({ children, initial }) {
 
     // Ya jala
     // GET Usuario
-    const getUsuario = async (ma, okMa) => {
+    const getUsuario = async (ma, okMa, update) => {
+        // ma       = Matricula
+        // okMa     = Valida para aplicar matricula
+        console.log(okMa);
+        const text = update ? "Usuario Actualizado" : "Usuario Cargado"
         try {
             const res = await toast.promise(
                 axios.get(
@@ -1023,7 +1027,7 @@ export function TablonProvider({ children, initial }) {
                 ),
                 {
                     pending: "Cargando usuario...",
-                    success: "Usuario Cargado",
+                    success: text,
                     error: "No se pudo :(",
                 },
                 { position: "top-center" }
@@ -1042,88 +1046,6 @@ export function TablonProvider({ children, initial }) {
 
             setMisionesUsuario(res.data.usuario.misiones);
             setInventario(res.data.usuario.inventario);
-
-            return res.data;
-        } catch (err) {
-            console.log("Error:", err?.response?.data || err.message);
-            notifyError(err?.response?.data?.msg || "Algo salio mal");
-            return { ok: false };
-        }
-    };
-
-    // Ya Jala
-    // POST Donacion
-    const postDonacion = async (data) => {
-        try {
-            const res = await toast.promise(
-                axios.post(
-                    `${process.env.REACT_APP_GREMIO_API_URL}/post_donar.php`,
-                    data
-                ),
-                {
-                    pending: "Procesando...",
-                    success: "Donacion Exitosa",
-                    error: "No se pudo :(",
-                },
-                { position: "top-center" }
-            );
-
-            // notifySuccess(res.data.msg);
-            getUsuario(matricula)
-
-            return res.data.ok; // opcional
-        } catch (err) {
-            console.log("Error:", err?.response?.data || err.message);
-            notifyError(err?.response?.data?.msg || "Error al crear usuario");
-            return err?.response?.data.ok;
-        }
-    };
-
-    // Ya Jala
-    // POST Venta
-    const postVenta = async (data) => {
-        try {
-            const res = await toast.promise(
-                axios.post(
-                    `${process.env.REACT_APP_GREMIO_API_URL}/post_venta.php`,
-                    data
-                ),
-                {
-                    pending: "Procesando...",
-                    success: "Donacion Exitosa",
-                    error: "No se pudo :(",
-                },
-                { position: "top-center" }
-            );
-
-            getUsuario(matricula)
-
-            return res.data.ok; // opcional
-        } catch (err) {
-            console.log("Error:", err?.response?.data || err.message);
-            notifyError(err?.response?.data?.msg || "Error al crear usuario");
-            return err?.response?.data.ok;
-        }
-    };
-
-    // Ya Jala
-    // GET Inentario
-    const getRecompensas = async () => {
-        try {
-            const res = await toast.promise(
-                axios.get(
-                    `${process.env.REACT_APP_GREMIO_API_URL}/get_recompensas.php`
-                ),
-                {
-                    pending: "Cargando Tienda",
-                    success: "Tienda Cargada",
-                    error: "No se pudo :(",
-                },
-                { position: "top-center" }
-            );
-
-            // notifySuccess("Sesion Iniciada");
-            setRecompensas(res.data.recompensas);
 
             return res.data;
         } catch (err) {
@@ -1171,6 +1093,223 @@ export function TablonProvider({ children, initial }) {
         } catch (err) {
             console.log("Error:", err?.response?.data || err.message);
             notifyError(err?.response?.data?.msg || "Error al crear usuario");
+            return { ok: false, msg: err?.response?.data?.msg };
+        }
+    };
+
+    // Ya Jala
+    // POST Donacion
+    const postDonacion = async (data) => {
+        try {
+            const res = await toast.promise(
+                axios.post(
+                    `${process.env.REACT_APP_GREMIO_API_URL}/post_donar.php`,
+                    data
+                ),
+                {
+                    pending: "Procesando...",
+                    success: "Donacion Exitosa",
+                    error: "No se pudo :(",
+                },
+                { position: "top-center" }
+            );
+
+            // notifySuccess(res.data.msg);
+            getUsuario(matricula, false, true)
+
+            return res.data.ok; // opcional
+        } catch (err) {
+            console.log("Error:", err?.response?.data || err.message);
+            notifyError(err?.response?.data?.msg || "Error al crear usuario");
+            return err?.response?.data.ok;
+        }
+    };
+
+    // Ya Jala
+    // POST Venta
+    const postVenta = async (data) => {
+        try {
+            const res = await toast.promise(
+                axios.post(
+                    `${process.env.REACT_APP_GREMIO_API_URL}/post_venta.php`,
+                    data
+                ),
+                {
+                    pending: "Procesando...",
+                    success: "Donacion Exitosa",
+                    error: "No se pudo :(",
+                },
+                { position: "top-center" }
+            );
+
+            getUsuario(matricula, false, true)
+
+            return res.data.ok; // opcional
+        } catch (err) {
+            console.log("Error:", err?.response?.data || err.message);
+            notifyError(err?.response?.data?.msg || "Error al crear usuario");
+            return err?.response?.data.ok;
+        }
+    };
+
+    // Ya Jala
+    // POST Retirar Venta
+    const retirarVenta = async (data) => {
+        try {
+            const res = await toast.promise(
+                axios.post(
+                    `${process.env.REACT_APP_GREMIO_API_URL}/post_retirar_venta.php`,
+                    data
+                ),
+                {
+                    pending: "Procesando...",
+                    success: "Articulo recuperado",
+                    error: "No se pudo :(",
+                },
+                { position: "top-center" }
+            );
+
+            getUsuario(matricula, false, true)
+
+            return res.data.ok; // opcional
+        } catch (err) {
+            console.log("Error:", err?.response?.data || err.message);
+            notifyError(err?.response?.data?.msg || "Error al crear usuario");
+            return err?.response?.data.ok;
+        }
+    };
+
+    // Ya Jala
+    // POST Usar Producto
+    const usarProducto = async (data) => {
+        try {
+            const res = await toast.promise(
+                axios.post(
+                    `${process.env.REACT_APP_GREMIO_API_URL}/post_usar.php`,
+                    data
+                ),
+                {
+                    pending: "Procesando...",
+                    success: "Articulo Usado",
+                    error: "No se pudo :(",
+                },
+                { position: "top-center" }
+            );
+
+            getUsuario(matricula, false, true)
+
+            return res.data.ok; // opcional
+        } catch (err) {
+            console.log("Error:", err?.response?.data || err.message);
+            notifyError(err?.response?.data?.msg || "Error al crear usuario");
+            return err?.response?.data.ok;
+        }
+    };
+    // Ya Jala
+    // POST Quitar Fijo
+    const quitarFijo = async (data) => {
+        try {
+            const res = await toast.promise(
+                axios.post(
+                    `${process.env.REACT_APP_GREMIO_API_URL}/post_quitar_fijo.php`,
+                    data
+                ),
+                {
+                    pending: "Procesando...",
+                    success: "Articulo retirado",
+                    error: "No se pudo :(",
+                },
+                { position: "top-center" }
+            );
+
+            getUsuario(matricula, false, true)
+
+            return res.data.ok; // opcional
+        } catch (err) {
+            console.log("Error:", err?.response?.data || err.message);
+            notifyError(err?.response?.data?.msg || "Error al crear usuario");
+            return err?.response?.data.ok;
+        }
+    };
+
+    // Ya Jala
+    // GET Lista de Tienda
+    const getRecompensas = async () => {
+        try {
+            const res = await toast.promise(
+                axios.get(
+                    `${process.env.REACT_APP_GREMIO_API_URL}/get_recompensas.php`
+                ),
+                {
+                    pending: "Cargando Tienda",
+                    success: "Tienda Cargada",
+                    error: "No se pudo :(",
+                },
+                { position: "top-center" }
+            );
+
+            // notifySuccess("Sesion Iniciada");
+            setRecompensas(res.data.recompensas);
+
+            return res.data;
+        } catch (err) {
+            console.log("Error:", err?.response?.data || err.message);
+            notifyError(err?.response?.data?.msg || "Algo salio mal");
+            return { ok: false };
+        }
+    };
+
+    // Ya Jala
+    // GET Comprar Tienda
+    const comprarTienda = async (data) => {
+        try {
+            const res = await toast.promise(
+                axios.post(
+                    `${process.env.REACT_APP_GREMIO_API_URL}/post_comprar_tienda.php`,
+                    data
+                ),
+                {
+                    pending: "Cargando Tienda",
+                    success: "Tienda Cargada",
+                    error: "No se pudo :(",
+                },
+                { position: "top-center" }
+            );
+
+            // notifySuccess("Sesion Iniciada");
+            getUsuario(matricula);
+
+            return res.data;
+        } catch (err) {
+            console.log("Error:", err?.response?.data || err.message);
+            notifyError(err?.response?.data?.msg || "Algo salio mal");
+            return { ok: false };
+        }
+    };
+
+    // Ya Jala
+    // GET Lista de Tienda
+    const getUsuariosR = async () => {
+        try {
+            const res = await toast.promise(
+                axios.get(
+                    `${process.env.REACT_APP_GREMIO_API_URL}/get_usuarios_ranking.php`
+                ),
+                {
+                    pending: "Cargando Tienda",
+                    success: "Tienda Cargada",
+                    error: "No se pudo :(",
+                },
+                { position: "top-center" }
+            );
+
+            // notifySuccess("Sesion Iniciada");
+            setUsuarios(res.data.usuarios);
+
+            return res.data;
+        } catch (err) {
+            console.log("Error:", err?.response?.data || err.message);
+            notifyError(err?.response?.data?.msg || "Algo salio mal");
             return { ok: false };
         }
     };
@@ -1233,15 +1372,20 @@ export function TablonProvider({ children, initial }) {
         misionesUsuario, setMisionesUsuario,    // ok
         inventario, setInventario,              // ok
         recompensas, setRecompensas,            // ok
+        usuarios, setUsuarios,                  // ok
         misiones, setMisiones,
-        usuarios, setUsuarios,
 
         // Api Calls Functions
         getUsuario,         //ok
         postUsuarioNuevo,   //ok
         getRecompensas,     //ok
         postDonacion,       //ok
-        postVenta,
+        postVenta,          //ok
+        retirarVenta,       //ok
+        usarProducto,       //ok
+        quitarFijo,         //ok
+        comprarTienda,      //ok
+        getUsuariosR,       //ok
         updateUsuario,
         updateInventario,
 

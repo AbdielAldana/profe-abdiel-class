@@ -80,7 +80,7 @@ const style = {
 };
 
 function Articulo({ articulo }) {
-    const { usuario, postDonacion, postVenta, updateInventario } = useTablon();
+    const { usuario, postDonacion, postVenta, retirarVenta, usarProducto, quitarFijo, updateInventario } = useTablon();
     let icono = IconArt(articulo.data.icono, articulo.data.clase)
 
     // Alertas
@@ -95,7 +95,6 @@ function Articulo({ articulo }) {
     const handleOpenData = () => {
         setOpenData(!openData)
     }
-
 
     // =======================================================
     // Modal de Confirmacion
@@ -172,7 +171,7 @@ function Articulo({ articulo }) {
         let tempEstado = destinoVenta == 0 ? 5 : 2
 
         let tempJson = {
-            estado: tempEstado, 
+            estado: tempEstado,
             matricula: usuario.matricula,
             inv_id: articulo.articulo.id,
             precio: precioVenta,
@@ -180,7 +179,7 @@ function Articulo({ articulo }) {
         }
         try {
             const call = await postVenta(tempJson)
-            
+
             if (call) {
                 handleCloseAction()
                 handleOpenData()
@@ -190,6 +189,68 @@ function Articulo({ articulo }) {
             // aquí puedes mostrar un notifyError si quieres
         }
 
+    }
+
+    // Retirar Venta
+    const handleRetirarVenta = async () => {
+        let tempJson = {
+            inv_id: articulo.articulo.id,
+        }
+        try {
+            const call = await retirarVenta(tempJson)
+
+            if (call) {
+                handleCloseAction()
+                handleOpenData()
+            }
+        } catch (err) {
+            console.error(err);
+            // aquí puedes mostrar un notifyError si quieres
+        }
+    }
+
+    // Usar Objeto
+    const handleUsarArticulo = async () => {
+        let tempJson = {
+            id_user: usuario.id,
+            inv_id: articulo.articulo.id,
+            uso: articulo.data.uso,
+            duracion: articulo.data.duracion
+        }
+        try {
+            const call = await usarProducto(tempJson)
+
+            if (call) {
+                handleCloseAction()
+                handleOpenData()
+            } else {
+                handleCloseAction()
+            }
+            
+            
+        } catch (err) {
+            console.error(err.msg);
+            // aquí puedes mostrar un notifyError si quieres
+        }
+    }
+
+    // Quitar Cosmetico
+    const handleQuitarFijo = async () => {
+        let tempJson = {
+            matricula: usuario.matricula,
+            id_inv: articulo.articulo.id,
+        }
+        try {
+            const call = await quitarFijo(tempJson)
+
+            if (call) {
+                handleCloseAction()
+                handleOpenData()
+            }
+        } catch (err) {
+            console.error(err);
+            // aquí puedes mostrar un notifyError si quieres
+        }
     }
 
     // DONACION 
@@ -206,7 +267,7 @@ function Articulo({ articulo }) {
         }
         try {
             const call = await postDonacion(tempJson)
-            
+
             if (call) {
                 handleCloseAction()
                 handleOpenData()
@@ -247,7 +308,7 @@ function Articulo({ articulo }) {
                     <Grid size={{ xs: 2 }} alignSelf={"center"}>
                         {icono}
                     </Grid>
-                    <Grid size={{ xs: 7 }}>
+                    <Grid size={{ xs: articulo.articulo.cantidad > 0 ? 7 : 10 }}>
                         <Typography
                             variant="h6"
                             fontWeight="bold"
@@ -255,6 +316,7 @@ function Articulo({ articulo }) {
                             sx={{ m: 0, p: 0 }}
                         >
                             {articulo.data.nombre}
+
                         </Typography>
                         <Typography
                             variant="body1"
@@ -263,25 +325,27 @@ function Articulo({ articulo }) {
                             {articulo.data.descripcion}
                         </Typography>
                     </Grid>
-                    <Grid size={{ xs: 3 }}>
-                        <Typography
-                            variant="body1"
-                            className="ellipsis"
-                            sx={{ m: 0, p: 0 }}
-                            textAlign={"right"}
-                        >
-                            {articulo.data.tipo}
-                        </Typography>
-                        <Typography
-                            variant="h5"
-                            fontWeight={"bold"}
-                            textAlign={"right"}
-                            gutterBottom
-                            sx={{ m: 0, p: 0 }}
-                        >
-                            x{articulo.articulo.cantidad}
-                        </Typography>
-                    </Grid>
+                    {articulo.articulo.cantidad > 0 &&
+                        <Grid size={{ xs: 3 }}>
+                            <Typography
+                                variant="body1"
+                                className="ellipsis"
+                                sx={{ m: 0, p: 0 }}
+                                textAlign={"right"}
+                            >
+                                {articulo.data.tipo}
+                            </Typography>
+                            <Typography
+                                variant="h5"
+                                fontWeight={"bold"}
+                                textAlign={"right"}
+                                gutterBottom
+                                sx={{ m: 0, p: 0 }}
+                            >
+                                x{articulo.articulo.cantidad}
+                            </Typography>
+                        </Grid>
+                    }
                     {articulo.data.uso === "Temporal" &&
                         <Grid size={{ xs: 12 }}>
                             {articulo.articulo.estado == 1 && articulo.data.uso === "Temporal" &&
@@ -294,15 +358,28 @@ function Articulo({ articulo }) {
                                     Termina en: {tiempoRestante}
                                 </Typography>
                             }
-                            {/* {articulo.articulo.estado == 4 && articulo.data.uso === "Temporal" &&
-                                <Typography
-                                    variant="subtitle1"
-                                    textAlign={"center"}
-                                    sx={{ m: 0, p: 0 }}
-                                >
-                                    Entregado el: {articulo.articulo.fecha_inicio}
-                                </Typography>
-                            } */}
+                        </Grid>
+                    }
+                    {articulo.articulo.estado == 4 && 
+                        <Grid size={{ xs: 12 }}>
+                            <Typography
+                                variant="subtitle1"
+                                textAlign={"center"}
+                                sx={{ m: 0, p: 0 }}
+                            >
+                                Donado el: {articulo.articulo.fecha_fin}
+                            </Typography>
+                        </Grid>
+                    }
+                    {articulo.articulo.estado == 5 && 
+                        <Grid size={{ xs: 12 }}>
+                            <Typography
+                                variant="subtitle1"
+                                textAlign={"center"}
+                                sx={{ m: 0, p: 0 }}
+                            >
+                                Vendido por: <b>{articulo.articulo.precio} puntos</b>, el {articulo.articulo.fecha_fin}
+                            </Typography>
                         </Grid>
                     }
                 </Grid>
@@ -333,16 +410,19 @@ function Articulo({ articulo }) {
                     />
                     <CardContent>
                         <Grid container spacing={1}>
-                            <Grid size={{ xs: 8 }}>
+                            <Grid size={{ xs: articulo.articulo.cantidad == 0 ? 12 : 8 }}>
                                 <Typography variant="h6" fontWeight={"bold"} className="ellipsis">
                                     {articulo.data.nombre}
                                 </Typography>
                             </Grid>
-                            <Grid size={{ xs: 4 }} alignSelf={"center"}>
-                                <Typography variant="body1" textAlign={"right"} fontWeight={"bold"}>
-                                    Cantidad: x{articulo.articulo.cantidad}
-                                </Typography>
-                            </Grid>
+                            {articulo.articulo.cantidad > 0 &&
+
+                                <Grid size={{ xs: 4 }} alignSelf={"center"}>
+                                    <Typography variant="body1" textAlign={"right"} fontWeight={"bold"}>
+                                        Cantidad: x{articulo.articulo.cantidad}
+                                    </Typography>
+                                </Grid>
+                            }
                             <Grid size={{ xs: 12 }}>
                                 <Divider />
                             </Grid>
@@ -362,6 +442,16 @@ function Articulo({ articulo }) {
                                     {articulo.data.descripcion}
                                 </Typography>
                             </Grid>
+                            {articulo.articulo.estado == 2 &&
+                                <Grid size={{ xs: 12 }}>
+                                    <Typography variant="subtitle1" fontWeight={"bold"}>
+                                        Precio de Venta:
+                                    </Typography>
+                                    <Typography variant="body1" gutterBottom>
+                                        {articulo.articulo.precio} pts
+                                    </Typography>
+                                </Grid>
+                            }
 
                             {/* Si es un Cosmetico */}
                             {articulo.data.tipo === "Cosmetico" &&
@@ -388,10 +478,14 @@ function Articulo({ articulo }) {
                     </CardContent>
 
                     {articulo.articulo.estado == 0 &&
-                        <CardActions style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <Button size="small" variant="outlined" color={"primary"} onClick={() => handleOpenAction("donar")}>Donar</Button>
-                            <Button size="small" variant="contained" color={"primary"} onClick={() => handleOpenAction("vender")}>Vender</Button>
+                        <CardActions style={{ display: 'flex', justifyContent: 'space-between', flexDirection: "row-reverse" }}>
                             <Button size="small" variant="contained" color={"secondary"} onClick={() => handleOpenAction("usar")}>Usar</Button>
+                            {articulo.data.revendible == 1 &&
+                                <Button size="small" variant="contained" color={"primary"} onClick={() => handleOpenAction("vender")}>Vender</Button>
+                            }
+                            {articulo.data.donable == 1 &&
+                                <Button size="small" variant="outlined" color={"primary"} onClick={() => handleOpenAction("donar")}>Donar</Button>
+                            }
                         </CardActions>
                     }
                     {articulo.articulo.estado == 1 && articulo.data.uso == "Fijo" &&
@@ -417,6 +511,16 @@ function Articulo({ articulo }) {
                     {articulo.articulo.estado == 4 &&
                         <CardActions style={{ display: 'flex', justifyContent: 'center' }}>
                             Donado el: {articulo.articulo.fecha_fin}
+                        </CardActions>
+                    }
+                    {articulo.articulo.estado == 5 &&
+                        <CardActions style={{ display: 'flex', justifyContent: 'center' }}>
+                            Vendida el: {articulo.articulo.fecha_fin}
+                        </CardActions>
+                    }
+                    {articulo.articulo.estado == 5 &&
+                        <CardActions style={{ display: 'flex', justifyContent: 'center' }}>
+                            Vendida por: {articulo.articulo.precio} puntos
                         </CardActions>
                     }
                 </Card>
@@ -492,6 +596,10 @@ function Articulo({ articulo }) {
                         <DialogContentText id="alert-dialog-description5">
                             Tendras que esperar a que alguien te lo compre.
                         </DialogContentText>
+                        <DialogContentText id="alert-dialog-description7">
+                            Se te cobrara una comicion del 10% inmediatamente. <br />
+                            Comision: <b>{Math.ceil((precioVenta * 0.1))} Puntos</b>
+                        </DialogContentText>
                         <Divider sx={{ my: 1 }} />
                         <Grid container spacing={1}>
                             <Grid size={{ xs: 12 }} alignSelf={"end"}>
@@ -550,7 +658,7 @@ function Articulo({ articulo }) {
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleCloseAction}> Cancelar </Button>
-                        <Button onClick={handleVender} >Equipar</Button>
+                        <Button onClick={handleUsarArticulo} >Equipar</Button>
                     </DialogActions>
                 </>}
                 {typeAction == "usar" && articulo.data.uso == "Temporal" && <>
@@ -567,7 +675,7 @@ function Articulo({ articulo }) {
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleCloseAction}> Cancelar </Button>
-                        <Button onClick={handleVender} >Activar</Button>
+                        <Button onClick={handleUsarArticulo} >Activar</Button>
                     </DialogActions>
                 </>}
                 {typeAction == "usar" && articulo.data.uso == "Consumible" && <>
@@ -584,7 +692,7 @@ function Articulo({ articulo }) {
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleCloseAction}> Cancelar </Button>
-                        <Button onClick={handleVender} >Usar</Button>
+                        <Button onClick={handleUsarArticulo} >Usar</Button>
                     </DialogActions>
                 </>}
                 {typeAction == "quitar" && articulo.data.uso == "Fijo" && <>
@@ -598,7 +706,24 @@ function Articulo({ articulo }) {
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleCloseAction}> Cancelar </Button>
-                        <Button onClick={handleVender} >Quiar</Button>
+                        <Button onClick={handleQuitarFijo} >Quiar</Button>
+                    </DialogActions>
+                </>}
+                {typeAction == "retirar" && <>
+                    <DialogTitle id="alert-dialog-title">
+                        Retiraras este Articulo del Mercado
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Este pasara Nuevamente a tu Articulos Disponibles.
+                        </DialogContentText>
+                        <DialogContentText id="alert-dialog-description">
+                            La comicion del 10% NO se te regresara
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleCloseAction}> Cancelar </Button>
+                        <Button onClick={handleRetirarVenta} >Retirar</Button>
                     </DialogActions>
                 </>}
             </Dialog>

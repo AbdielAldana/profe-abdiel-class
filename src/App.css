@@ -153,6 +153,51 @@ summary:hover {
   text-overflow: ellipsis;
 }
 
+.adornoTitulo {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 100px;
+  /* background-color: red; */
+  z-index: 0;
+  
+  /* border: solid black 2px; */
+  overflow: hidden;
+  z-index: 0;
+
+}
+
+/* View Titulo */
+.viewtitulo h4 {
+  position: relative;
+  z-index: 1;
+      filter: brightness(.1) invert(1);
+  text-align: center;
+}
+
+.viewtitulo {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius:15px 15px 0 0;
+  /* width: 100%;
+  height: fit-content; */
+  /* background-color: red; */
+  /* padding: 20px; */
+  width: 100%;
+  /* position: absolute;
+  bottom: 0;
+  left: 0; */
+  height: 80px;
+  /* background-color: red; */
+  z-index: 0;
+  /* border-radius: 0 0 15px 15px; */
+  /* border: solid black 2px; */
+  overflow: hidden;
+}
+
 /* Niveles */
 
 .barLevel {
@@ -403,10 +448,11 @@ summary:hover {
 .dataLevel {
   background-color: #fff;
   width: fit-content;
-  padding: 5px 20px;
+  padding: 5px 10px;
   text-align: right;
   box-shadow: 0 0 5px black;
   border-radius: 15px 0 0 0 ;
+  display: flex;
 }
 .dataPuntos {
   background-color: #fff;
@@ -424,4 +470,33 @@ summary:hover {
   overflow: hidden;
   position: relative;
   /* position: absolute; */
+}
+
+
+/* Ranking */
+
+.imgMin {
+  transform: scale(.4);
+  height: 100px;
+  width: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.textX {
+    /* filter: brightness(.1) invert(1); */
+    font-weight: bold;
+    margin: 0px !important;
+    padding: 0px o !important;
+}
+
+.rowUser {
+  padding:  0 5px;
+}
+
+.checkUser {
+  border-radius: 15px;
+  transform: scale(1.01);
+  margin: 10px 0;
 }

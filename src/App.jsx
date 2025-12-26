@@ -6,7 +6,7 @@ import "./App.scss";
 import Container from '@mui/material/Container';
 
 
-import { Outlet, useNavigate, useNavigation } from "react-router";
+import { Outlet, useNavigate, useNavigation, useLocation  } from "react-router";
 // import useAuth from "./hooks/useAuth";
 // import { logout } from "./utils/auth";
 
@@ -103,6 +103,15 @@ const theme2 = createTheme({
 });
 
 export default function ButtonAppBar() {
+  const { pathname } = useLocation();
+
+  React.useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "instant", // o "smooth" si quieres animación
+    });
+  }, [pathname]);
 
   const navigation = useNavigation();
   const isLoading = navigation.state === "loading";

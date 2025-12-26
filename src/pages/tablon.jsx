@@ -107,7 +107,7 @@ function Tablon() {
             </TablonProvider>
 
             <NavbarBottomTablon />
-            <ToastContainer autoClose={300} />
+            <ToastContainer autoClose={1000} />
         </div>
     )
 }
