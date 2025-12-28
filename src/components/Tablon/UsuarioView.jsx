@@ -9,12 +9,12 @@ function UsuarioView({ user, id }) {
         const { level, progreso, xpFaltante, earnedInLevel, cost } = getLevelData(xpTotal);
 
     const validateUser = () => {
-        return user.id == usuario.id
+        return user.id == usuario?.id ? true : false
     }
 
     const youruser = () => {
         let color = "#00000000"
-        console.log(user.id == usuario.id);
+        // console.log(user.id == usuario.id);
         
         if(validateUser()){
             return user.color+""

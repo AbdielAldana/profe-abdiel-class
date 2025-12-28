@@ -6,7 +6,6 @@ import { Button, Divider, Grid, Modal, Paper, TextField, Typography } from "@mui
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 import CardHeader from '@mui/material/CardHeader';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
@@ -21,9 +20,6 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-
-// Componentes
-import { toast } from "react-toastify";
 
 // Context
 import { useTablon } from "./TablonContext";
@@ -80,15 +76,8 @@ const style = {
 };
 
 function Articulo({ articulo }) {
-    const { usuario, postDonacion, postVenta, retirarVenta, usarProducto, quitarFijo, updateInventario } = useTablon();
+    const { usuario, postDonacion, postVenta, retirarVenta, usarProducto, quitarFijo } = useTablon();
     let icono = IconArt(articulo.data.icono, articulo.data.clase)
-
-    // Alertas
-    const notifyError = (txt) =>
-        toast.error(txt, { position: "top-center" });
-
-    const notifySuccess = (txt) =>
-        toast.success(txt, { position: "top-center" });
 
     // Modal Para ver el Articulo Completo
     const [openData, setOpenData] = useState(false)
@@ -145,9 +134,6 @@ function Articulo({ articulo }) {
             return;
         }
 
-        const min = Math.floor(costo * 0.5);
-        const max = Math.floor(costo * 1.5);
-
         const val = Number.parseInt(value, 10);
 
         if (Number.isNaN(val)) return;
@@ -168,7 +154,9 @@ function Articulo({ articulo }) {
     };
 
     const handleVender = async () => {
-        let tempEstado = destinoVenta == 0 ? 5 : 2
+        // eslint-disable-next-line
+        let tempEstado = destinoVenta == 0 ? 5 : 2;
+        
 
         let tempJson = {
             estado: tempEstado,
@@ -226,8 +214,8 @@ function Articulo({ articulo }) {
             } else {
                 handleCloseAction()
             }
-            
-            
+
+
         } catch (err) {
             console.error(err.msg);
             // aquí puedes mostrar un notifyError si quieres
@@ -285,6 +273,7 @@ function Articulo({ articulo }) {
 
     // Tiempo
     let tiempoRestante = articulo.articulo.fecha_fin === null ? "" : getTiempoRestante(articulo.articulo.fecha_fin ? articulo.articulo.fecha_fin : "2030/12/10 00:00:00")
+    // eslint-disable-next-line
     const [_, setTick] = useState(0);
     useEffect(() => {
         const i = setInterval(() => setTick(t => t + 1), 1000);
@@ -304,7 +293,7 @@ function Articulo({ articulo }) {
                 }}
                 onClick={handleOpenData}
             >
-                <Grid container spacing={3}>
+                <Grid container spacing={1}>
                     <Grid size={{ xs: 2 }} alignSelf={"center"}>
                         {icono}
                     </Grid>
@@ -320,6 +309,7 @@ function Articulo({ articulo }) {
                         </Typography>
                         <Typography
                             variant="body1"
+                            className="ellipsis"
                             sx={{ m: 0, p: 0 }}
                         >
                             {articulo.data.descripcion}
@@ -346,21 +336,21 @@ function Articulo({ articulo }) {
                             </Typography>
                         </Grid>
                     }
-                    {articulo.data.uso === "Temporal" &&
+                    {// eslint-disable-next-line
+                    articulo.data.uso === "Temporal" && articulo.articulo.estado == 1 &&
                         <Grid size={{ xs: 12 }}>
-                            {articulo.articulo.estado == 1 && articulo.data.uso === "Temporal" &&
-                                <Typography
-                                    variant="subtitle1"
-                                    fontWeight={"bold"}
-                                    textAlign={"center"}
-                                    sx={{ m: 0, p: 0 }}
-                                >
-                                    Termina en: {tiempoRestante}
-                                </Typography>
-                            }
+                            <Typography
+                                variant="subtitle1"
+                                fontWeight={"bold"}
+                                textAlign={"center"}
+                                sx={{ m: 0, p: 0 }}
+                            >
+                                Termina en: {tiempoRestante}
+                            </Typography>
                         </Grid>
                     }
-                    {articulo.articulo.estado == 4 && 
+                    {// eslint-disable-next-line
+                    articulo.articulo.estado == 4 &&
                         <Grid size={{ xs: 12 }}>
                             <Typography
                                 variant="subtitle1"
@@ -371,7 +361,8 @@ function Articulo({ articulo }) {
                             </Typography>
                         </Grid>
                     }
-                    {articulo.articulo.estado == 5 && 
+                    {// eslint-disable-next-line
+                    articulo.articulo.estado == 5 &&
                         <Grid size={{ xs: 12 }}>
                             <Typography
                                 variant="subtitle1"
@@ -410,6 +401,7 @@ function Articulo({ articulo }) {
                     />
                     <CardContent>
                         <Grid container spacing={1}>
+                            {/* eslint-disable-next-line */}
                             <Grid size={{ xs: articulo.articulo.cantidad == 0 ? 12 : 8 }}>
                                 <Typography variant="h6" fontWeight={"bold"} className="ellipsis">
                                     {articulo.data.nombre}
@@ -442,7 +434,8 @@ function Articulo({ articulo }) {
                                     {articulo.data.descripcion}
                                 </Typography>
                             </Grid>
-                            {articulo.articulo.estado == 2 &&
+                            {// eslint-disable-next-line
+                            articulo.articulo.estado == 2 &&
                                 <Grid size={{ xs: 12 }}>
                                     <Typography variant="subtitle1" fontWeight={"bold"}>
                                         Precio de Venta:
@@ -477,48 +470,58 @@ function Articulo({ articulo }) {
                         </Grid>
                     </CardContent>
 
-                    {articulo.articulo.estado == 0 &&
+                    {// eslint-disable-next-line
+                    articulo.articulo.estado == 0 &&
                         <CardActions style={{ display: 'flex', justifyContent: 'space-between', flexDirection: "row-reverse" }}>
                             <Button size="small" variant="contained" color={"secondary"} onClick={() => handleOpenAction("usar")}>Usar</Button>
-                            {articulo.data.revendible == 1 &&
+                            {// eslint-disable-next-line
+                            articulo.data.revendible == 1 &&
                                 <Button size="small" variant="contained" color={"primary"} onClick={() => handleOpenAction("vender")}>Vender</Button>
                             }
-                            {articulo.data.donable == 1 &&
+                            {// eslint-disable-next-line
+                            articulo.data.donable == 1 &&
                                 <Button size="small" variant="outlined" color={"primary"} onClick={() => handleOpenAction("donar")}>Donar</Button>
                             }
                         </CardActions>
                     }
-                    {articulo.articulo.estado == 1 && articulo.data.uso == "Fijo" &&
+                    {// eslint-disable-next-line
+                    articulo.articulo.estado == 1 && articulo.data.uso == "Fijo" &&
                         <CardActions style={{ display: 'flex', justifyContent: 'flex-end' }}>
                             <Button size="small" variant="contained" color={"secondary"} onClick={() => handleOpenAction("quitar")}>Quitar</Button>
                         </CardActions>
                     }
-                    {articulo.articulo.estado == 1 && articulo.data.uso == "Temporal" &&
+                    {// eslint-disable-next-line
+                    articulo.articulo.estado == 1 && articulo.data.uso == "Temporal" &&
                         <CardActions style={{ display: 'flex', justifyContent: 'center' }}>
                             Termina en: {tiempoRestante}
                         </CardActions>
                     }
-                    {articulo.articulo.estado == 2 &&
+                    {// eslint-disable-next-line
+                    articulo.articulo.estado == 2 &&
                         <CardActions style={{ display: 'flex', justifyContent: 'flex-end' }}>
                             <Button size="small" variant="contained" color={"secondary"} onClick={() => handleOpenAction("retirar")}>Retirar</Button>
                         </CardActions>
                     }
-                    {articulo.articulo.estado == 3 &&
+                    {// eslint-disable-next-line
+                    articulo.articulo.estado == 3 &&
                         <CardActions style={{ display: 'flex', justifyContent: 'center' }}>
                             Usado el: {articulo.articulo.fecha_inicio}
                         </CardActions>
                     }
-                    {articulo.articulo.estado == 4 &&
+                    {// eslint-disable-next-line
+                    articulo.articulo.estado == 4 &&
                         <CardActions style={{ display: 'flex', justifyContent: 'center' }}>
                             Donado el: {articulo.articulo.fecha_fin}
                         </CardActions>
                     }
-                    {articulo.articulo.estado == 5 &&
+                    {// eslint-disable-next-line
+                    articulo.articulo.estado == 5 &&
                         <CardActions style={{ display: 'flex', justifyContent: 'center' }}>
                             Vendida el: {articulo.articulo.fecha_fin}
                         </CardActions>
                     }
-                    {articulo.articulo.estado == 5 &&
+                    {// eslint-disable-next-line
+                    articulo.articulo.estado == 5 &&
                         <CardActions style={{ display: 'flex', justifyContent: 'center' }}>
                             Vendida por: {articulo.articulo.precio} puntos
                         </CardActions>
@@ -535,7 +538,8 @@ function Articulo({ articulo }) {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                {typeAction == "donar" && <>
+                {// eslint-disable-next-line
+                typeAction == "donar" && <>
                     <DialogTitle id="alert-dialog-title">
                         Seguro que quieres Donar?
                     </DialogTitle>
@@ -564,7 +568,8 @@ function Articulo({ articulo }) {
                         <Button type="submit" form="donacion-form">Donar</Button>
                     </DialogActions>
                 </>}
-                {typeAction == "vender" && <>
+                {// eslint-disable-next-line
+                typeAction == "vender" && <>
                     <DialogTitle id="alert-dialog-title">
                         Estas a punto de Vender tu articulo
                     </DialogTitle>
@@ -622,6 +627,7 @@ function Articulo({ articulo }) {
                             <Grid size={{ xs: 12 }} alignSelf={"end"}>
                                 <TextField
                                     required
+                                    // eslint-disable-next-line
                                     disabled={destinoVenta == 0 ? true : false}
                                     id="precioVenta"
                                     name="Precio"
@@ -641,7 +647,8 @@ function Articulo({ articulo }) {
                         <Button onClick={handleVender} >Vender</Button>
                     </DialogActions>
                 </>}
-                {typeAction == "usar" && articulo.data.uso == "Fijo" && <>
+                {// eslint-disable-next-line
+                typeAction == "usar" && articulo.data.uso == "Fijo" && <>
                     <DialogTitle id="alert-dialog-title">
                         Te estas Equipando este Articulo
                     </DialogTitle>
@@ -661,7 +668,8 @@ function Articulo({ articulo }) {
                         <Button onClick={handleUsarArticulo} >Equipar</Button>
                     </DialogActions>
                 </>}
-                {typeAction == "usar" && articulo.data.uso == "Temporal" && <>
+                {// eslint-disable-next-line
+                typeAction == "usar" && articulo.data.uso == "Temporal" && <>
                     <DialogTitle id="alert-dialog-title">
                         Activaras este Articulo
                     </DialogTitle>
@@ -678,7 +686,8 @@ function Articulo({ articulo }) {
                         <Button onClick={handleUsarArticulo} >Activar</Button>
                     </DialogActions>
                 </>}
-                {typeAction == "usar" && articulo.data.uso == "Consumible" && <>
+                {// eslint-disable-next-line
+                typeAction == "usar" && articulo.data.uso == "Consumible" && <>
                     <DialogTitle id="alert-dialog-title">
                         Usaras este Articulo
                     </DialogTitle>
@@ -695,7 +704,8 @@ function Articulo({ articulo }) {
                         <Button onClick={handleUsarArticulo} >Usar</Button>
                     </DialogActions>
                 </>}
-                {typeAction == "quitar" && articulo.data.uso == "Fijo" && <>
+                {// eslint-disable-next-line
+                typeAction == "quitar" && articulo.data.uso == "Fijo" && <>
                     <DialogTitle id="alert-dialog-title">
                         Usaras este Articulo
                     </DialogTitle>
@@ -709,7 +719,8 @@ function Articulo({ articulo }) {
                         <Button onClick={handleQuitarFijo} >Quiar</Button>
                     </DialogActions>
                 </>}
-                {typeAction == "retirar" && <>
+                {// eslint-disable-next-line
+                typeAction == "retirar" && <>
                     <DialogTitle id="alert-dialog-title">
                         Retiraras este Articulo del Mercado
                     </DialogTitle>

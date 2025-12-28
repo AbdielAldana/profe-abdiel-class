@@ -1,12 +1,11 @@
 // React
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 // Material UI
-import { Button, Divider, Grid, Modal, Paper, TextField, Typography } from "@mui/material"
+import { Button, Divider, Grid, Modal, Paper, Typography } from "@mui/material"
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 import CardHeader from '@mui/material/CardHeader';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
@@ -17,19 +16,12 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-
-// Componentes
-import { toast } from "react-toastify";
 
 // Context
 import { useTablon } from "./TablonContext";
 
 // Utils
-import { ViewType, IconArt, claseName, getTiempoRestante } from "../../utils/articuloTypeUtils"
+import { ViewType, IconArt, claseName } from "../../utils/articuloTypeUtils"
 import { getLevelData } from "../../utils/levelUtils";
 import FondoDecorativo from "../../components/Tablon/FondoDecorativo";
 
@@ -82,7 +74,7 @@ const style = {
 };
 
 function ArticuloCompra({ articulo }) {
-    const { usuario, recompensas, comprarTienda } = useTablon();
+    const { usuario, comprarTienda } = useTablon();
     let icono = IconArt(articulo.icono, articulo.clase)
 
     // Niveles
@@ -91,13 +83,6 @@ function ArticuloCompra({ articulo }) {
 
     const puntos_disponibles =
         usuario === null ? 0 : usuario.p_totales - usuario.p_gastados;
-
-    // Alertas
-    const notifyError = (txt) =>
-        toast.error(txt, { position: "top-center" });
-
-    const notifySuccess = (txt) =>
-        toast.success(txt, { position: "top-center" });
 
     // Modal Para ver el Articulo Completo
     const [openData, setOpenData] = useState(false)
@@ -145,8 +130,7 @@ function ArticuloCompra({ articulo }) {
 
     // =======================================================
     // Render tipo de Cosmetico
-    const [tipoCosmetico, idCosmetico] = articulo.tipo === "Cosmetico" ? articulo.descripcion.split(" ") : "";
-
+    // eslint-disable-next-line
     const [color, setColor] = useState(usuario ? usuario.color : "#000000")
 
 
@@ -205,6 +189,7 @@ function ArticuloCompra({ articulo }) {
                         <Typography
                             variant="body1"
                             sx={{ m: 0, p: 0 }}
+                            className="ellipsis"
                         >
                             {articulo.tipo} - {articulo.descripcion}
                         </Typography>
@@ -389,7 +374,8 @@ function ArticuloCompra({ articulo }) {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                {typeAction == "comprar" && <>
+                {// eslint-disable-next-line
+                typeAction == "comprar" && <>
                     <DialogTitle id="alert-dialog-title">
                         Confirmacion de Compra
                     </DialogTitle>

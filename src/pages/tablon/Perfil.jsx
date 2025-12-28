@@ -1,5 +1,5 @@
 // ReactJS
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 
 // Material UI
 import {
@@ -19,17 +19,17 @@ import { useCookies } from "react-cookie";
 import { toast } from "react-toastify";
 
 // Utils
-import { difColor, difColorName, difName } from "../../utils/dificultadUtils";
 import { getLevelData } from "../../utils/levelUtils";
 import { resizeImageAuto } from "../../utils/resizeImgUtil";
 
 // Icons
-import ModalMision from "../../components/Tablon/Modals/ModalMision";
 import { styled } from '@mui/material/styles';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import FondoDecorativo from "../../components/Tablon/FondoDecorativo";
 import Articulo from "../../components/Tablon/Articulo";
 import { GiRupee } from "react-icons/gi";
+import LogoutIcon from '@mui/icons-material/Logout';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 
 const VisuallyHiddenInput = styled('input')({
@@ -46,19 +46,13 @@ const VisuallyHiddenInput = styled('input')({
 
 function Perfil() {
     // Informacion Principal
-    const { usuario, setUsuario, matricula, setMatricula, getUsuario, postUsuarioNuevo, misionesUsuario } = useTablon();
+    // misionesUsuario
+    const { usuario, setUsuario, matricula, setMatricula, getUsuario, postUsuarioNuevo, } = useTablon();
     const [cookies, setCookie] = useCookies(["matricula_actual"]);
     const base = process.env.REACT_APP_GREMIO_API_URL;
 
-    // console.log(usuario);
-
-    // Alertas
-    const notifyError = (txt) =>
-        toast.error(txt, { position: "top-center" });
-
     const notifySuccess = (txt) =>
         toast.success(txt, { position: "top-center" });
-
 
     // Manejo de inicio de Sesion
     const [user, setUser] = useState(matricula ? matricula : "")
@@ -112,14 +106,17 @@ function Perfil() {
     const handleRegistrarUsuario = async () => {
         if (!imageFileForm)
             return setErrorMatriculaMsg("Falta una Imagen")
+        // eslint-disable-next-line
         if (registroMatricula.length == 0 || registroMatricula == "")
             return setErrorMatriculaMsg("Falta Matricula")
         if (registroMatricula.length <= 6)
             return setErrorMatriculaMsg("Matricula no Valida")
+        // eslint-disable-next-line
         if (registroNombre.length == 0 || registroNombre == "")
             return setErrorMatriculaMsg("Falta tu Nombre")
         if (registroNombre.length <= 5)
             return setErrorMatriculaMsg("Nombre muy corto")
+        // eslint-disable-next-line
         if (registroNick.length == 0 || registroNick == "")
             return setErrorMatriculaMsg("Falta tu Nickname")
         if (registroNick.length <= 5)
@@ -140,12 +137,12 @@ function Perfil() {
 
     // Misiones
 
-    const [openDataMision, setOpenDataMision] = React.useState(false)
-    const [selectMision, setSelectMision] = React.useState(misionesUsuario[0])
-    const handleOpenDataMision = (m) => {
-        if (m.lore) setSelectMision(m);
-        setOpenDataMision(!openDataMision)
-    }
+    // const [openDataMision, setOpenDataMision] = React.useState(false)
+    // const [selectMision, setSelectMision] = React.useState(misionesUsuario[0])
+    // const handleOpenDataMision = (m) => {
+    //     if (m.lore) setSelectMision(m);
+    //     setOpenDataMision(!openDataMision)
+    // }
     // Inventario
 
 
@@ -169,7 +166,6 @@ function Perfil() {
             {/* Usuario Perfil */}
             {usuario !== null &&
                 <Grid size={{ xs: 12, md: 12 }}>
-                    {/* <Paper sx={{ p: 2 }} style={{ border: "solid 1px" + usuario.color, boxShadow: "0 0 5px" + usuario.color }}> */}
                     <Grid container spacing={2}>
                         <Grid size={{ xs: 12, md: 12 }} display="flex" justifyContent="center" style={{ position: 'relative' }}>
                             <div className={"tipo" + usuario.marco}>
@@ -211,77 +207,28 @@ function Perfil() {
                                 <b>{bolsa}</b> puntos
                             </Typography>
                         </Grid>
+                        <Grid size={{ xs: 12, md: 12 }} display="flex" alignItems="center" justifyContent={"space-between"}>
+                            <Button onClick={cerrarSesion} variant="contained" size="small" color="error" startIcon={<LogoutIcon />}>
+                                Salir
+                            </Button>
+                            <Button variant="contained" size="small" color="primary" endIcon={<SettingsIcon />}>
+                                Editar
+                            </Button>
+                        </Grid>
                         <Grid size={{ xs: 12, md: 12 }}>
                             <Divider />
                         </Grid>
 
-                        {/* Cosmeticos */}
-
-                        {/* <Grid size={{ xs: 12, sm: 6 }} className={"viewCompletMisions"}>
-                            <Grid container spacing={1}>
-                                <Grid size={{ xs: 12, md: 12 }}>
-                                    <Typography variant="h5" fontWeight={"bold"} textAlign="center">
-                                        Cosmeticos
-                                    </Typography>
-                                </Grid>
-                                <Grid size={{ xs: 12, md: 12 }}>
-                                    <Typography variant="h6" fontWeight={"bold"} textAlign="center">
-                                        Marcos
-                                    </Typography>
-                                </Grid>
-                                <Grid size={{ xs: 12, md: 12 }}>
-                                    <Grid container spacing={1}>
-                                        {Array.from({ length: 4 }, (_, value) => (
-                                            <Grid key={value} size={{ xs: 3 }}>
-                                                <Button
-                                                    fullWidth
-                                                    variant="contained"
-                                                    size="small"
-                                                    color={usuario.marco === value ? "secondary" : "primary"}
-                                                    onClick={() => handleChangeMarco(value)}
-                                                >
-                                                    {value === 0 ? "No" : value}
-                                                </Button>
-                                            </Grid>
-                                        ))}
-                                    </Grid>
-                                </Grid>
-                                <Grid size={{ xs: 12, md: 12 }}>
-                                    <Typography variant="h6" fontWeight={"bold"} textAlign="center">
-                                        Fondo
-                                    </Typography>
-                                </Grid>
-                                <Grid size={{ xs: 12, md: 12 }}>
-                                    <Grid container spacing={1}>
-                                        {Array.from({ length: 8 }, (_, value) => (
-                                            <Grid key={value} size={{ xs: 3 }}>
-                                                <Button
-                                                    fullWidth
-                                                    variant="contained"
-                                                    size="small"
-                                                    color={usuario.fondo === value ? "secondary" : "primary"}
-                                                    onClick={() => handleChangeFondo(value)}
-                                                >
-                                                    {value === 0 ? "No" : value}
-                                                </Button>
-                                            </Grid>
-                                        ))}
-
-                                    </Grid>
-                                </Grid>
-                            </Grid>
-                        </Grid> */}
-
-
                         {/* Inventario */}
-                        <Grid size={{ xs: 12, md: 6 }} className={"viewCompletMisions"}>
+                        <Grid size={{ xs: 12, md: 12 }} className={"viewCompletMisions"}>
                             <Grid container spacing={2}>
                                 <Grid size={{ xs: 12, md: 12 }}>
                                     <Typography variant="h5" fontWeight={"bold"} textAlign="center" gutterBottom>
                                         Inventario
                                     </Typography>
                                 </Grid>
-                                {usuario.inventario.filter(inv => inv.articulo.estado == 1).length > 0 &&
+                                {// eslint-disable-next-line
+                                    usuario.inventario.filter(inv => inv.articulo.estado == 1).length > 0 &&
                                     <Grid size={{ xs: 12, md: 12 }}>
                                         <Typography variant="h6" fontWeight={"bold"} >
                                             Equipado / Activo
@@ -290,36 +237,41 @@ function Perfil() {
                                 }
                                 {usuario.inventario &&
                                     usuario.inventario
+                                        // eslint-disable-next-line
                                         .filter(inv => inv.articulo.estado == 1)
                                         .sort((a, b) => a.data.clase - b.data.clase)
                                         .map((inv, e) => {
                                             return (
-                                                <Grid key={e} size={{ xs: 12 }}>
+                                                <Grid key={e} size={{ xs: 12, md: 6 }}>
                                                     <Articulo articulo={inv} />
                                                 </Grid>
                                             )
                                         })
                                 }
-                                {usuario.inventario.filter(inv => inv.articulo.estado == 0).length > 0 &&
+                                {// eslint-disable-next-line
+                                    usuario.inventario.filter(inv => inv.articulo.estado == 0).length > 0 &&
                                     <Grid size={{ xs: 12, md: 12 }}>
                                         <Typography variant="h6" fontWeight={"bold"} >
                                             Disponibles
                                         </Typography>
                                     </Grid>
                                 }
-                                {usuario.inventario &&
+                                {// eslint-disable-next-line
+                                    usuario.inventario &&
                                     usuario.inventario
+                                        // eslint-disable-next-line
                                         .filter(inv => inv.articulo.estado == 0)
                                         .sort((a, b) => a.data.clase - b.data.clase)
                                         .map((inv, e) => {
                                             return (
-                                                <Grid key={e} size={{ xs: 12 }}>
+                                                <Grid key={e} size={{ xs: 12, md: 6 }}>
                                                     <Articulo articulo={inv} />
                                                 </Grid>
                                             )
                                         })
                                 }
-                                {usuario.inventario.filter(inv => inv.articulo.estado == 2).length > 0 &&
+                                {// eslint-disable-next-line
+                                    usuario.inventario.filter(inv => inv.articulo.estado == 2).length > 0 &&
                                     <Grid size={{ xs: 12, md: 12 }}>
                                         <Typography variant="h6" fontWeight={"bold"} >
                                             En Venta
@@ -328,17 +280,19 @@ function Perfil() {
                                 }
                                 {usuario.inventario &&
                                     usuario.inventario
+                                        // eslint-disable-next-line
                                         .filter(inv => inv.articulo.estado == 2)
                                         .sort((a, b) => a.data.clase - b.data.clase)
                                         .map((inv, e) => {
                                             return (
-                                                <Grid key={e} size={{ xs: 12 }}>
+                                                <Grid key={e} size={{ xs: 12, md: 6 }}>
                                                     <Articulo articulo={inv} />
                                                 </Grid>
                                             )
                                         })
                                 }
-                                {usuario.inventario.filter(inv => inv.articulo.estado == 3).length > 0 &&
+                                {// eslint-disable-next-line
+                                    usuario.inventario.filter(inv => inv.articulo.estado == 3).length > 0 &&
                                     <Grid size={{ xs: 12, md: 12 }}>
                                         <Typography variant="h6" fontWeight={"bold"} >
                                             Usados
@@ -347,17 +301,19 @@ function Perfil() {
                                 }
                                 {usuario.inventario &&
                                     usuario.inventario
+                                        // eslint-disable-next-line
                                         .filter(inv => inv.articulo.estado == 3)
                                         .sort((a, b) => a.data.clase - b.data.clase)
                                         .map((inv, e) => {
                                             return (
-                                                <Grid key={e} size={{ xs: 12 }}>
+                                                <Grid key={e} size={{ xs: 12, md: 6 }}>
                                                     <Articulo articulo={inv} />
                                                 </Grid>
                                             )
                                         })
                                 }
-                                {usuario.inventario.filter(inv => inv.articulo.estado == 4).length > 0 &&
+                                {// eslint-disable-next-line
+                                    usuario.inventario.filter(inv => inv.articulo.estado == 4).length > 0 &&
                                     <Grid size={{ xs: 12, md: 12 }}>
                                         <Typography variant="h6" fontWeight={"bold"} >
                                             Donados
@@ -366,17 +322,19 @@ function Perfil() {
                                 }
                                 {usuario.inventario &&
                                     usuario.inventario
+                                        // eslint-disable-next-line
                                         .filter(inv => inv.articulo.estado == 4)
                                         .sort((a, b) => a.data.clase - b.data.clase)
                                         .map((inv, e) => {
                                             return (
-                                                <Grid key={e} size={{ xs: 12 }}>
+                                                <Grid key={e} size={{ xs: 12, md: 6 }}>
                                                     <Articulo articulo={inv} />
                                                 </Grid>
                                             )
                                         })
                                 }
-                                {usuario.inventario.filter(inv => inv.articulo.estado == 5).length > 0 &&
+                                {// eslint-disable-next-line
+                                    usuario.inventario.filter(inv => inv.articulo.estado == 5).length > 0 &&
                                     <Grid size={{ xs: 12, md: 12 }}>
                                         <Typography variant="h6" fontWeight={"bold"} >
                                             Vendidos
@@ -385,11 +343,12 @@ function Perfil() {
                                 }
                                 {usuario.inventario &&
                                     usuario.inventario
+                                        // eslint-disable-next-line
                                         .filter(inv => inv.articulo.estado == 5)
                                         .sort((a, b) => a.data.clase - b.data.clase)
                                         .map((inv, e) => {
                                             return (
-                                                <Grid key={e} size={{ xs: 12 }}>
+                                                <Grid key={e} size={{ xs: 12, md: 6 }}>
                                                     <Articulo articulo={inv} />
                                                 </Grid>
                                             )
@@ -398,64 +357,34 @@ function Perfil() {
                             </Grid>
                         </Grid>
 
-                        {/* Misiones */}
-                        <Grid size={{ xs: 12, md: 6 }} className={"viewCompletMisions"}>
-                            <Grid container spacing={3}>
-                                <Grid size={{ xs: 12, md: 12 }}>
-                                    <Typography variant="h5" fontWeight={"bold"} textAlign="center">
-                                        Misiones Completadas
-                                    </Typography>
-                                </Grid>
-                                <Grid size={{ xs: 12, md: 12 }}>
-                                    {misionesUsuario !== undefined &&
-                                        misionesUsuario
-                                            .sort((a, b) => a.data.dificultad - b.data.dificultad)
-                                            .sort((a, b) => a.data.puntos - b.data.puntos)
-                                            .map((mision, i) => {
-
-
-                                                return (
-                                                    <div key={mision.id_mision ?? i} onClick={() => { handleOpenDataMision(mision) }} style={{ display: "flex", justifyContent: "space-between", borderBottom: "solid 1px black", marginBottom: "10px" }}>
-                                                        <div style={{ display: "flex", alignItems: "center", width: '60%' }} >
-
-                                                            <Typography
-                                                                variant="h6"
-
-                                                                color={difColorName(mision.data.dificultad)}
-                                                                textAlign="center"
-                                                                className="ellipsis"
-                                                            >
-                                                                {mision.data.nombre}
-                                                            </Typography>
-                                                        </div>
-                                                        <div>
-                                                            <Typography
-                                                                variant="h6"
-                                                                fontWeight={"bold"}
-
-                                                                textAlign="center"
-                                                            >
-                                                                {mision.data.puntos} pts.
-                                                            </Typography>
-                                                        </div>
-                                                    </div>
-                                                );
-
-                                            })}
-                                </Grid>
-                            </Grid>
-                        </Grid>
-
-                        <Grid size={{ xs: 12, md: 12 }}>
-                            <Button variant="contained" color="error" onClick={cerrarSesion}>Cerrar Sesion</Button>
-                        </Grid>
                     </Grid>
                     {/* </Paper> */}
                 </Grid>
             }
+            {usuario === null && cookies.matricula_actual &&
+                <Grid size={{ xs: 12, md: 12 }}>
+                    <Grid container spacing={2}>
+                        <Grid size={{ xs: 12, md: 12 }} display="flex" justifyContent="center" style={{ position: 'relative' }}>
+                            <div className={"tipo" + 0}>
+                                <div className="imagenPerfil " >
+                                    {/* <img src={base + "/" + usuario.imagen_perfil} alt="" width={"100%"} /> */}
+                                </div>
+                            </div>
+                            <div className="adorno" style={{ backgroundColor: "#344955" }}>
+                                {/* <FondoDecorativo fondo={parseInt(usuario.fondo)} /> */}
+                            </div>
+                        </Grid>
+                        <Grid size={{ xs: 12, md: 12 }} display="flex" alignItems="center" justifyContent={"center"}>
+                            <Typography variant="h4" fontWeight={"bold"} textAlign={"center"}>
+                                Cargando Usuario
+                            </Typography>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            }
 
             {/* Inicio de Sesion */}
-            {usuario === null &&
+            {usuario === null && !cookies.matricula_actual &&
                 <Grid size={{ xs: 12, md: 12 }}>
                     <Paper sx={{ p: 2 }}>
                         <Grid container spacing={2}>
@@ -476,6 +405,20 @@ function Perfil() {
                                     onChange={(e) => setUser(e.target.value)}
                                 />
                             </Grid>
+                            <Grid size={{ xs: 8, md: 10 }}>
+                                <TextField
+                                    id="abrir_perfil"
+                                    label="Matricula"
+                                    variant="outlined"
+                                    size="small"
+                                    type="datetime-local"
+                                    step="1"
+                                    sx={{ mr: 3 }}
+                                    fullWidth
+                                    value={user}
+                                    onChange={(e) => setUser(e.target.value+":00")}
+                                />
+                            </Grid>
                             <Grid size={{ xs: 4, md: 2 }}>
                                 <Button
                                     color="primary"
@@ -491,7 +434,7 @@ function Perfil() {
             }
 
             {/* Registro */}
-            {usuario === null &&
+            {usuario === null && !cookies.matricula_actual &&
                 <Grid size={{ xs: 12, md: 12 }}>
                     <Paper sx={{ p: 2 }} style={{ border: "solid 1px" + registoColor, boxShadow: "0 0 5px" + registoColor }}>
                         <Grid container spacing={2}>
@@ -502,7 +445,7 @@ function Perfil() {
                             </Grid>
                             <Grid size={{ xs: 12, md: 12 }}>
                                 <Grid container spacing={3}>
-                                    <Grid size={{ xs: 12, md: 4  }}>
+                                    <Grid size={{ xs: 12, md: 4 }}>
                                         <Grid container spacing={1}>
                                             <Grid size={{ xs: 12, md: 12 }} style={{ display: 'flex', justifyContent: 'center' }}>
                                                 <div className="imagenPerfil" style={{ border: "solid 1px" + registoColor, boxShadow: "0 0 5px" + registoColor }}>
