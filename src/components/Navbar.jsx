@@ -6,16 +6,16 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
+// import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
+// import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
+// import Tooltip from '@mui/material/Tooltip';
+// import MenuItem from '@mui/material/MenuItem';
 import Drawer from '@mui/material/Drawer';
 
-import { NavLink, useLocation } from "react-router";
+import { NavLink } from "react-router";
 
 // List
 import List from '@mui/material/List';
@@ -27,35 +27,36 @@ import ListItemText from '@mui/material/ListItemText';
 
 // Iconos
 import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
-import DashboardIcon from '@mui/icons-material/Dashboard';
+// import DashboardIcon from '@mui/icons-material/Dashboard';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import ElderlyIcon from '@mui/icons-material/Elderly';
-import ContrastIcon from '@mui/icons-material/Contrast';
-import SettingsIcon from '@mui/icons-material/Settings';
+// import ContrastIcon from '@mui/icons-material/Contrast';
+// import SettingsIcon from '@mui/icons-material/Settings';
 import ForumIcon from '@mui/icons-material/Forum';
-import AssignmentLateIcon from '@mui/icons-material/AssignmentLate';
+// import AssignmentLateIcon from '@mui/icons-material/AssignmentLate';
 import { GiBookmark } from "react-icons/gi";
+import GavelIcon from '@mui/icons-material/Gavel';
 
 function Navbar(params) {
-    const [anchorElUser, setAnchorElUser] = React.useState(null);
+    // eslint-disable-next-line
+    // const [anchorElUser, setAnchorElUser] = React.useState(null);
     const [open, setOpen] = React.useState(false);
-    const location = useLocation();
 
-    const handleLogout = () => {
-        localStorage.removeItem("auth");
-        window.dispatchEvent(new Event("auth-change"));
-        handleCloseUserMenu()
-        params.navigate("/login");
-    };
+    // const handleLogout = () => {
+    //     localStorage.removeItem("auth");
+    //     window.dispatchEvent(new Event("auth-change"));
+    //     handleCloseUserMenu()
+    //     params.navigate("/login");
+    // };
 
 
-    const handleOpenUserMenu = (event) => {
-        setAnchorElUser(event.currentTarget);
-    };
+    // const handleOpenUserMenu = (event) => {
+    //     setAnchorElUser(event.currentTarget);
+    // };
 
-    const handleCloseUserMenu = () => {
-        setAnchorElUser(null);
-    };
+    // const handleCloseUserMenu = () => {
+    //     setAnchorElUser(null);
+    // };
 
     const toggleDrawer = (newOpen) => () => {
         setOpen(newOpen);
@@ -81,7 +82,7 @@ function Navbar(params) {
 
 
                         <NavLink to="/" className={({ isActive }) => isActive ? "active" : ""} >
-                            Abdiel Aldana
+                            Nexo
                         </NavLink>
                     </Typography>
                     {/* Celular */}
@@ -106,7 +107,7 @@ function Navbar(params) {
                                                 <ListItemIcon>
                                                     <MeetingRoomIcon />
                                                 </ListItemIcon>
-                                                <ListItemText primary={"Abdiel Aldana"} />
+                                                <ListItemText primary={"Nexo"} />
                                             </ListItemButton>
                                         </ListItem>
                                     </NavLink>
@@ -125,13 +126,13 @@ function Navbar(params) {
                                         <ListItem disablePadding>
                                             <ListItemButton>
                                                 <ListItemIcon>
-                                                    <GiBookmark style={{fontSize: "25px"}} />
+                                                    <GiBookmark style={{ fontSize: "25px" }} />
                                                 </ListItemIcon>
                                                 <ListItemText primary={"Gremio"} />
                                             </ListItemButton>
                                         </ListItem>
                                     </NavLink>
-                                    <Divider />
+                                    {/* <Divider /> */}
                                     <NavLink to="/chismes" className={({ isActive }) => isActive ? "active" : ""} >
                                         <ListItem disablePadding>
                                             <ListItemButton>
@@ -139,6 +140,17 @@ function Navbar(params) {
                                                     <ForumIcon />
                                                 </ListItemIcon>
                                                 <ListItemText primary={"Foro"} />
+                                            </ListItemButton>
+                                        </ListItem>
+                                    </NavLink>
+                                    <Divider />
+                                    <NavLink to="/informacion" className={({ isActive }) => isActive ? "active" : ""} >
+                                        <ListItem disablePadding>
+                                            <ListItemButton>
+                                                <ListItemIcon>
+                                                    <GavelIcon />
+                                                </ListItemIcon>
+                                                <ListItemText primary={"Informacion"} />
                                             </ListItemButton>
                                         </ListItem>
                                     </NavLink>
@@ -174,7 +186,7 @@ function Navbar(params) {
                         }}
                     >
                         <NavLink to="/" className={({ isActive }) => isActive ? "active" : ""} >
-                            Abdiel Aldana
+                            N E X O
                         </NavLink>
                     </Typography>
 
@@ -202,6 +214,13 @@ function Navbar(params) {
                                 sx={{ my: 2, color: 'white', display: 'block' }}
                             >
                                 Foro
+                            </Button>
+                        </NavLink>
+                        <NavLink to="/informacion" className={({ isActive }) => isActive ? "active" : ""} >
+                            <Button
+                                sx={{ my: 2, color: 'white', display: 'block' }}
+                            >
+                                Informacion
                             </Button>
                         </NavLink>
 
@@ -232,8 +251,8 @@ function Navbar(params) {
 
 
                     {/* Usuario */}
-                    {/* <Box sx={{ flexGrow: 0 }} >
-                        <Tooltip title="Open settings">
+                    <Box sx={{ flexGrow: 0 }} >
+                        {/* <Tooltip title="Open settings">
                             <IconButton color='white' onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                                 <SettingsIcon color='white2' />
                             </IconButton>
@@ -258,8 +277,8 @@ function Navbar(params) {
                             <MenuItem onClick={params.handleTheme}>
                                 <Typography sx={{ textAlign: 'center' }}>Cambiar Tema <ContrastIcon /></Typography>
                             </MenuItem>
-                        </Menu>
-                    </Box> */}
+                        </Menu> */}
+                    </Box>
                 </Toolbar>
             </Container>
         </AppBar>

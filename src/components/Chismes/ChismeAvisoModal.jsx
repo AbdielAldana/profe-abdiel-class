@@ -39,6 +39,7 @@ export default function ChismeAvisoModal() {
     React.useEffect(() => {
         if (!cookies.gnomus_lex) setCookie("gnomus_lex", false, { path: "/" });
         if (cookies.gnomus_lex) setOpen(false);
+        // eslint-disable-next-line
     }, []);
 
     const handleAcceptTerms = () => {

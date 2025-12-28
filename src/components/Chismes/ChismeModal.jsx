@@ -79,6 +79,7 @@ export default function ChismeModal({ open, onClose, data, refreshChismes, pass 
 	React.useEffect(() => {
 		setReactions(data?.reactions ? { ...data.reactions } : {});
 		setComentarios(Array.isArray(data?.comentarios) ? [...data.comentarios] : []);
+		// eslint-disable-next-line
 	}, [
 		data?.id_registro,
 		data?.comentarios_count,

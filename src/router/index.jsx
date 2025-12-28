@@ -8,14 +8,14 @@ import Materias from "../pages/materias";
 import Biblioteca from "../pages/biblioteca";
 
 // 👇 Importa cada página de materia
-import ProgramacionWeb from "../pages/materias/ProgramacionWeb";
-import TecnicasAnimacion from "../pages/materias/TecnicasAnimacion";
-import DisenoApps from "../pages/materias/DisenoApps";
-import Mercadotecnia from "../pages/materias/Mercadotecnia";
-import DisenoEditorial from "../pages/materias/DisenoEditorial";
-import AnimacionFlash from "../pages/materias/AnimacionFlash";
-import DisenoMultimedia from "../pages/materias/DisenoMultimedia";
-import PortafolioProfesional from "../pages/materias/PortafolioProfesional";
+// import ProgramacionWeb from "../pages/materias/ProgramacionWeb";
+// import TecnicasAnimacion from "../pages/materias/TecnicasAnimacion";
+// import DisenoApps from "../pages/materias/DisenoApps";
+// import Mercadotecnia from "../pages/materias/Mercadotecnia";
+// import DisenoEditorial from "../pages/materias/DisenoEditorial";
+// import AnimacionFlash from "../pages/materias/AnimacionFlash";
+// import DisenoMultimedia from "../pages/materias/DisenoMultimedia";
+// import PortafolioProfesional from "../pages/materias/PortafolioProfesional";
 import Chismes from "../pages/chismes";
 import Tablon from "../pages/tablon";
 import Misiones from "../pages/tablon/Misiones";
@@ -23,6 +23,7 @@ import Tienda from "../pages/tablon/Tienda";
 import Ranking from "../pages/tablon/Ranking";
 import Perfil from "../pages/tablon/Perfil";
 import Admin from "../pages/tablon/Admin";
+import Normas from "../pages/normas";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,7 @@ const router = createBrowserRouter([
       { path: "/materias", element: <Materias /> },
       { path: "/biblioteca", element: <Biblioteca /> },
       { path: "/chismes", element: <Chismes /> },
+      { path: "/informacion", element: <Normas /> },
       // { path: "/tablon_de_misiones", element: <Tablon/> },
       {
         path: "/tablon_de_misiones",
