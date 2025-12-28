@@ -1,70 +1,86 @@
-# Getting Started with Create React App
+# abdielaldana.com
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Plataforma web personal que centraliza proyectos educativos, comunitarios y experimentales enfocados en **desarrollo web, diseño digital y gamificación**.
 
-## Available Scripts
+El sitio funciona como un **hub** donde conviven recursos académicos, espacios sociales y sistemas interactivos creados para estudiantes y usuarios activos.
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## 🌐 Proyectos principales
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### 📚 Biblioteca Digital
+Repositorio de material educativo organizado por categorías.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+**Incluye:**
+- Recursos de desarrollo web (HTML, CSS, JavaScript, React).
+- Material de diseño y multimedia.
+- Documentos, guías y referencias para estudiantes.
 
-### `npm test`
+**Objetivo:**  
+Facilitar el acceso rápido a contenido útil y reutilizable para aprendizaje y consulta.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+### 💬 Foro de Chismes
+Foro anónimo de participación libre.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+**Características:**
+- Publicaciones sin identidad visible.
+- Categorías temáticas.
+- Sistema simple de interacción.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+**Objetivo:**  
+Crear un espacio social ligero, sin presión de identidad, para compartir experiencias y comentarios.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+### ⚔️ Gremio (Sistema de Misiones)
+Sistema gamificado que incentiva la participación y el progreso del usuario.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+**Incluye:**
+- Misiones con recompensas.
+- Sistema de niveles y experiencia.
+- Ranking de usuarios.
+- Recompensas cosméticas y beneficios.
+- Inventario de usuario.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+**Objetivo:**  
+Motivar la constancia y la participación mediante mecánicas tipo RPG aplicadas a un entorno educativo/comunitario.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+---
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## 🛠️ Tecnologías utilizadas
 
-## Learn More
+**Frontend**
+- React
+- Material UI
+- JavaScript
+- CSS
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+**Backend**
+- PHP (API REST)
+- MySQL
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+**Otros**
+- JSON
+- Axios
+- Manejo de sesiones y cookies
 
-### Code Splitting
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## 📌 Estado del proyecto
 
-### Analyzing the Bundle Size
+Proyecto en **desarrollo activo y evolutivo**.  
+Las secciones se ajustan y amplían conforme surgen nuevas ideas o necesidades.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+No se busca un producto final cerrado, sino una plataforma en crecimiento constante.
 
-### Making a Progressive Web App
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## 👤 Autor
 
-### Advanced Configuration
+**Abdiel Aldana**  
+Profesor, programador e ilustrador.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+🌐 https://abdielaldana.com  
+💻 https://github.com/abdielaldana
