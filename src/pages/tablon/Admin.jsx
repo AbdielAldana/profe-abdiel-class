@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react"
 import { useTablon } from "../../contexts/TablonContext"
-import { Button, Divider, Grid, Modal, Paper, TextField, Typography } from "@mui/material";
+import { Button,  Grid, Modal,  TextField, Typography } from "@mui/material";
 
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import CardHeader from '@mui/material/CardHeader';
+// import CardHeader from '@mui/material/CardHeader';
 
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -14,6 +14,7 @@ import Select from '@mui/material/Select';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
+import MisionAdmin from "../../components/Tablon/Admin/MisionAdmin";
 
 // Styles
 const styleModal = {
@@ -57,12 +58,18 @@ function Admin() {
     const { adminInfo, getAdminData, usuario, postAddMisionAdmin } = useTablon();
 
     useEffect(() => {
-        if (usuario?.admin) {
+        if (adminInfo === null) {
             getAdminData()
         }
+        // eslint-disable-next-line
     }, [])
+    useEffect(() => {
+        console.log(adminInfo?.misiones);
 
-    // Modal ]Add Mision
+    }, [adminInfo])
+
+
+    // Modal Add Mision
     const [openAddMision, setOpenAddMision] = useState(false)
     const handleOpenAddMision = () => {
         setOpenAddMision(!openAddMision)
@@ -93,7 +100,7 @@ function Admin() {
             fechaInicioGlobal: formJson.fecha_inicio_mision.replace("T", " ") + ":00",
             fechaFinGlobal: formJson.fecha_fin_mision.replace("T", " ") + ":00",
 
-            visible: formJson.visible_mision === "on" ? 1 : 0,
+            visible: 1,
 
         }
 
@@ -108,13 +115,34 @@ function Admin() {
 
     };
 
+
+
+
     return (
         <>
             <Grid container spacing={2}>
                 <Grid size={{ xs: 12, md: 12 }}>
                     <Button onClick={handleOpenAddMision} variant="contained" color="primary">Agregar Mision</Button>
                 </Grid>
+
+                <Grid size={{ xs: 12, md: 12 }}>
+                    <Grid container spacing={2}>
+                        {adminInfo !== null &&
+                            adminInfo?.misiones
+                                .map((miso, i) => {
+                                    return (
+                                        <Grid key={i} size={{ xs: 12, md: 6 }}>
+                                            <MisionAdmin mision={miso} />
+                                        </Grid>
+                                    )
+                                })
+
+                        }
+                    </Grid>
+                </Grid>
             </Grid>
+
+            
 
             {/* Add Mision */}
             <Modal

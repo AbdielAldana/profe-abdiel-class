@@ -1,23 +1,142 @@
 import React from "react";
-import Grid from "@mui/material/Grid";
-import { Paper, Typography, Box, Button } from "@mui/material";
+import { Divider, Grid,  Typography, } from "@mui/material";
+
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import CardActionArea from '@mui/material/CardActionArea';
 
 
-import { Link } from "react-router";
+import { NavLink } from "react-router";
 
-import { Carousel } from 'nuka-carousel';
+// import { GiBookmark } from "react-icons/gi";
 
-import AuroraZombie from "../img/AuroraZombie.jpg"
-import Aurora29 from "../img/Aurora No 29 Septiembre 2025.jpg"
-import Aurora33 from "../img/Aurora No 33 Octubre 2025.jpg"
-import Aurora30 from "../img/Aurora No 30 Octubre 2025.jpg"
-import Aurora32 from "../img/Aurora No 32 Octubre 2025.jpg"
+import biblioImg from '../img/biblioteca.png'
+import foroImg from '../img/foro.png'
+import gremioImg from '../img/gremio.png'
+import normasImg from '../img/normas.png'
+
+// import { Carousel } from 'nuka-carousel';
+
+// import AuroraZombie from "../img/AuroraZombie.jpg"
+// import Aurora29 from "../img/Aurora No 29 Septiembre 2025.jpg"
+// import Aurora33 from "../img/Aurora No 33 Octubre 2025.jpg"
+// import Aurora30 from "../img/Aurora No 30 Octubre 2025.jpg"
+// import Aurora32 from "../img/Aurora No 32 Octubre 2025.jpg"
 
 
 
 export default function Inicio() {
     return (
         <div>
+            <Grid container spacing={2}>
+
+                <Grid size={{ xs: 12, md: 12 }}>
+                    <Typography textAlign={"center"} variant="h4">Aprender también puede ser una experiencia</Typography>
+                </Grid>
+                <Grid size={{ xs: 12, md: 12 }}>
+                    <Typography variant="body1">
+                        Un entorno diseñado para apoyar a los alumnos con herramientas reales: una biblioteca práctica, beneficios por participación y un foro seguro donde todas las voces pueden expresarse.
+                    </Typography>
+                </Grid>
+                <Grid size={{ xs: 12, md: 12 }}>
+                    <Divider />
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                    <NavLink to="/tablon_de_misiones" >
+                        <Card>
+                            <CardActionArea>
+                                <CardMedia
+                                    component="img"
+                                    height="140"
+                                    image={gremioImg}
+                                    alt="green iguana"
+                                />
+                                <CardContent>
+                                    <Typography gutterBottom variant="h5" component="div">
+                                        Gremio
+                                    </Typography>
+                                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                                        El núcleo interactivo del sitio. <br />
+                                        Completa misiones, gana puntos, sube de nivel y personaliza tu perfil mientras participas activamente en la comunidad.
+                                    </Typography>
+                                </CardContent>
+                            </CardActionArea>
+                        </Card>
+                    </NavLink>
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                    <NavLink to="/biblioteca" >
+                        <Card>
+                            <CardActionArea>
+                                <CardMedia
+                                    component="img"
+                                    height="140"
+                                    image={biblioImg}
+                                    alt="green iguana"
+                                />
+                                <CardContent>
+                                    <Typography gutterBottom variant="h5" component="div">
+                                        Biblioteca
+                                    </Typography>
+                                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                                        Un espacio de consulta con recursos seleccionados sobre programación, diseño y temas creativos.
+                                        Aquí encuentras material directo, práctico y útil para aprender a tu ritmo.
+                                    </Typography>
+                                </CardContent>
+                            </CardActionArea>
+                        </Card>
+                    </NavLink>
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                    <NavLink to="/chismes" >
+                        <Card>
+                            <CardActionArea>
+                                <CardMedia
+                                    component="img"
+                                    height="140"
+                                    image={foroImg}
+                                    alt="green iguana"
+                                />
+                                <CardContent>
+                                    <Typography gutterBottom variant="h5" component="div">
+                                        Foro Anonimo
+                                    </Typography>
+                                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                                        Un lugar para opinar, preguntar y compartir experiencias sin filtros ni etiquetas.
+                                        Participa libremente en conversaciones reales, sin juicios y sin nombres.
+                                    </Typography>
+                                </CardContent>
+                            </CardActionArea>
+                        </Card>
+                    </NavLink>
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                    <NavLink to="/informacion" >
+                        <Card>
+                            <CardActionArea>
+                                <CardMedia
+                                    component="img"
+                                    height="140"
+                                    image={normasImg}
+                                    alt="green iguana"
+                                />
+                                <CardContent>
+                                    <Typography gutterBottom variant="h5" component="div">
+                                        Informacion
+                                    </Typography>
+                                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                                        Un espacio con acuerdos claros sobre evaluación, convivencia y funcionamiento del curso, 
+                                        pensados para que todos sepamos cómo se trabaja aquí.
+                                    </Typography>
+                                </CardContent>
+                            </CardActionArea>
+                        </Card>
+                    </NavLink>
+                </Grid>
+
+
+            </Grid>
             {/* <Carousel autoplay showDots showArrows wrapMode="wrap">
 
                 <div className="slide bg-green-500"><img src={Aurora33} /></div>
@@ -25,8 +144,8 @@ export default function Inicio() {
 
             </Carousel> */}
 
-            <Grid container spacing={2}>
-                <Paper sx={{ padding: 2, margin: "10px 0" }}>
+            {/* <Grid container spacing={2}> */}
+            {/* <Paper sx={{ padding: 2, margin: "10px 0" }}>
                     <Typography variant="h5" gutterBottom>
                         Avisos!!!
                     </Typography>
@@ -35,18 +154,18 @@ export default function Inicio() {
                         Se ha habilitado la nueva sección de Chismes, un espacio anónimo para que los usuarios puedan compartir historias, comentarios y publicaciones de manera libre y segura.
                         Te invitamos a explorarla, participar y contribuir con nuevos chismes dentro de la plataforma.
                     </Typography>
-                </Paper>
+                </Paper> */}
 
-                {/* <Grid item size={{ xs: 12, md: 12 }}> */}
-                {/* <Paper sx={{ p: 3 }}>
+            {/* <Grid item size={{ xs: 12, md: 12 }}> */}
+            {/* <Paper sx={{ p: 3 }}>
                     <Typography variant="h4" gutterBottom textAlign="center">
                         Pagina chida para mis alumnos y asi :3
                     </Typography>
                 </Paper> */}
 
-                {/* </Grid> */}
-                {/* Columna izquierda */}
-                <Grid size={{ xs: 12, md: 12 }}
+            {/* </Grid> */}
+            {/* Columna izquierda */}
+            {/* <Grid size={{ xs: 12, md: 12 }}
                     sx={{
                         position: { xs: "static", md: "sticky" },
                         top: { md: "100px" },
@@ -68,8 +187,8 @@ export default function Inicio() {
                         <Typography variant="body1" color="text.secondary">
                             En este portal tendrás la oportunidad de explorar documentos, presentaciones y herramientas de software utilizadas en las materias, así como conocer los objetivos y propósitos de cada una. Todo esto con la intención de facilitar tu proceso de aprendizaje y brindarte una visión clara de lo que se espera en cada etapa académica.
                         </Typography>
-                    </Paper>
-                    {/* <Paper sx={{ padding: 2, margin: "10px 0" }}>
+                    </Paper> */}
+            {/* <Paper sx={{ padding: 2, margin: "10px 0" }}>
                         <Typography variant="h5" gutterBottom>
                             Avisos
                         </Typography>
@@ -78,7 +197,7 @@ export default function Inicio() {
                         </Typography>
                         <hr />                    
                     </Paper> */}
-                    <Paper sx={{ padding: 2, margin: "10px 0" }}>
+            {/* <Paper sx={{ padding: 2, margin: "10px 0" }}>
                         <Typography variant="h5" gutterBottom>
                             Proximas Actualizaciones
                         </Typography>
@@ -108,18 +227,18 @@ export default function Inicio() {
                         </Typography>
                     </Paper>
 
-                </Grid>
+                </Grid> */}
 
-                {/* Columna derecha */}
-                <Grid size={{ xs: 12, md: 4 }}
+            {/* Columna derecha */}
+            {/* <Grid size={{ xs: 12, md: 6 }}
                     sx={{
                         position: { xs: "static", md: "sticky" },
                         top: { md: "100px" },
                         alignSelf: "flex-start", // Para que el sticky funcione bien
                     }}
-                >
+                > */}
 
-                    {/* <Paper sx={{ p: 2, my: 1 }} className="border-3aad">
+            {/* <Paper sx={{ p: 2, my: 1 }} className="border-3aad">
                     <Typography variant="h6" gutterBottom>
                         3ro AAD - Programación Web
                     </Typography>
@@ -215,8 +334,8 @@ export default function Inicio() {
                     </Box>
                 </Paper> */}
 
-                </Grid>
-            </Grid>
+            {/* </Grid>
+            </Grid> */}
         </div>
     );
 }

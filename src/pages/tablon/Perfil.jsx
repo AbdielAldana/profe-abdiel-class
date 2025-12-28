@@ -17,6 +17,7 @@ import Input from '@mui/material/Input';
 import { useTablon } from "../../contexts/TablonContext"; // ajusta
 import { useCookies } from "react-cookie";
 import { toast } from "react-toastify";
+import { NavLink } from "react-router";
 
 // Utils
 import { getLevelData } from "../../utils/levelUtils";
@@ -211,8 +212,15 @@ function Perfil() {
                             <Button onClick={cerrarSesion} variant="contained" size="small" color="error" startIcon={<LogoutIcon />}>
                                 Salir
                             </Button>
+                            {usuario.admin &&
+                                <NavLink to="/tablon_de_misiones/admin">
+                                    <Button variant="contained" size="small" color="secondary" endIcon={<SettingsIcon />}>
+                                        Admin
+                                    </Button>
+                                </NavLink>
+                            }
                             <Button variant="contained" size="small" color="primary" endIcon={<SettingsIcon />}>
-                                Editar
+                                Edit
                             </Button>
                         </Grid>
                         <Grid size={{ xs: 12, md: 12 }}>

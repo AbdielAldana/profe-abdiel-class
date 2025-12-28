@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useCookies } from "react-cookie";
-import { useNavigate } from "react-router";
+// import { useNavigate } from "react-router";
 
 
 const TablonContext = React.createContext(null);
@@ -981,7 +981,7 @@ const TablonContext = React.createContext(null);
 
 export function TablonProvider({ children, initial }) {
     const [cookies, setCookie] = useCookies(["matricula_actual"]);
-    const navigate = useNavigate()
+    // const navigate = useNavigate()
 
     const notifyError = (txt) =>
         toast.error(txt, { position: "top-center" });
@@ -1053,9 +1053,9 @@ export function TablonProvider({ children, initial }) {
             setMisionesUsuario(res.data.usuario.misiones);
             setInventario(res.data.usuario.inventario);
 
-            if (res.data.usuario.admin) {
-                navigate("/tablon_de_misiones/admin");
-            }
+            // if (res.data.usuario.admin) {
+            //     navigate("/tablon_de_misiones/admin");
+            // }
 
             return res.data;
         } catch (err) {
@@ -1343,7 +1343,8 @@ export function TablonProvider({ children, initial }) {
             );
 
             // notifySuccess("Sesion Iniciada");
-            setAdminInfo(res.data.usuarios);
+            
+            setAdminInfo(res.data);
 
             return res.data;
         } catch (err) {
@@ -1353,7 +1354,7 @@ export function TablonProvider({ children, initial }) {
         }
     };
 
-    // POST Quitar Fijo
+    // POST Add Mision
     const postAddMisionAdmin = async (data) => {
         try {
             const res = await toast.promise(
@@ -1364,6 +1365,56 @@ export function TablonProvider({ children, initial }) {
                 {
                     pending: "Procesando...",
                     success: "Mision Creada",
+                    error: "No se pudo :(",
+                },
+                { position: "top-center" }
+            );
+
+            getAdminData()
+
+            return res.data.ok; // opcional
+        } catch (err) {
+            console.log("Error:", err?.response?.data || err.message);
+            notifyError(err?.response?.data?.msg || "Error al crear usuario");
+            return err?.response?.data.ok;
+        }
+    };
+    // POST Reset Mision Periodica
+    const postResetMisionPeriodicaAdmin = async (data) => {
+        try {
+            const res = await toast.promise(
+                axios.post(
+                    `${process.env.REACT_APP_GREMIO_API_URL}/post_reset_mision_admin.php`,
+                    data
+                ),
+                {
+                    pending: "Procesando...",
+                    success: "Mision Reset",
+                    error: "No se pudo :(",
+                },
+                { position: "top-center" }
+            );
+
+            getAdminData()
+
+            return res.data.ok; // opcional
+        } catch (err) {
+            console.log("Error:", err?.response?.data || err.message);
+            notifyError(err?.response?.data?.msg || "Error al crear usuario");
+            return err?.response?.data.ok;
+        }
+    };
+    // POST Edit Mision Periodica
+    const postEditMisionAdmin = async (data) => {
+        try {
+            const res = await toast.promise(
+                axios.post(
+                    `${process.env.REACT_APP_GREMIO_API_URL}/post_edit_mision_admin.php`,
+                    data
+                ),
+                {
+                    pending: "Procesando...",
+                    success: "Mision Actualizada",
                     error: "No se pudo :(",
                 },
                 { position: "top-center" }
@@ -1407,6 +1458,8 @@ export function TablonProvider({ children, initial }) {
         adminInfo, setAdminInfo,
         getAdminData,
         postAddMisionAdmin,
+        postResetMisionPeriodicaAdmin,
+        postEditMisionAdmin,
 
         // Estaticos
         tipo_entrega,
