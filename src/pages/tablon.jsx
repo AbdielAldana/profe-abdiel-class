@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Outlet, useNavigate } from "react-router";
+import { Outlet, useNavigate  } from "react-router";
 import { useCookies } from "react-cookie";
 import { ToastContainer} from "react-toastify";
 
-import { TablonProvider } from "../components/Tablon/TablonContext";
+import { TablonProvider } from "../contexts/TablonContext";
 import NavbarBottomTablon from "../components/Tablon/NavbarBottomTablon";
 
 const tipo_entrega = [
@@ -44,6 +44,8 @@ export default function Tablon() {
 	const [misionesUsuario] = useState(demo);
 	const [inventario] = useState(null);
 
+	const [adminInfo] = useState(null);
+
 	useEffect(() => {
         if (!cookies.matricula_actual) {
             setCookie("matricula_actual", null, { path: "/", maxAge: 60 * 60 * 24 })
@@ -70,6 +72,7 @@ export default function Tablon() {
 					misionesUsuario,
 					matricula,
 					inventario,
+					adminInfo,
 				}}
 			>
 				<Outlet />

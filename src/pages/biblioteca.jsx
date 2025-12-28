@@ -122,7 +122,7 @@ export default function Biblioteca({
                 if (!alive) return;
 
                 let json = res.data;
-                console.log(res.data);
+                // console.log(res.data);
 
 
                 // Si vino como string (por headers incorrectos), parsea a objeto
@@ -145,7 +145,7 @@ export default function Biblioteca({
                 //         : [];
 
                 const items = json[0].items
-                console.log(items);
+                // console.log(items);
 
                 setRemoteBaseUrl(json.baseUrl || baseUrlProp);
                 setBooks(items);
@@ -205,7 +205,7 @@ export default function Biblioteca({
     return (
         <Grid container spacing={3}>
             {/* Header */}
-            <Grid item size={{ xs: 12, md: 12 }}>
+            <Grid size={{ xs: 12, md: 12 }}>
                 <Paper sx={{ p: 3 }}>
                     <Typography variant="h4" gutterBottom>
                         Biblioteca Digital
@@ -217,7 +217,7 @@ export default function Biblioteca({
             </Grid>
 
             {/* Filtros */}
-            <Grid item size={{ xs: 12, md: 12 }}>
+            <Grid size={{ xs: 12, md: 12 }}>
                 <Paper sx={{ p: 2 }} id="filtros">
                     <Stack direction={{ xs: "column", md: "row" }} spacing={2} alignItems={{ xs: "stretch", md: "center" }}>
                         <TextField
@@ -256,7 +256,7 @@ export default function Biblioteca({
             </Grid>
 
             {/* Chips de conteo por tema */}
-            <Grid item size={{ xs: 12, md: 12 }} id={"etiquetas"}>
+            <Grid size={{ xs: 12, md: 12 }} id={"etiquetas"}>
                 <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
                     {Object.entries(BASE_TOPICS).map(([key, label]) => (
                         <Chip
@@ -271,7 +271,7 @@ export default function Biblioteca({
                 </Stack>
             </Grid>
 
-            <Grid item size={{ xs: 12, md: 12 }}>
+            <Grid size={{ xs: 12, md: 12 }}>
                 <Divider />
             </Grid>
 
@@ -279,7 +279,7 @@ export default function Biblioteca({
             {filtered.map((b) => {
                 const href = buildUrl(baseUrl, b.folder, b.file);
                 return (
-                    <Grid key={b.id} item size={{ xs: 12, md: 4 }} className={"cardM"}>
+                    <Grid key={b.id} size={{ xs: 12, md: 4 }} className={"cardM"}>
                         <Card sx={{ height: "100%", minWidth: "100%", display: "flex", flexDirection: "column" }}>
                             <CardActionArea component="a" href={href} target="_blank" rel="noopener noreferrer">
                                 <CardMedia
@@ -328,7 +328,7 @@ export default function Biblioteca({
             })}
 
             {filtered.length === 0 && (
-                <Grid item size={{ xs: 12, md: 12 }}>
+                <Grid size={{ xs: 12, md: 12 }}>
                     <Paper sx={{ p: 3, textAlign: "center" }}>
                         <Typography variant="body1">No se encontraron resultados con los filtros actuales.</Typography>
                     </Paper>
@@ -336,7 +336,7 @@ export default function Biblioteca({
             )}
 
             {/* Nota de mantenimiento */}
-            <Grid item size={{ xs: 12, md: 12 }}>
+            <Grid size={{ xs: 12, md: 12 }}>
                 <Paper sx={{ p: 2 }}>
                     <Typography variant="subtitle2" gutterBottom>
                         ¿Cómo puedo aportar libros?

@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router";
 
 
 const TablonContext = React.createContext(null);
@@ -980,6 +981,7 @@ const TablonContext = React.createContext(null);
 
 export function TablonProvider({ children, initial }) {
     const [cookies, setCookie] = useCookies(["matricula_actual"]);
+    const navigate = useNavigate()
 
     const notifyError = (txt) =>
         toast.error(txt, { position: "top-center" });
@@ -995,7 +997,10 @@ export function TablonProvider({ children, initial }) {
     const [recompensas, setRecompensas] = React.useState(initial.recompensas)
     const [inventario, setInventario] = React.useState(initial.inventario)
     const [tipo_entrega] = React.useState(initial.tipo_entrega);
-
+    
+    
+    const [adminInfo, setAdminInfo] = React.useState(initial.adminInfo)
+    
     useEffect(() => {
         if (cookies.matricula_actual) {
             getUsuario(cookies.matricula_actual, true, false)
@@ -1047,6 +1052,10 @@ export function TablonProvider({ children, initial }) {
 
             setMisionesUsuario(res.data.usuario.misiones);
             setInventario(res.data.usuario.inventario);
+
+            if (res.data.usuario.admin) {
+                navigate("/tablon_de_misiones/admin");
+            }
 
             return res.data;
         } catch (err) {
@@ -1315,6 +1324,61 @@ export function TablonProvider({ children, initial }) {
         }
     };
 
+    // ==============================================================================
+    // Admin
+
+    // GET Admin Data
+    const getAdminData = async () => {
+        try {
+            const res = await toast.promise(
+                axios.get(
+                    `${process.env.REACT_APP_GREMIO_API_URL}/get_admin_info.php`, { params: { matricula: usuario.matricula } }
+                ),
+                {
+                    pending: "Cargando Data",
+                    success: "Data Cargada",
+                    error: "No se pudo :(",
+                },
+                { position: "top-center" }
+            );
+
+            // notifySuccess("Sesion Iniciada");
+            setAdminInfo(res.data.usuarios);
+
+            return res.data;
+        } catch (err) {
+            console.log("Error:", err?.response?.data || err.message);
+            notifyError(err?.response?.data?.msg || "Algo salio mal");
+            return { ok: false };
+        }
+    };
+
+    // POST Quitar Fijo
+    const postAddMisionAdmin = async (data) => {
+        try {
+            const res = await toast.promise(
+                axios.post(
+                    `${process.env.REACT_APP_GREMIO_API_URL}/post_mision_admin.php`,
+                    data
+                ),
+                {
+                    pending: "Procesando...",
+                    success: "Mision Creada",
+                    error: "No se pudo :(",
+                },
+                { position: "top-center" }
+            );
+
+            getAdminData()
+
+            return res.data.ok; // opcional
+        } catch (err) {
+            console.log("Error:", err?.response?.data || err.message);
+            notifyError(err?.response?.data?.msg || "Error al crear usuario");
+            return err?.response?.data.ok;
+        }
+    };
+
 
     // Actualiza Los datos
     const value = React.useMemo(() => ({
@@ -1339,10 +1403,15 @@ export function TablonProvider({ children, initial }) {
         comprarTienda,      //ok
         getUsuariosR,       //ok
 
+        // Admin
+        adminInfo, setAdminInfo,
+        getAdminData,
+        postAddMisionAdmin,
+
         // Estaticos
         tipo_entrega,
         // eslint-disable-next-line
-    }), [misiones, usuarios, usuario, recompensas, misionesUsuario, matricula, inventario]);
+    }), [misiones, usuarios, usuario, recompensas, misionesUsuario, matricula, inventario, adminInfo]);
 
     return <TablonContext.Provider value={value}>{children}</TablonContext.Provider>;
 }

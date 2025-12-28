@@ -18,12 +18,13 @@ import DialogTitle from '@mui/material/DialogTitle';
 
 
 // Context
-import { useTablon } from "./TablonContext";
+import { useTablon } from "../../../contexts/TablonContext";
 
 // Utils
-import { ViewType, IconArt, claseName } from "../../utils/articuloTypeUtils"
-import { getLevelData } from "../../utils/levelUtils";
-import FondoDecorativo from "../../components/Tablon/FondoDecorativo";
+import { ViewType, IconArt, claseName } from "../../../utils/articuloTypeUtils"
+import { getLevelData } from "../../../utils/levelUtils";
+// import FondoDecorativo from "../../components/Tablon/Perfil/FondoDecorativo";
+import FondoDecorativo from "../Perfil/FondoDecorativo";
 
 // Iconos
 import CloseIcon from '@mui/icons-material/Close';

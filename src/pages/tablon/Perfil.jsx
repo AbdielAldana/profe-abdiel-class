@@ -14,7 +14,7 @@ import {
 import Input from '@mui/material/Input';
 
 // Componentes Generales
-import { useTablon } from "../../components/Tablon/TablonContext"; // ajusta
+import { useTablon } from "../../contexts/TablonContext"; // ajusta
 import { useCookies } from "react-cookie";
 import { toast } from "react-toastify";
 
@@ -25,8 +25,8 @@ import { resizeImageAuto } from "../../utils/resizeImgUtil";
 // Icons
 import { styled } from '@mui/material/styles';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
-import FondoDecorativo from "../../components/Tablon/FondoDecorativo";
-import Articulo from "../../components/Tablon/Articulo";
+import FondoDecorativo from "../../components/Tablon/Perfil/FondoDecorativo";
+import Articulo from "../../components/Tablon/Perfil/Articulo";
 import { GiRupee } from "react-icons/gi";
 import LogoutIcon from '@mui/icons-material/Logout';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -403,20 +403,6 @@ function Perfil() {
                                     fullWidth
                                     value={user}
                                     onChange={(e) => setUser(e.target.value)}
-                                />
-                            </Grid>
-                            <Grid size={{ xs: 8, md: 10 }}>
-                                <TextField
-                                    id="abrir_perfil"
-                                    label="Matricula"
-                                    variant="outlined"
-                                    size="small"
-                                    type="datetime-local"
-                                    step="1"
-                                    sx={{ mr: 3 }}
-                                    fullWidth
-                                    value={user}
-                                    onChange={(e) => setUser(e.target.value+":00")}
                                 />
                             </Grid>
                             <Grid size={{ xs: 4, md: 2 }}>

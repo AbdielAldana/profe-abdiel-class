@@ -232,7 +232,7 @@ function Navbar(params) {
 
 
                     {/* Usuario */}
-                    <Box sx={{ flexGrow: 0 }} >
+                    {/* <Box sx={{ flexGrow: 0 }} >
                         <Tooltip title="Open settings">
                             <IconButton color='white' onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                                 <SettingsIcon color='white2' />
@@ -259,7 +259,7 @@ function Navbar(params) {
                                 <Typography sx={{ textAlign: 'center' }}>Cambiar Tema <ContrastIcon /></Typography>
                             </MenuItem>
                         </Menu>
-                    </Box>
+                    </Box> */}
                 </Toolbar>
             </Container>
         </AppBar>

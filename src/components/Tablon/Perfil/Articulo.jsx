@@ -22,11 +22,11 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
 // Context
-import { useTablon } from "./TablonContext";
+import { useTablon } from "../../../contexts/TablonContext";
 
 // Utils
-import { ViewType, IconArt, claseName, getTiempoRestante } from "../../utils/articuloTypeUtils"
-import FondoDecorativo from "../../components/Tablon/FondoDecorativo";
+import { ViewType, IconArt, claseName, getTiempoRestante } from "../../../utils/articuloTypeUtils"
+import FondoDecorativo from "./FondoDecorativo";
 
 // Iconos
 import CloseIcon from '@mui/icons-material/Close';

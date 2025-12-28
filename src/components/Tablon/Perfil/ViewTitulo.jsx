@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Typography } from "@mui/material"
-import { useTablon } from "../../components/Tablon/TablonContext";
+import { useTablon } from "../../../contexts/TablonContext";
 import FondoDecorativo from "./FondoDecorativo";
 
 function ViewTitulo(params) {

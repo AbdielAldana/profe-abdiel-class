@@ -15,19 +15,19 @@ import {
 import BottomNavigation from "@mui/material/BottomNavigation";
 
 // Componentes Generales
-import { useTablon } from "../../components/Tablon/TablonContext"; // ajusta
+import { useTablon } from "../../contexts/TablonContext"; // ajusta
 import { useCookies } from "react-cookie";
 import { ToastContainer, toast } from "react-toastify";
-import ArticuloCompra from "../../components/Tablon/ArticuloCompra";
+import ArticuloCompra from "../../components/Tablon/Tienda/ArticuloCompra";
 
 // Utils
 import { getLevelData } from "../../utils/levelUtils";
 import { ViewType, IconArt, claseName, getTiempoRestante, getEstadoRecompensa, getMensajeEstado } from "../../utils/articuloTypeUtils"
-import FondoDecorativo from "../../components/Tablon/FondoDecorativo";
+import FondoDecorativo from "../../components/Tablon/Perfil/FondoDecorativo";
 
 // iconos
 import { GiRupee } from "react-icons/gi";
-import ViewTitulo from "../../components/Tablon/ViewTitulo";
+import ViewTitulo from "../../components/Tablon/Perfil/ViewTitulo";
 
 
 function Tienda() {

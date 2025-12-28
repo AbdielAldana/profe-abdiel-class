@@ -17,7 +17,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 
 import { useCookies } from 'react-cookie';
 import Navbar from './components/Navbar';
-import NavbarBottom from './components/NavbarBottom';
+// import NavbarBottom from './components/NavbarBottom';
 
 const theme = createTheme({
   palette: {
@@ -118,18 +118,18 @@ export default function ButtonAppBar() {
   const [themeSelect, setThemeSelect] = React.useState(theme2);
   const [cookies, setCookie] = useCookies(["theme"]);
 
-  React.useEffect(() => {
-    if (cookies.theme) {
-      if (cookies.theme === 'light') {
-        setThemeSelect(theme2)
-      } else {
-        setThemeSelect(theme)
-      }
-    } else {
-      setCookie('theme', 'light', { path: '/' });
-      setThemeSelect(theme2)
-    }
-  }, [])
+  // React.useEffect(() => {
+  //   if (cookies.theme) {
+  //     if (cookies.theme === 'light') {
+  //       setThemeSelect(theme2)
+  //     } else {
+  //       setThemeSelect(theme)
+  //     }
+  //   } else {
+  //     setCookie('theme', 'light', { path: '/' });
+  //     setThemeSelect(theme2)
+  //   }
+  // }, [])
 
   const handleTheme = () => {
     if (cookies.theme === 'light') {

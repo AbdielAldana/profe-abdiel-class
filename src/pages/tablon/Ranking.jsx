@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import { useTablon } from "../../components/Tablon/TablonContext";
+import { useTablon } from "../../contexts/TablonContext";
 import { Grid, Typography } from "@mui/material";
-import ViewTitulo from "../../components/Tablon/ViewTitulo";
-import UsuarioView from "../../components/Tablon/UsuarioView";
+import ViewTitulo from "../../components/Tablon/Perfil/ViewTitulo";
+import UsuarioView from "../../components/Tablon/Ranking/UsuarioView";
 
 
 function Ranking(params) {

@@ -1,6 +1,6 @@
 import { Grid, Typography } from "@mui/material"
-import { getLevelData } from "../../utils/levelUtils";
-import { useTablon } from "./TablonContext";
+import { getLevelData } from "../../../utils/levelUtils";
+import { useTablon } from "../../../contexts/TablonContext";
 
 function UsuarioView({ user, id }) {
     const base = process.env.REACT_APP_GREMIO_API_URL;

@@ -22,6 +22,7 @@ import Misiones from "../pages/tablon/Misiones";
 import Tienda from "../pages/tablon/Tienda";
 import Ranking from "../pages/tablon/Ranking";
 import Perfil from "../pages/tablon/Perfil";
+import Admin from "../pages/tablon/Admin";
 
 const router = createBrowserRouter([
   {
@@ -44,6 +45,7 @@ const router = createBrowserRouter([
           { path: "tienda", element: <Tienda /> },
           { path: "perfil", element: <Perfil /> },
           { path: "ranking", element: <Ranking /> },
+          { path: "admin", element: <Admin /> },
         ]
       }
 
