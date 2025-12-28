@@ -16,15 +16,15 @@ import Select from "@mui/material/Select";
 import { useCookies } from "react-cookie";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
-import Chisme from "../components/Chisme";
-import ChismeAvisoModal from "../components/ChismeAvisoModal";
+import Chisme from "../components/Chismes/Chisme";
+// import ChismeAvisoModal from "../components/ChismeAvisoModal";
 import Fab from '@mui/material/Fab';
-import KeyIcon from '@mui/icons-material/Key';
-import KeyOffIcon from '@mui/icons-material/KeyOff';
+// import KeyIcon from '@mui/icons-material/Key';
+// import KeyOffIcon from '@mui/icons-material/KeyOff';
 import CloseIcon from '@mui/icons-material/Close';
-import NavbarBottom from "../components/NavbarBottom";
-import { data } from "react-router";
-import ActionBar from "../components/ActionBar";
+import NavbarBottom from "../components/Chismes/NavbarBottom";
+// import { data } from "react-router";
+// import ActionBar from "../components/ActionBar";
 
 const style = {
 	position: "absolute",
@@ -449,10 +449,10 @@ function Chismes() {
         <div>
             <Grid container spacing={5}>
                 {/* ================= Filtros ================= */}
-                <Grid item size={{ xs: 12, md: 12 }}>
+                <Grid size={{ xs: 12, md: 12 }}>
                     <Paper sx={{ p: 2 }} id="filtros">
                         <Grid container spacing={2}>
-                            <Grid item size={{ xs: 12, md: 12 }}>
+                            <Grid size={{ xs: 12, md: 12 }}>
                                 <Typography
                                     variant="h5"
                                     fontWeight={"bold"}
@@ -463,7 +463,7 @@ function Chismes() {
                                 </Typography>
                             </Grid>
 
-                            <Grid item size={{ xs: 12, sm: 6, md: 8 }}>
+                            <Grid size={{ xs: 12, sm: 6, md: 8 }}>
                                 <FormControl fullWidth>
                                     <InputLabel id="topic-filter-label">Buscar por Tema</InputLabel>
                                     <Select
@@ -480,7 +480,7 @@ function Chismes() {
                                 </FormControl>
                             </Grid>
 
-                            <Grid item size={{ xs: 12, sm: 6, md: 4 }} display={"flex"} justifyContent={"space-evenly"} alignItems={"center"}>
+                            <Grid size={{ xs: 12, sm: 6, md: 4 }} display={"flex"} justifyContent={"space-evenly"} alignItems={"center"}>
                                 <Chip label="Nuevos" clickable color={order === "new" ? "secondary" : "default"} onClick={() => handleSetGetOrder("new")} />
                                 <Chip label="Viejos" clickable color={order === "old" ? "secondary" : "default"} onClick={() => handleSetGetOrder("old")} />
                                 <Chip label="Destacados" clickable color={order === "level" ? "secondary" : "default"} onClick={() => handleSetGetOrder("level")} />
@@ -494,7 +494,7 @@ function Chismes() {
                 </Grid>
 
                 {/* ================= Lista ================= */}
-                <Grid item size={{ xs: 12, md: 12 }}>
+                <Grid size={{ xs: 12, md: 12 }}>
                     <Grid container spacing={3}>
                         {array.length !== 0 &&
                             array.map(e => (
@@ -509,7 +509,7 @@ function Chismes() {
                     </Grid>
 
                     {/* Fallback manual */}
-                    <Grid item size={{ xs: 12, md: 12 }} style={{ marginTop: 16 }}>
+                    <Grid size={{ xs: 12, md: 12 }} style={{ marginTop: 16 }}>
                         {error && (
                             <Typography color="error" sx={{ mb: 1 }}>
                                 {String(error.message || error)}
@@ -542,12 +542,12 @@ function Chismes() {
             >
                 <Paper sx={style}>
                     <Grid container spacing={2}>
-                        <Grid item size={{ xs: 12, md: 12 }} className="buttonClose">
+                        <Grid size={{ xs: 12, md: 12 }} className="buttonClose">
                             <Fab aria-label="add" size="small" onClick={handleCloseComent}>
                                 <CloseIcon />
                             </Fab>
                         </Grid>
-                        <Grid item size={{ xs: 12, md: 12 }}>
+                        <Grid size={{ xs: 12, md: 12 }}>
                             <Typography
                                 variant="h4"
                                 fontWeight={"bold"}
@@ -559,7 +559,7 @@ function Chismes() {
                             <Divider />
                         </Grid>
 
-                        <Grid item size={{ xs: 12, md: 6 }}>
+                        <Grid size={{ xs: 12, md: 6 }}>
                             <TextField
                                 label="Titulo"
                                 variant="outlined"
@@ -570,7 +570,7 @@ function Chismes() {
                             />
                         </Grid>
 
-                        <Grid item size={{ xs: 12, md: 6 }}>
+                        <Grid size={{ xs: 12, md: 6 }}>
                             <FormControl fullWidth>
                                 <InputLabel id="topic-post-label">Tema</InputLabel>
                                 <Select
@@ -595,7 +595,7 @@ function Chismes() {
                             </Typography>
                         </Grid>
 
-                        <Grid item size={{ xs: 12, md: 12 }}>
+                        <Grid size={{ xs: 12, md: 12 }}>
                             <textarea
                                 rows={6}
                                 placeholder={"Empieza a escribir aqui...."}
@@ -609,17 +609,17 @@ function Chismes() {
                                 {lenghtTexto} / 400
                             </Typography>
                         </Grid>
-                        <Grid item size={{ xs: 12, md: 12 }}>
+                        <Grid size={{ xs: 12, md: 12 }}>
                             <Typography gutterBottom textAlign="center">
                                 NO COMPARTAS DATOS PERSONALES DE NINGÚN TIPO!!
                             </Typography>
                         </Grid>
-                        <Grid item size={{ xs: 12, md: 12 }}>
+                        <Grid size={{ xs: 12, md: 12 }}>
                             <Divider />
                         </Grid>
 
-                        <Grid item size={{ xs: 8, md: 6 }}></Grid>
-                        <Grid item size={{ xs: 4, md: 6 }} display={"flex"} justifyContent={"flex-end"}>
+                        <Grid size={{ xs: 8, md: 6 }}></Grid>
+                        <Grid size={{ xs: 4, md: 6 }} display={"flex"} justifyContent={"flex-end"}>
                             <Button size="large" variant="contained" onClick={handleSendChisme}>
                                 Publicar
                             </Button>
@@ -637,12 +637,12 @@ function Chismes() {
             >
                 <Paper sx={style}>
                     <Grid container spacing={2}>
-                        <Grid item size={{ xs: 12, md: 12 }} className="buttonClose">
+                        <Grid size={{ xs: 12, md: 12 }} className="buttonClose">
                             <Fab aria-label="add" size="small" onClick={handleModalMailClose}>
                                 <CloseIcon />
                             </Fab>
                         </Grid>
-                        <Grid item size={{ xs: 12, md: 12 }}>
+                        <Grid size={{ xs: 12, md: 12 }}>
                             <Typography
                                 variant="h4"
                                 fontWeight={"bold"}
@@ -678,7 +678,7 @@ function Chismes() {
                             <Divider />
                         </Grid>
 
-                        <Grid item size={{ xs: 12, md: 6 }}>
+                        <Grid size={{ xs: 12, md: 6 }}>
                             <TextField
                                 label="Asunto"
                                 variant="outlined"
@@ -690,7 +690,7 @@ function Chismes() {
                             />
                         </Grid>
 
-                        <Grid item size={{ xs: 12, md: 6 }}>
+                        <Grid size={{ xs: 12, md: 6 }}>
                             <FormControl fullWidth>
                                 <InputLabel id="comentario-queja-label">Razon</InputLabel>
                                 <Select
@@ -713,7 +713,7 @@ function Chismes() {
                             </FormControl>
                         </Grid>
 
-                        <Grid item size={{ xs: 12, md: 6 }}>
+                        <Grid size={{ xs: 12, md: 6 }}>
                             <TextField
                                 label="Mensaje"
                                 variant="outlined"
@@ -726,7 +726,7 @@ function Chismes() {
                             />
                         </Grid>
 
-                        <Grid item size={{ xs: 4, md: 6 }} display={"flex"} justifyContent={"flex-end"}>
+                        <Grid size={{ xs: 4, md: 6 }} display={"flex"} justifyContent={"flex-end"}>
                             <Button size="large" variant="contained" onClick={handleSubmit}>
                                 Enviar
                             </Button>

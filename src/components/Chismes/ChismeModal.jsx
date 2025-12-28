@@ -1,7 +1,7 @@
 import * as React from "react";
 import {
 	Box,
-	Card,
+	// Card,
 	CardHeader,
 	CardContent,
 	CardActions,
@@ -11,15 +11,14 @@ import {
 	Modal,
 	Tooltip,
 	Badge,
-	Paper,
 	Button,
 	TextField,
 	Fab,
 	Grid,
 	Divider,
 } from "@mui/material";
-import { green, yellow, grey } from "@mui/material/colors";
-import WhatshotIcon from "@mui/icons-material/Whatshot";
+import { grey } from "@mui/material/colors";
+// import WhatshotIcon from "@mui/icons-material/Whatshot";
 import CloseIcon from "@mui/icons-material/Close";
 import { useCookies } from "react-cookie";
 import axios from "axios";
@@ -344,7 +343,7 @@ export default function ChismeModal({ open, onClose, data, refreshChismes, pass 
 						{[...comentarios]
 							.sort((a, b) => b.level - a.level)
 							.map((c) => (
-								<Grid item size={{ xs: 12, md: 6 }} key={c.id_registro}>
+								<Grid size={{ xs: 12, md: 6 }} key={c.id_registro}>
 									{/* <Card
 										sx={{ mb: 1.5, p: 2, borderRadius: 2, bgcolor: "background.default" }}
 									> */}

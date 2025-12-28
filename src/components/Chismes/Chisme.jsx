@@ -9,12 +9,11 @@ import {
 	Box,
 	CardActionArea,
 	CardActions,
-	IconButton,
 } from "@mui/material";
-import { red, green, yellow, grey } from "@mui/material/colors";
+import { grey } from "@mui/material/colors";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import ChismeModal from "./ChismeModal";
+import ChismeModal from './ChismeModal'
 
 export default function Chisme({ data, pass, refreshChismes }) {
 	const [open, setOpen] = React.useState(false);
@@ -64,12 +63,12 @@ export default function Chisme({ data, pass, refreshChismes }) {
 			? "1"
 			: `${commentCount}`;
 
-	const [selectedCard, setSelectedCard] = React.useState(0);
+	// const [selectedCard, setSelectedCard] = React.useState(0);
 
 
 	return (
 		<>
-			<Grid item size={{ xs: 12, md: 6 }}>
+			<Grid size={{ xs: 12, md: 6 }}>
 				<Card
 
 
@@ -118,7 +117,7 @@ export default function Chisme({ data, pass, refreshChismes }) {
 						</CardContent>
 					
 					<CardActions style={{display: "flex", justifyContent: "flex-end"}}>
-						<IconButton>
+						<div>
 							<Box
 								onClick={handleOpen}
 								sx={{
@@ -136,8 +135,8 @@ export default function Chisme({ data, pass, refreshChismes }) {
 								<FavoriteIcon />
 								<Typography variant="body1">{data.reactions.fire}</Typography>
 							</Box>
-						</IconButton>
-						<IconButton>
+						</div>
+						<div>
 							<Box
 								onClick={handleOpen}
 								sx={{
@@ -155,7 +154,7 @@ export default function Chisme({ data, pass, refreshChismes }) {
 								<ChatBubbleOutlineIcon  />
 								<Typography variant="body1">{commentLabel}</Typography>
 							</Box>
-						</IconButton>
+						</div>
 					</CardActions>
 					</CardActionArea>
 				</Card>
