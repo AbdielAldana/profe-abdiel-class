@@ -192,8 +192,14 @@ function ArticuloCompra({ articulo }) {
                             sx={{ m: 0, p: 0 }}
                             className="ellipsis"
                         >
-                            {articulo.tipo} - {articulo.descripcion}
+                            {articulo.tipo} - {articulo.uso}
                         </Typography>
+                    </Grid>
+                    <Grid size={{ xs: 12 }}>
+                        <Divider  />
+                    </Grid>
+                    <Grid size={{ xs: 12 }}>
+                        <Typography variant="body1">{articulo.descripcion}</Typography>
                     </Grid>
 
                     {!usuario &&

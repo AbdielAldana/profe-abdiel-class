@@ -312,19 +312,19 @@ function Articulo({ articulo }) {
                             className="ellipsis"
                             sx={{ m: 0, p: 0 }}
                         >
-                            {articulo.data.descripcion}
+                            {articulo.data.tipo} - {articulo.data.uso}
                         </Typography>
                     </Grid>
                     {articulo.articulo.cantidad > 0 &&
-                        <Grid size={{ xs: 3 }}>
-                            <Typography
+                        <Grid size={{ xs: 3 }} alignSelf={"center"}>
+                            {/* <Typography
                                 variant="body1"
                                 className="ellipsis"
                                 sx={{ m: 0, p: 0 }}
                                 textAlign={"right"}
                             >
                                 {articulo.data.tipo}
-                            </Typography>
+                            </Typography> */}
                             <Typography
                                 variant="h5"
                                 fontWeight={"bold"}
@@ -336,40 +336,70 @@ function Articulo({ articulo }) {
                             </Typography>
                         </Grid>
                     }
+                    <Grid size={{ xs: 12 }}>
+                        <Divider/>
+                    </Grid>
+                    <Grid size={{ xs: 12 }}>
+                        <Typography variant="body1">{articulo.data.descripcion}</Typography>
+                    </Grid>
+                    {// eslint-disable-next-line
+                     articulo.articulo.estado == 3 &&
+                        <Grid size={{ xs: 12 }}>
+                            <Divider sx={{mb:1}} />
+                            <Typography
+                                variant="subtitle1"
+                                // fontWeight={"bold"}
+                                // textAlign={"center"}
+                                sx={{ m: 0, p: 0 }}
+                            >
+                                Usado en: <b>{articulo.articulo.fecha_fin}</b>
+                            </Typography>
+                        </Grid>
+                    }
                     {// eslint-disable-next-line
                     articulo.data.uso === "Temporal" && articulo.articulo.estado == 1 &&
                         <Grid size={{ xs: 12 }}>
+                            <Divider sx={{mb:1}} />
                             <Typography
                                 variant="subtitle1"
-                                fontWeight={"bold"}
-                                textAlign={"center"}
+                                // fontWeight={"bold"}
+                                // textAlign={"center"}
                                 sx={{ m: 0, p: 0 }}
                             >
-                                Termina en: {tiempoRestante}
+                                Termina en: <b>{tiempoRestante}</b>
                             </Typography>
                         </Grid>
                     }
                     {// eslint-disable-next-line
                     articulo.articulo.estado == 4 &&
                         <Grid size={{ xs: 12 }}>
+                            <Divider sx={{mb:1}} />
                             <Typography
                                 variant="subtitle1"
-                                textAlign={"center"}
+                                // textAlign={"center"}
                                 sx={{ m: 0, p: 0 }}
                             >
-                                Donado el: {articulo.articulo.fecha_fin}
+                                Donado el: <b>{articulo.articulo.fecha_fin}</b>
                             </Typography>
                         </Grid>
                     }
                     {// eslint-disable-next-line
                     articulo.articulo.estado == 5 &&
                         <Grid size={{ xs: 12 }}>
+                            <Divider sx={{mb:1}} />
                             <Typography
                                 variant="subtitle1"
-                                textAlign={"center"}
+                                // textAlign={"center"}
                                 sx={{ m: 0, p: 0 }}
                             >
-                                Vendido por: <b>{articulo.articulo.precio} puntos</b>, el {articulo.articulo.fecha_fin}
+                                Vendido por: <b>{articulo.articulo.precio} puntos</b>
+                            </Typography>
+                            <Typography
+                                variant="subtitle1"
+                                // textAlign={"center"}
+                                sx={{ m: 0, p: 0 }}
+                            >
+                                El día: <b>{articulo.articulo.fecha_fin}</b>
                             </Typography>
                         </Grid>
                     }
@@ -505,7 +535,7 @@ function Articulo({ articulo }) {
                     {// eslint-disable-next-line
                     articulo.articulo.estado == 3 &&
                         <CardActions style={{ display: 'flex', justifyContent: 'center' }}>
-                            Usado el: {articulo.articulo.fecha_inicio}
+                            Usado el: {articulo.articulo.fecha_fin}
                         </CardActions>
                     }
                     {// eslint-disable-next-line

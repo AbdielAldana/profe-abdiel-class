@@ -236,10 +236,11 @@ function Admin() {
                                             required
                                         >
                                             <MenuItem value={0}>Comun</MenuItem>
-                                            <MenuItem value={1}>Rara</MenuItem>
-                                            <MenuItem value={2}>Epica</MenuItem>
-                                            <MenuItem value={3}>Legendaria</MenuItem>
-                                            <MenuItem value={4}>Mytica</MenuItem>
+                                            <MenuItem value={1}>Básica</MenuItem>
+                                            <MenuItem value={2}>Rara</MenuItem>
+                                            <MenuItem value={3}>Epica</MenuItem>
+                                            <MenuItem value={4}>Legendaria</MenuItem>
+                                            <MenuItem value={5}>Mytica</MenuItem>
                                         </Select>
                                     </FormControl>
                                 </Grid>

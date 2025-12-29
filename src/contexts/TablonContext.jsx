@@ -1023,7 +1023,7 @@ export function TablonProvider({ children, initial }) {
     const getUsuario = async (ma, okMa, update) => {
         // ma       = Matricula
         // okMa     = Valida para aplicar matricula
-        if (usuario !== null) return
+        // if (usuario !== null) return
         const text = update ? "Usuario Actualizado" : "Usuario Cargado"
         try {
             const res = await toast.promise(
@@ -1287,7 +1287,7 @@ export function TablonProvider({ children, initial }) {
             );
 
             // notifySuccess("Sesion Iniciada");
-            getUsuario(matricula);
+            getUsuario(matricula, true, true);
 
             return res.data;
         } catch (err) {

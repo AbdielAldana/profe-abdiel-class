@@ -204,13 +204,23 @@ function MisionAdmin({ mision }) {
                         <Divider />
                     </Grid>
                     <Grid size={{ xs: 12 }}>
-                        <Typography variant="h5" fontWeight={"bold"}>
+                        <Typography variant="h5" fontWeight={"bold"} className="ellipsis">
                             {mision.nombre} - {mision.subNombre}
                         </Typography>
                     </Grid>
                     <Grid size={{ xs: 12 }}>
                         <Typography variant="body1" >
-                            {mision.objetivo}
+                            <b>Lore: </b>{mision.lore}
+                        </Typography>
+                    </Grid>
+                    <Grid size={{ xs: 12 }}>
+                        <Typography variant="body1" >
+                            <b>Objetivo: </b>{mision.objetivo}
+                        </Typography>
+                    </Grid>
+                    <Grid size={{ xs: 12 }}>
+                        <Typography variant="body1" >
+                            <b>Requisitos: </b>{mision.requisitos}
                         </Typography>
                     </Grid>
                     <Grid size={{ xs: 12 }}>
@@ -229,6 +239,60 @@ function MisionAdmin({ mision }) {
                     <Grid size={{ xs: 12 }}>
                         <Divider />
                     </Grid>
+                    <Grid size={{ xs: 6 }}>
+                        <Typography variant="body1" >
+                            Visible: <b>{mision.visible == 1 ? "Si" : "No"}</b>
+                        </Typography>
+                    </Grid>
+                    <Grid size={{ xs: 6 }} display={"flex"} justifyContent={"flex-end"} alignItems={"center"}>
+                        <Typography variant="body1" >
+                            Tipo: <b>{mision.tipo_mision == 1 ? "Periodica" : "Unica"}</b>
+                        </Typography>
+                    </Grid>
+                    {mision.frecuencia > 0 &&
+                        <Grid size={{ xs: 12 }}>
+                            <Divider />
+                        </Grid>
+                    }
+                    {mision.frecuencia > 0 &&
+                        <Grid size={{ xs: 6 }}>
+                            <Typography variant="body1" >
+                                Canje Ver.: <b>{mision.canjes_version_actual}</b>
+                            </Typography>
+                        </Grid>
+                    }
+                    {mision.frecuencia > 0 &&
+                        <Grid size={{ xs: 6 }} display={"flex"} justifyContent={"flex-end"} alignItems={"center"}>
+                            <Typography variant="body1" >
+                                Frecuencia: <b>{mision.frecuencia == 1 ? "Diaria" : mision.frecuencia == 2 ? "Semanal" : mision.frecuencia == 3 ? "Mensual" : ""}</b>
+                            </Typography>
+                        </Grid>
+                    }
+                    <Grid size={{ xs: 12 }}>
+                        <Divider />
+                    </Grid>
+
+                    <Grid size={{ xs: 5 }}>
+                        <Typography variant="body1" >
+                            Canje Totales:
+                        </Typography>
+                        <Typography variant="body1" >
+                            <b>{mision.total_canjes}</b>
+                        </Typography>
+                    </Grid>
+
+                    <Grid size={{ xs: 7 }} display={"flex"} justifyContent={"center"} alignItems={"flex-end"} flexDirection={"column"}>
+                        <Typography variant="body1" >
+                            Ultimo Canje
+                        </Typography>
+                        <Typography variant="body1" textAlign={"right"}>
+                            <b>{mision.ultimo_canje ? mision.ultimo_canje : "Aun no"}</b>
+                        </Typography>
+                    </Grid>
+
+                    <Grid size={{ xs: 12 }}>
+                        <Divider />
+                    </Grid>
                     <Grid size={{ xs: 8 }} alignSelf={"center"}>
                         <Typography variant="body1" >
                             Termina: <b>{tiempoRestante}</b>
@@ -237,7 +301,7 @@ function MisionAdmin({ mision }) {
                     <Grid size={{ xs: 4 }} display={"flex"} justifyContent={"flex-end"}>
                         {/* eslint-disable-next-line */}
                         {tiempoRestante == "Vencida" && mision.tipo_mision == 1 &&
-                            <Button variant="contained" size="small" color="primary" onClick={handleOpenAddMisionReset}>Reset</Button>
+                            <Button variant="contained" size="small" color="primary" sx={{ mr: 1 }} onClick={handleOpenAddMisionReset}>Reset</Button>
                         }
                         <Button variant="contained" size="small" color="primary" onClick={handleOpenAddMisionEdit}>Editar</Button>
                     </Grid>
@@ -396,10 +460,11 @@ function MisionAdmin({ mision }) {
                                             defaultValue={mision.dificultad}
                                         >
                                             <MenuItem value={0}>Comun</MenuItem>
-                                            <MenuItem value={1}>Rara</MenuItem>
-                                            <MenuItem value={2}>Epica</MenuItem>
-                                            <MenuItem value={3}>Legendaria</MenuItem>
-                                            <MenuItem value={4}>Mytica</MenuItem>
+                                            <MenuItem value={1}>Basica</MenuItem>
+                                            <MenuItem value={2}>Rara</MenuItem>
+                                            <MenuItem value={3}>Epica</MenuItem>
+                                            <MenuItem value={4}>Legendaria</MenuItem>
+                                            <MenuItem value={5}>Mytica</MenuItem>
                                         </Select>
                                     </FormControl>
                                 </Grid>
