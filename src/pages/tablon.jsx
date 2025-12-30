@@ -14,34 +14,34 @@ const tipo_entrega = [
 	{ id: 4, nombre: "Codigo", accept: "string" }, // ojo: tenías "sring"
 ];
 
-const demo = [
-	{
-		id_mision: 0,
-		dificultad: 0,
-		nombre: "",
-		subNombre: "",
-		puntos: 0,
-		lore: "",
-		objetivo: "",
-		requisitos: [],
-		tipoEntrega: 0,
-		fechaInicioGlobal: "2025-12-16 00:00:00",
-		fechaFinGlobal: "2025-12-16 08:59:59",
-		visible: true,
-	},
-];
+// const demo = [
+// 	{
+// 		id_mision: 0,
+// 		dificultad: 0,
+// 		nombre: "",
+// 		subNombre: "",
+// 		puntos: 0,
+// 		lore: "",
+// 		objetivo: "",
+// 		requisitos: [],
+// 		tipoEntrega: 0,
+// 		fechaInicioGlobal: "2025-12-16 00:00:00",
+// 		fechaFinGlobal: "2025-12-16 08:59:59",
+// 		visible: true,
+// 	},
+// ];
 
 export default function Tablon() {
 	const [cookies, setCookie] = useCookies(["matricula_actual"]);
 	const navigate = useNavigate();
 
-	const [misiones] = useState(demo);
+	const [misiones] = useState(null);
 	const [recompensas] = useState(null);
 	const [usuarios] = useState(null);
 
 	const [matricula, setMatricula] = useState(null);
 	const [usuario] = useState(null);
-	const [misionesUsuario] = useState(demo);
+	const [misionesUsuario] = useState(null);
 	const [inventario] = useState(null);
 
 	const [adminInfo] = useState(null);

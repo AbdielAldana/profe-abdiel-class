@@ -4,26 +4,15 @@ import React, { useEffect } from "react";
 // Material UI
 import {
     Grid,
-    Paper,
     Typography,
-    Button,
-    Divider,
-    CardActions,
-    Avatar,
-    colors,
 } from "@mui/material";
-import BottomNavigation from "@mui/material/BottomNavigation";
 
 // Componentes Generales
 import { useTablon } from "../../contexts/TablonContext"; // ajusta
-import { useCookies } from "react-cookie";
-import { ToastContainer, toast } from "react-toastify";
 import ArticuloCompra from "../../components/Tablon/Tienda/ArticuloCompra";
 
 // Utils
 import { getLevelData } from "../../utils/levelUtils";
-import { ViewType, IconArt, claseName, getTiempoRestante, getEstadoRecompensa, getMensajeEstado } from "../../utils/articuloTypeUtils"
-import FondoDecorativo from "../../components/Tablon/Perfil/FondoDecorativo";
 
 // iconos
 import { GiRupee } from "react-icons/gi";
@@ -31,7 +20,7 @@ import ViewTitulo from "../../components/Tablon/Perfil/ViewTitulo";
 
 
 function Tienda() {
-    const { usuario, recompensas, matricula, getRecompensas } = useTablon();
+    const { usuario, recompensas, getRecompensas } = useTablon();
 
     // Niveles
     const xpTotal = usuario?.p_totales ?? 0;
@@ -80,11 +69,18 @@ function Tienda() {
 
             <ViewTitulo
                 texto="Tienda"
+                update={getRecompensas}
             />
-
+            <Grid size={{ xs: 12 }}>
+                <Typography variant="h6" fontWeight={"bold"}>
+                    Ventajas
+                </Typography>
+            </Grid>
+            {/* Articulos */}
             {recompensas !== null &&
                 recompensas
                     .filter((r) => r.visible !== false)
+                    .filter((r) => r.tipo !== "Cosmetico")
                     .sort((a, b) => a.costo - b.costo)
                     .sort((a, b) => a.nivel_min - b.nivel_min)
                     .sort((a, b) => a.clase - b.clase)
@@ -94,7 +90,28 @@ function Tienda() {
                                 <ArticuloCompra articulo={re} />
                             </Grid>
                         );
-                    })}
+                    })
+            }
+            <Grid size={{xs:12}}>
+                <Typography variant="h6" fontWeight={"bold"}>
+                    Cosmeticos
+                </Typography>
+            </Grid>
+            {recompensas !== null &&
+                recompensas
+                    .filter((r) => r.visible !== false)
+                    .filter((r) => r.tipo === "Cosmetico")
+                    .sort((a, b) => a.costo - b.costo)
+                    .sort((a, b) => a.nivel_min - b.nivel_min)
+                    .sort((a, b) => a.clase - b.clase)
+                    .map((re, i) => {
+                        return (
+                            <Grid key={i} size={{ xs: 12, md: 6 }}>
+                                <ArticuloCompra articulo={re} />
+                            </Grid>
+                        );
+                    })
+            }
         </Grid>
     );
 }

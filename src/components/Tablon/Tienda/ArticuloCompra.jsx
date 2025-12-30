@@ -113,7 +113,10 @@ function ArticuloCompra({ articulo }) {
     const handleConfirmarCompra = async () => {
         let tempJson = {
             matricula: usuario.matricula,
-            id_recopensa: articulo.id_articulo,
+            id_recompensa: articulo.id_articulo,
+        }
+        if(articulo.mercado){
+            tempJson.inv_id = ofertaMasCara.inv_id
         }
         try {
             const call = await comprarTienda(tempJson)
@@ -131,10 +134,13 @@ function ArticuloCompra({ articulo }) {
 
     // =======================================================
     // Render tipo de Cosmetico
-    // eslint-disable-next-line
-    const [color, setColor] = useState(usuario ? usuario.color : "#000000")
+    const [color] = useState(usuario ? usuario.color : "#000000")
 
-
+    const ofertaMasCara = articulo.mercado?.length
+        ? articulo.mercado.reduce((cara, actual) =>
+            actual.precio > cara.precio ? actual : cara
+        )
+        : null;
     return (
         <>
             {/* Vista principal del Articulo */}
@@ -161,7 +167,7 @@ function ArticuloCompra({ articulo }) {
                             </Typography>
                         </Grid>
                     }
-                    {usuario &&
+                    {usuario && !articulo.mercado &&
                         <Grid size={{ xs: 6 }} display={"flex"} justifyContent={"flex-end"} alignItems={"center"}>
                             <GiRupee size={20} color={usuario?.color} />
                             <Typography
@@ -172,6 +178,21 @@ function ArticuloCompra({ articulo }) {
                                 color={puntos_disponibles >= articulo.costo ? "" : "error"}
                             >
                                 <b>{articulo.costo}</b> pts
+                            </Typography>
+                        </Grid>
+                    }
+                    {usuario && articulo.mercado &&
+                        <Grid size={{ xs: 6 }} display={"flex"} justifyContent={"flex-end"} alignItems={"center"}>
+                            [M]
+                            <GiRupee size={20} color={usuario?.color} />
+                            <Typography
+                                variant="subtitle1"
+                                className="ellipsis"
+                                sx={{ m: 0, p: 0 }}
+                                textAlign={"right"}
+                                color={puntos_disponibles >= ofertaMasCara.precio ? "" : "error"}
+                            >
+                                <b>{ofertaMasCara.precio}</b> pts
                             </Typography>
                         </Grid>
                     }
@@ -196,7 +217,7 @@ function ArticuloCompra({ articulo }) {
                         </Typography>
                     </Grid>
                     <Grid size={{ xs: 12 }}>
-                        <Divider  />
+                        <Divider />
                     </Grid>
                     <Grid size={{ xs: 12 }}>
                         <Typography variant="body1">{articulo.descripcion}</Typography>
@@ -243,28 +264,14 @@ function ArticuloCompra({ articulo }) {
                     />
                     <CardContent>
                         <Grid container spacing={1}>
-                            {usuario &&
-                                <Grid size={{ xs: 12 }}>
-                                    <Typography variant="h6" fontWeight={"bold"} className="ellipsis" textAlign={"center"}>
-                                        {articulo.nombre}
-                                    </Typography>
-                                    <Divider sx={{ my: 1 }} />
-                                    <Typography variant="body1"  >
-                                        Costo: <b>{articulo.costo} Puntos</b>
-                                    </Typography>
-                                    <Typography variant="body1" >
-                                        Nivel Minimo: <b>{articulo.nivel_min}</b>
-                                    </Typography>
-                                </Grid>
-                            }
-
-
-                            {/* <Grid size={{ xs: 4 }} alignSelf={"center"}>
-                                <Typography variant="h6" textAlign={"right"} fontWeight={"bold"}>
-
+                            <Grid size={{ xs: 12 }}>
+                                <Typography variant="h6" fontWeight={"bold"} className="ellipsis" textAlign={"center"}>
+                                    {articulo.nombre}
                                 </Typography>
-                                
-                            </Grid> */}
+                                <Typography variant="body1" textAlign={"center"}>
+                                    Nivel Minimo: <b>{articulo.nivel_min}</b>
+                                </Typography>
+                            </Grid>
                             <Grid size={{ xs: 12 }}>
                                 <Divider />
                             </Grid>
@@ -314,7 +321,38 @@ function ArticuloCompra({ articulo }) {
                             }
                         </Grid>
                         <Grid size={{ xs: 12 }}>
-                            <Divider />
+                            <Divider sx={{ my: 1 }} />
+                        </Grid>
+                        {usuario &&
+                            <Grid size={{ xs: 12 }}>
+                                {ofertaMasCara ? (
+                                    <>
+                                        <Typography variant="body1"  >
+                                            Vendedor: <b>{ofertaMasCara.vendedor.nickname}</b>
+                                        </Typography>
+                                        <Typography variant="body1" color={puntos_disponibles >= ofertaMasCara.precio ? "" : "error"} >
+                                            Costo Actual: <b>{ofertaMasCara.precio} Puntos</b>
+                                        </Typography>
+                                        <Typography variant="body1" color={puntos_disponibles >= articulo.costo ? "" : "error"} style={{textDecoration: "line-through"}} >
+                                            Costo Original: <b>{articulo.costo} Puntos</b>
+                                        </Typography>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Typography variant="body1"  >
+                                            Precio Original
+                                        </Typography>
+                                        <Typography variant="body1" color={puntos_disponibles >= articulo.costo ? "" : "error"} >
+                                            Costo: <b>{articulo.costo} Puntos</b>
+                                        </Typography>
+                                    </>
+                                )}
+
+
+                            </Grid>
+                        }
+                        <Grid size={{ xs: 12 }}>
+                            <Divider sx={{ my: 1 }} />
                         </Grid>
                     </CardContent>
 
@@ -382,23 +420,23 @@ function ArticuloCompra({ articulo }) {
                 aria-describedby="alert-dialog-description"
             >
                 {// eslint-disable-next-line
-                typeAction == "comprar" && <>
-                    <DialogTitle id="alert-dialog-title">
-                        Confirmacion de Compra
-                    </DialogTitle>
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                            Estas a punto de comprar un articulo.
-                        </DialogContentText>
-                        <DialogContentText id="alert-dialog-description">
-                            Gastaras {articulo.costo} pts
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleCloseAction}> Cancelar </Button>
-                        <Button onClick={handleConfirmarCompra}>Confirmar Compra</Button>
-                    </DialogActions>
-                </>}
+                    typeAction == "comprar" && <>
+                        <DialogTitle id="alert-dialog-title">
+                            Confirmacion de Compra
+                        </DialogTitle>
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                                Estas a punto de comprar un articulo.
+                            </DialogContentText>
+                            <DialogContentText id="alert-dialog-description">
+                                Gastaras {articulo.costo} pts
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleCloseAction}> Cancelar </Button>
+                            <Button onClick={handleConfirmarCompra}>Confirmar Compra</Button>
+                        </DialogActions>
+                    </>}
             </Dialog>
         </>
     )

@@ -21,6 +21,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormLabel from '@mui/material/FormLabel';
+import { getFechaFinPorFrecuencia } from "../../../utils/misionAdminUtils";
 
 const style = {
     p: 2,
@@ -82,6 +83,9 @@ function MisionAdmin({ mision }) {
     const handleOpenAddMisionReset = () => {
         setOpenAddMisionReset(!openAddMisionReset)
     }
+
+    const fechaFin = getFechaFinPorFrecuencia(mision.frecuencia)
+
     const resetMision = async (event) => {
         // postResetMisionPeriodicaAdmin
         event.preventDefault();
@@ -93,7 +97,7 @@ function MisionAdmin({ mision }) {
             id_mision: mision.id,
             codigo: formJson.codigo_mision_reset,
             codigo_contador: parseInt(mision.codigo_contador) + 1,
-            fechaFinGlobal: formJson.fecha_fin_mision_reset
+            fechaFinGlobal: fechaFin
         }
 
         try {
@@ -342,23 +346,10 @@ function MisionAdmin({ mision }) {
                                         required
                                     />
                                 </Grid>
-
                                 <Grid size={{ xs: 12, md: 12 }}>
-                                    <TextField
-                                        id="fecha_fin_mision_reset"
-                                        name="fecha_fin_mision_reset"
-                                        label="Fecha Fin Nueva"
-                                        variant="outlined"
-                                        size="small"
-                                        fullWidth
-                                        type="datetime-local"
-                                        required
-                                        slotProps={{
-                                            input: {
-                                                startAdornment: " ",
-                                            },
-                                        }}
-                                    />
+                                    <Typography variant="body1">
+                                        Proximo Vencimiento: <b>{fechaFin}</b>
+                                    </Typography>
                                 </Grid>
                             </Grid>
                         </form>

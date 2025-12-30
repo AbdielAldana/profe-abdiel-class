@@ -508,3 +508,28 @@ summary:hover {
   transform: scale(1.01);
   margin: 10px 0;
 }
+
+.rainbow {
+  font-weight: bold;
+  background: linear-gradient(
+    90deg,
+    #ff0000,
+    #ff9900,
+    #ffff00,
+    #33ff00,
+    #00ffff,
+    #3333ff,
+    #cc00ff,
+    #ff0000
+  );
+  background-size: 400% 100%;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: rainbow 3s linear infinite;
+}
+
+@keyframes rainbow {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
