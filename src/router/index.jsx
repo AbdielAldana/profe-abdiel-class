@@ -24,6 +24,7 @@ import Ranking from "../pages/tablon/Ranking";
 import Perfil from "../pages/tablon/Perfil";
 import Admin from "../pages/tablon/Admin";
 import Normas from "../pages/normas";
+import Mesa from "../pages/tablon/Mesa";
 
 const router = createBrowserRouter([
   {
@@ -48,6 +49,7 @@ const router = createBrowserRouter([
           { path: "perfil", element: <Perfil /> },
           { path: "ranking", element: <Ranking /> },
           { path: "admin", element: <Admin /> },
+          { path: "mesa", element: <Mesa /> },
         ]
       }
 

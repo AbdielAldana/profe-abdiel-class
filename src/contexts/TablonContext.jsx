@@ -67,6 +67,12 @@ export function TablonProvider({ children, initial }) {
             setMisionesUsuario(res.data.usuario.misiones);
             setInventario(res.data.usuario.inventario);
 
+            // console.log(misiones);
+
+            // if(misiones == null) {
+            // getMisiones(res.data.usuario)
+            // }
+
             return res.data;
         } catch (err) {
             console.log("Error:", err?.response?.data || err.message);
@@ -311,17 +317,20 @@ export function TablonProvider({ children, initial }) {
     // Misiones
 
     // GET Misiones
-    const getMisiones = async () => {
-        if (usuario !== null) {
+    const getMisiones = async (matriculaTemporal) => {
+        // console.log(usuarioInterno?.matricula);
+        const tempMatricula = cookies.matricula_actual !== null ? cookies.matricula_actual : matriculaTemporal
+
+        if (tempMatricula !== null) {
             try {
                 const res = await toast.promise(
                     axios.get(
                         `${process.env.REACT_APP_GREMIO_API_URL}/get_misiones_disponibles.php`,
-                        { params: { matricula: usuario.matricula } }
+                        { params: { matricula: tempMatricula } }
                     ),
                     {
-                        pending: "Cargando Tienda",
-                        success: "Tienda Cargada",
+                        pending: "Cargando Misiones",
+                        success: "Misiones Cargadas",
                         error: "No se pudo :(",
                     },
                     { position: "top-center" }
@@ -329,6 +338,7 @@ export function TablonProvider({ children, initial }) {
 
                 // notifySuccess("Sesion Iniciada");
                 setMisiones(res.data.misiones);
+
 
                 return res.data;
             } catch (err) {
@@ -380,7 +390,7 @@ export function TablonProvider({ children, initial }) {
 
             // notifySuccess("Sesion Iniciada");
             getUsuario(matricula, true, true);
-            getMisiones()
+            getMisiones(usuario.matricula)
             getUsuariosR()
 
             return res.data;
@@ -529,6 +539,37 @@ export function TablonProvider({ children, initial }) {
         }
     };
 
+    const postPuntos = async (data) => {
+        try {
+            const res = await toast.promise(
+                axios.post(
+                    `${process.env.REACT_APP_GREMIO_API_URL}/post_puntos.php`,
+                    data
+                ),
+                {
+                    pending: "Procesando...",
+                    success: "Puntos Actualizados",
+                    error: "No se pudo :(",
+                },
+                { position: "top-center" }
+            );
+            console.log(res);
+
+            setUsuario(prev => ({
+                ...prev,
+                ...res.data.usuario
+            }));
+
+            // getUsuario(matricula, true, true);
+
+            return res.data.ok; // opcional
+        } catch (err) {
+            console.log("Error:", err?.response?.data || err.message);
+            notifyError(err?.response?.data?.msg || "Error al crear usuario");
+            return err?.response?.data.ok;
+        }
+    }
+
 
     // Actualiza Los datos
     const value = React.useMemo(() => ({
@@ -563,6 +604,9 @@ export function TablonProvider({ children, initial }) {
         // Misiones
         getMisiones,
         canjearMision,
+
+        // Puntos
+        postPuntos,
 
         // Admin
         adminInfo, setAdminInfo,        //ok

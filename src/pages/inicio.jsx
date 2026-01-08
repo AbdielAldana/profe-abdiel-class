@@ -1,5 +1,5 @@
 import React from "react";
-import { Divider, Grid,  Typography, } from "@mui/material";
+import { Divider, Grid, Typography, } from "@mui/material";
 
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -32,7 +32,7 @@ export default function Inicio() {
             <Grid container spacing={2}>
 
                 <Grid size={{ xs: 12, md: 12 }}>
-                    <Typography textAlign={"center"} variant="h4">Aprender también puede ser una experiencia</Typography>
+                    <Typography textAlign={"center"} variant="h4">Todo empieza aquí</Typography>
                 </Grid>
                 <Grid size={{ xs: 12, md: 12 }}>
                     <Typography variant="body1">
@@ -126,13 +126,19 @@ export default function Inicio() {
                                         Informacion
                                     </Typography>
                                     <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                        Un espacio con acuerdos claros sobre evaluación, convivencia y funcionamiento del curso, 
+                                        Un espacio con acuerdos claros sobre evaluación, convivencia y funcionamiento del curso,
                                         pensados para que todos sepamos cómo se trabaja aquí.
                                     </Typography>
                                 </CardContent>
                             </CardActionArea>
                         </Card>
                     </NavLink>
+                </Grid>
+
+                <Grid size={{ xs: 12 }}>
+                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                        Version 2.0.1 | Creada por Abdiel Aldana
+                    </Typography>
                 </Grid>
 
 

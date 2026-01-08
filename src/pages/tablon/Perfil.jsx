@@ -31,6 +31,7 @@ import Articulo from "../../components/Tablon/Perfil/Articulo";
 import { GiRupee } from "react-icons/gi";
 import LogoutIcon from '@mui/icons-material/Logout';
 import SettingsIcon from '@mui/icons-material/Settings';
+import CasinoIcon from '@mui/icons-material/Casino';
 
 
 const VisuallyHiddenInput = styled('input')({
@@ -219,9 +220,11 @@ function Perfil() {
                                     </Button>
                                 </NavLink>
                             }
-                            <Button variant="contained" size="small" color="primary" endIcon={<SettingsIcon />}>
-                                Edit
-                            </Button>
+                            <NavLink to="/tablon_de_misiones/mesa">
+                                <Button variant="contained" size="small" color="primary" endIcon={<CasinoIcon />}>
+                                    Suerte
+                                </Button>
+                            </NavLink>
                         </Grid>
                         <Grid size={{ xs: 12, md: 12 }}>
                             <Divider />
