@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useTablon } from "../../contexts/TablonContext"
-import { Button,  Grid, Modal,  TextField, Typography } from "@mui/material";
+import { Button, Grid, Modal, TextField, Typography } from "@mui/material";
 
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -15,6 +15,7 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import MisionAdmin from "../../components/Tablon/Admin/MisionAdmin";
+import { getTiempoRestante } from "../../utils/articuloTypeUtils";
 
 // Styles
 const styleModal = {
@@ -127,8 +128,69 @@ function Admin() {
 
                 <Grid size={{ xs: 12, md: 12 }}>
                     <Grid container spacing={2}>
+                        <Grid size={{ xs: 12, md: 12 }}>
+                            <Typography fontWeight={"bold"}>Visibles Vencidas Periodicas</Typography>
+                        </Grid>
                         {adminInfo !== null &&
                             adminInfo?.misiones
+                                .sort((a, b) => a.dificultad - b.dificultad)
+                                .filter(x => x.visible == 1)
+                                .filter(x => x.frecuencia != 0)
+                                .filter(x => getTiempoRestante(x.fechaFinGlobal) === "Vencida")
+                                .map((miso, i) => {
+                                    return (
+                                        <Grid key={i} size={{ xs: 12, md: 6 }}>
+                                            <MisionAdmin mision={miso} />
+                                            
+                                        </Grid>
+                                    )
+                                })
+
+                        }
+                        <Grid size={{ xs: 12, md: 12 }}>
+                            <Typography fontWeight={"bold"}>Visibles</Typography>
+                        </Grid>
+                        {adminInfo !== null &&
+                            adminInfo?.misiones
+                                .sort((a, b) => a.dificultad - b.dificultad)
+                                .filter(x => x.visible == 1)
+                                .filter(x => getTiempoRestante(x.fechaFinGlobal) !== "Vencida")
+                                .map((miso, i) => {
+                                    return (
+                                        <Grid key={i} size={{ xs: 12, md: 6 }}>
+                                            <MisionAdmin mision={miso} />
+                                            
+                                        </Grid>
+                                    )
+                                })
+
+                        }
+                        <Grid size={{ xs: 12, md: 12 }}>
+                            <Typography fontWeight={"bold"}>Visibles Vencidas Unicas</Typography>
+                        </Grid>
+                        {adminInfo !== null &&
+                            adminInfo?.misiones
+                                .sort((a, b) => a.dificultad - b.dificultad)
+                                .filter(x => x.visible == 1)
+                                .filter(x => x.frecuencia == 0)
+                                .filter(x => getTiempoRestante(x.fechaFinGlobal) === "Vencida")
+                                .map((miso, i) => {
+                                    return (
+                                        <Grid key={i} size={{ xs: 12, md: 6 }}>
+                                            <MisionAdmin mision={miso} />
+                                            
+                                        </Grid>
+                                    )
+                                })
+
+                        }
+                        <Grid size={{ xs: 12, md: 12 }}>
+                            <Typography fontWeight={"bold"}>No Visibles</Typography>
+                        </Grid>
+                        {adminInfo !== null &&
+                            adminInfo?.misiones
+                                .sort((a, b) => a.dificultad - b.dificultad)
+                                .filter(x => x.visible == 0)
                                 .map((miso, i) => {
                                     return (
                                         <Grid key={i} size={{ xs: 12, md: 6 }}>
@@ -142,7 +204,7 @@ function Admin() {
                 </Grid>
             </Grid>
 
-            
+
 
             {/* Add Mision */}
             <Modal

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 
-import { Link, Breadcrumbs, Button, Divider, Grid, Typography } from "@mui/material";
+import { Link, Breadcrumbs, Button, Divider, Grid, Typography, Alert } from "@mui/material";
 
 
 import confetti from "canvas-confetti";
@@ -86,6 +86,15 @@ function CofreMaldito(p) {
         postPuntos(payload);
     }
 
+    const segundosRestantesDelDia = () => {
+        const ahora = new Date();
+        const finDelDia = new Date();
+
+        finDelDia.setHours(23, 59, 59, 999);
+
+        return Math.floor((finDelDia.getTime() - ahora.getTime()) / 1000);
+    };
+
     const premio = (random) => {
         const regla = REGLAS_COFRE.find(
             r => random >= r.min && random <= r.max
@@ -100,7 +109,7 @@ function CofreMaldito(p) {
             let cook = cookies.puntosGanados + final
             setCookie("puntosGanados", cook, {
                 path: "/",
-                maxAge: 60 * 60 * 24,
+                maxAge: segundosRestantesDelDia(),
             })
             sendPayload(final, 0)
         }
@@ -202,9 +211,7 @@ function CofreMaldito(p) {
 
             {!p.permiso && !inicio &&
                 <Grid size={{ xs: 12, md: 8 }} display="flex" justifyContent="space-evenly" alignItems="center">
-                    <Typography textAlign="center" variant="h6">
-                        Ya ganaste 1000 puntos hoy, regresa en 24 horas
-                    </Typography>
+                    <Alert severity="error">Ya ganaste 1500 puntos hoy, regresa mañana.</Alert>
                 </Grid>
             }
 

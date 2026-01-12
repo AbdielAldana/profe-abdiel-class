@@ -206,27 +206,35 @@ function Mision({ mision }) {
                             <b>Lore: </b>{mision.lore}
                         </Typography>
                     </Grid>
-                    <Grid size={{ xs: 12 }}>
-                        <Typography variant="body1" >
-                            <b>Objetivo: </b>{mision.objetivo}
-                        </Typography>
-                    </Grid>
-                    <Grid size={{ xs: 12 }}>
-                        <Typography variant="body1" >
-                            <b>Requisitos: </b>{mision.requisitos}
-                        </Typography>
-                    </Grid>
+                    {tiempoRestante !== "Vencida" &&
+                        <Grid size={{ xs: 12 }}>
+                            <Typography variant="body1" >
+                                <b>Objetivo: </b>{mision.objetivo}
+                            </Typography>
+                        </Grid>
+                    }
+                    {tiempoRestante !== "Vencida" &&
+                        <Grid size={{ xs: 12 }}>
+                            <Typography variant="body1" >
+                                <b>Requisitos: </b>{mision.requisitos}
+                            </Typography>
+                        </Grid>
+                    }
+                    {tiempoRestante !== "Vencida" &&
                     <Grid size={{ xs: 12 }}>
                         <Divider />
                     </Grid>
+}
 
-                    <Grid size={{ xs: 8 }} alignSelf={"center"}>
-                        <Typography variant="body1" >
-                            Termina: <b>{tiempoRestante}</b>
-                        </Typography>
-                    </Grid>
+                    {tiempoRestante !== "Vencida" &&
+                        <Grid size={{ xs: 8 }} alignSelf={"center"}>
+                            <Typography variant="body1" >
+                                Termina: <b>{tiempoRestante}</b>
+                            </Typography>
+                        </Grid>
+                    }
 
-                    {mision.frecuencia > 0 &&
+                    {mision.frecuencia > 0  && tiempoRestante !== "Vencida" &&
                         <Grid size={{ xs: 4 }} display={"flex"} justifyContent={"flex-end"} alignItems={"center"}>
                             <Typography variant="body1" >
                                 <b>{mision.frecuencia == 1 ? "Diaria" : mision.frecuencia == 2 ? "Semanal" : mision.frecuencia == 3 ? "Mensual" : ""}</b>

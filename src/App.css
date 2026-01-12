@@ -905,3 +905,129 @@ summary:hover {
 .ojoder {
   transform: rotateY(180deg);
 }
+
+
+/* LADRON */
+
+.ladron {
+  height: 400px;
+  width: 100%;
+  background-color: #3a3a3a;
+  background-position: center;
+  background-size: cover;
+  border-radius: 15px;
+  position: relative;
+  background-blend-mode: overlay;
+}
+
+.buena {
+  height: 50px;
+  width: 50px;
+  color: #b48f29;
+  border-radius: 50%;
+  position: absolute;
+  animation: aparece .2s ease-in;
+}
+
+.buena span {
+  font-size: 30px;
+  position: absolute;
+  top: calc(50% - 25px);
+  left: calc(50% - 25px);
+  color: white;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  font-weight: bold;
+}
+
+.mala {
+  height: 50px;
+  width: 50px;
+  color: #b48f29;
+  border-radius: 50%;
+  position: absolute;
+  animation: aparece .2s ease-in;
+}
+
+.mala span {
+  font-size: 30px;
+  position: absolute;
+  top: calc(50% - 25px);
+  left: calc(50% - 25px);
+  color: white;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  font-weight: bold;
+}
+
+.legendaria {
+  height: 50px;
+  width: 50px;
+  color: #e6b83a;
+  border-radius: 50%;
+  position: absolute;
+  animation: aparece .2s ease-in;
+  transform: scale(1.15);
+  filter: drop-shadow(0 0 10px gold);
+}
+
+.legendaria span {
+  font-size: 30px;
+  position: absolute;
+  top: calc(50% - 25px);
+  left: calc(50% - 25px);
+  color: white;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  font-weight: bold;
+}
+
+
+@keyframes aparece {
+  from {
+    transform: translateY(-20px);
+    filter: opacity(0);
+  }
+
+  to {
+    transform: translateY(0px);
+    filter: opacity(1);
+  }
+}
+
+.barratiempo {
+  height: 20px;
+  width: 100%;
+  position: relative;
+  background-color: transparent;
+  border-radius: 15px 15px 0 0;
+  overflow: hidden;
+}
+
+.barratiempo::before {
+  content: "";
+  width: 100%;
+  height: 5px;
+  background-color: #f9aa33;
+  z-index: 10;
+  position: absolute;
+  top: 10px;
+  left: 0;
+  /* padding: 0 10px; */
+  animation: timeOver 3s;
+}
+
+
+@keyframes timeOver {
+  from {
+    width: 100%;
+  }
+
+  to {
+    width: 0%;
+  }
+
+}

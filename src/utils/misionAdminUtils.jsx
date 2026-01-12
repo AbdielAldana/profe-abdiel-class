@@ -9,7 +9,7 @@ export const getFechaFinPorFrecuencia = (frecuencia) => {
   const f = parseInt(frecuencia, 10);
   const d = new Date(); // ahora
 
-  if (f === 1) d.setDate(d.getDate() + 1);      // +1 día
+  if (f === 1) d.setDate(d.getDate());      // +1 día
   else if (f === 2) d.setDate(d.getDate() + 7); // +1 semana (7 días)
   else if (f === 3) d.setMonth(d.getMonth() + 1); // +1 mes
   else return null;

@@ -1,4 +1,4 @@
-import { Button, Divider, Grid, Typography, Link, Breadcrumbs, } from "@mui/material";
+import { Button, Divider, Grid, Typography, Link, Breadcrumbs, Alert, } from "@mui/material";
 import { useTablon } from "../../contexts/TablonContext";
 import { getLevelData } from "../../utils/levelUtils";
 import { useState, useEffect, useRef } from "react";
@@ -20,7 +20,9 @@ import Dice from "../../components/Tablon/Mesa/Dice";
 import blackjackImg from "../../img/blackjack.png"
 import cofreImg from "../../img/cofre.png"
 import dadoImg from "../../img/dado.png"
+import ladronImg from "../../img/ladron.png"
 import CofreMaldito from "../../components/Tablon/Mesa/CofreMaldito";
+import HabilidadLadron from "../../components/Tablon/Mesa/HabilidadLadron";
 
 
 
@@ -108,11 +110,7 @@ function Mesa(p) {
                 </Grid>
                 {!permiso &&
                     <Grid size={{ xs: 12 }}>
-                        <Typography variant="subtitle1" color="error" textAlign="center" >
-                            Ya alcanzaste tu limite. <br />
-                            Ganaste mas de 1500 puntos hoy. <br />
-                            Regresa en 24 horas
-                        </Typography>
+                        <Alert severity="error">Ya ganaste 1500 puntos hoy, regresa mañana.</Alert>
                     </Grid>
                 }
                 <Grid size={{ xs: 12 }}>
@@ -124,7 +122,7 @@ function Mesa(p) {
 
                 <Grid size={{ xs: 12, md: 6 }}>
                     <Card>
-                        <CardActionArea onClick={() => setJuego("blackjack")} disabled={!permiso}>
+                        <CardActionArea onClick={() => setJuego("blackjack")} >
                             <CardMedia
                                 component="img"
                                 height="180"
@@ -144,7 +142,7 @@ function Mesa(p) {
                 </Grid>
                 <Grid size={{ xs: 12, md: 6 }}>
                     <Card>
-                        <CardActionArea onClick={() => setJuego("dice")} disabled={!permiso}>
+                        <CardActionArea onClick={() => setJuego("dice")} >
                             <CardMedia
                                 component="img"
                                 height="180"
@@ -164,7 +162,7 @@ function Mesa(p) {
                 </Grid>
                 <Grid size={{ xs: 12, md: 6 }}>
                     <Card>
-                        <CardActionArea onClick={() => setJuego("cofre")} disabled={!permiso}>
+                        <CardActionArea onClick={() => setJuego("cofre")} >
                             <CardMedia
                                 component="img"
                                 height="180"
@@ -177,6 +175,26 @@ function Mesa(p) {
                                 </Typography>
                                 <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                                     Parece un tesoro, pero no todo lo que brilla es oro. Abre el cofre y descubre si te recompensa o te muerde.
+                                </Typography>
+                            </CardContent>
+                        </CardActionArea>
+                    </Card>
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                    <Card>
+                        <CardActionArea onClick={() => setJuego("ladron")} >
+                            <CardMedia
+                                component="img"
+                                height="180"
+                                image={ladronImg}
+                                alt="green iguana"
+                            />
+                            <CardContent>
+                                <Typography gutterBottom variant="h5" component="div">
+                                    Habilidad de Ladron
+                                </Typography>
+                                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                                    Pon a prueba tuws reflejos, roba todo el oro posible. Ten cuidado porque si te equivocas puede perder mas de los que apuestas.
                                 </Typography>
                             </CardContent>
                         </CardActionArea>
@@ -282,6 +300,7 @@ function Mesa(p) {
             {play && juego === "dice" && <Dice setPlay={setPlay} setJuego={setJuego} permiso={permiso} />}
             {play && juego === "cofre" && <CofreMaldito setPlay={setPlay} setJuego={setJuego} permiso={permiso} />}
             {play && juego === "oraculo" && ui_placeholder("Cartas del Oráculo")}
+            {play && juego === "ladron" && <HabilidadLadron setPlay={setPlay} setJuego={setJuego} permiso={permiso} /> }
 
             <div style={{ height: "50px" }}></div>
         </div>

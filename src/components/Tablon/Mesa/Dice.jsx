@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 
-import { Link, Breadcrumbs, Button, Divider, Grid, Typography } from "@mui/material";
+import { Link, Breadcrumbs, Button, Divider, Grid, Typography, Alert } from "@mui/material";
 
 
 import confetti from "canvas-confetti";
@@ -19,13 +19,22 @@ function Dice(p) {
     const { usuario, postPuntos } = useTablon();
     const [cookies, setCookie] = useCookies(["puntosGanados"])
 
+    const segundosRestantesDelDia = () => {
+        const ahora = new Date();
+        const finDelDia = new Date();
+
+        finDelDia.setHours(23, 59, 59, 999);
+
+        return Math.floor((finDelDia.getTime() - ahora.getTime()) / 1000);
+    };
+
     const setCook = (pts) => {
         console.log(pts);
         
         let cook = cookies.puntosGanados + pts
         setCookie("puntosGanados", cook, {
             path: "/",
-            maxAge: 60 * 60 * 24,
+            maxAge: segundosRestantesDelDia(),
         })
     }
 
@@ -257,9 +266,10 @@ function Dice(p) {
 
                 {!p.permiso && !initPlay &&
                 <Grid size={{ xs: 12, md: 8 }} display="flex" justifyContent="space-evenly" alignItems="center">
-                    <Typography textAlign="center" variant="h6">
+                    {/* <Typography textAlign="center" variant="h6">
                         Ya ganaste 1000 puntos hoy, regresa en 24 horas
-                    </Typography>
+                    </Typography> */}
+                    <Alert severity="error">Ya ganaste 1500 puntos hoy, regresa mañana.</Alert>                    
                 </Grid>
             }
 
