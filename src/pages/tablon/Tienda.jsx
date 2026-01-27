@@ -71,16 +71,19 @@ function Tienda() {
                 texto="Tienda"
                 update={getRecompensas}
             />
-            <Grid size={{ xs: 12 }}>
-                <Typography variant="h6" fontWeight={"bold"}>
-                    Ventajas
-                </Typography>
-            </Grid>
+            {usuario?.linaje === 2 &&
+                <Grid size={{ xs: 12 }}>
+                    <Typography variant="h6" fontWeight={"bold"}>
+                        Ventajas Dragones
+                    </Typography>
+                </Grid>
+            }
             {/* Articulos */}
-            {recompensas !== null &&
+            {usuario?.linaje === 2 && recompensas !== null &&
                 recompensas
                     .filter((r) => r.visible !== false)
                     .filter((r) => r.tipo !== "Cosmetico")
+                    .filter((r) => r.linaje === 2)
                     .sort((a, b) => a.costo - b.costo)
                     .sort((a, b) => a.nivel_min - b.nivel_min)
                     .sort((a, b) => a.clase - b.clase)
@@ -92,7 +95,29 @@ function Tienda() {
                         );
                     })
             }
-            <Grid size={{xs:12}}>
+            <Grid size={{ xs: 12 }}>
+                <Typography variant="h6" fontWeight={"bold"}>
+                    Ventajas
+                </Typography>
+            </Grid>
+            {/* Articulos */}
+            {recompensas !== null &&
+                recompensas
+                    .filter((r) => r.visible !== false)
+                    .filter((r) => r.tipo !== "Cosmetico")
+                    .filter((r) => r.linaje !== 2)
+                    .sort((a, b) => a.costo - b.costo)
+                    .sort((a, b) => a.nivel_min - b.nivel_min)
+                    .sort((a, b) => a.clase - b.clase)
+                    .map((re, i) => {
+                        return (
+                            <Grid key={i} size={{ xs: 12, md: 6 }}>
+                                <ArticuloCompra articulo={re} />
+                            </Grid>
+                        );
+                    })
+            }
+            <Grid size={{ xs: 12 }}>
                 <Typography variant="h6" fontWeight={"bold"}>
                     Cosmeticos
                 </Typography>

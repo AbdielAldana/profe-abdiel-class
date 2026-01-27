@@ -25,6 +25,7 @@ import Perfil from "../pages/tablon/Perfil";
 import Admin from "../pages/tablon/Admin";
 import Normas from "../pages/normas";
 import Mesa from "../pages/tablon/Mesa";
+import Linaje from "../pages/tablon/Linaje";
 
 const router = createBrowserRouter([
   {
@@ -50,6 +51,7 @@ const router = createBrowserRouter([
           { path: "ranking", element: <Ranking /> },
           { path: "admin", element: <Admin /> },
           { path: "mesa", element: <Mesa /> },
+          { path: "linaje", element: <Linaje /> },
         ]
       }
 

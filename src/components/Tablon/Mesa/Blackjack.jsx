@@ -446,7 +446,7 @@ function Ui_blackjack(p) {
                     <Typography textAlign="center" variant="h6">
                         
                     </Typography>
-                    <Alert severity="error">Ya ganaste 1500 puntos hoy, regresa mañana.</Alert>
+                    <Alert severity="error">Ya ganaste {usuario.linaje == 1 ? "2500" : "1500"} puntos hoy, regresa mañana.</Alert>
                 </Grid>
             }
 

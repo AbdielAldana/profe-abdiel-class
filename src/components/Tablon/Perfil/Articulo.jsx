@@ -20,6 +20,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import { toast } from "react-toastify";
 
 // Context
 import { useTablon } from "../../../contexts/TablonContext";
@@ -76,8 +77,11 @@ const style = {
 };
 
 function Articulo({ articulo }) {
-    const { usuario, postDonacion, postVenta, retirarVenta, usarProducto, quitarFijo } = useTablon();
+    const { usuario, getUsuario, postDonacion, postVenta, retirarVenta, usarProducto, quitarFijo, postMision24 } = useTablon();
     let icono = IconArt(articulo.data.icono, articulo.data.clase)
+
+    const notifyError = (txt) =>
+        toast.error(txt, { position: "top-center" });
 
     // Modal Para ver el Articulo Completo
     const [openData, setOpenData] = useState(false)
@@ -156,7 +160,7 @@ function Articulo({ articulo }) {
     const handleVender = async () => {
         // eslint-disable-next-line
         let tempEstado = destinoVenta == 0 ? 5 : 2;
-        
+
 
         let tempJson = {
             estado: tempEstado,
@@ -266,6 +270,39 @@ function Articulo({ articulo }) {
         }
     };
 
+    // Reset Mision 24
+    const [idMision, setIdMision] = useState(0)
+
+    const handleIdMision = (event) => {
+        setIdMision(event.target.value)
+    }
+
+    const mision24 = async () => {
+        let tempPayload = {
+            id_usuario: usuario.id,
+            id_mision: idMision,
+            id_articulo: articulo.articulo.id
+        }
+
+        // console.log(tempPayload);
+        if (idMision !== 0) {
+            try {
+                const call = await postMision24(tempPayload)
+
+                if (call) {
+                    handleCloseAction()
+                    handleOpenData()
+                }
+            } catch (err) {
+                console.error(err);
+                // aquí puedes mostrar un notifyError si quieres
+            }
+        } else {
+            notifyError("Selecciona una Mision")
+        }
+
+    }
+
 
     // =======================================================
     // Render tipo de Cosmetico
@@ -277,8 +314,16 @@ function Articulo({ articulo }) {
     const [_, setTick] = useState(0);
     useEffect(() => {
         const i = setInterval(() => setTick(t => t + 1), 1000);
+        console.log(tiempoRestante);
+        
+        if (tiempoRestante === "Vencida") {
+            getUsuario(usuario.matricula, true, true)
+        }
         return () => clearInterval(i);
     }, []);
+
+
+
 
 
     return (
@@ -337,15 +382,15 @@ function Articulo({ articulo }) {
                         </Grid>
                     }
                     <Grid size={{ xs: 12 }}>
-                        <Divider/>
+                        <Divider />
                     </Grid>
                     <Grid size={{ xs: 12 }}>
                         <Typography variant="body1">{articulo.data.descripcion}</Typography>
                     </Grid>
                     {// eslint-disable-next-line
-                     articulo.articulo.estado == 3 &&
+                        articulo.articulo.estado == 3 &&
                         <Grid size={{ xs: 12 }}>
-                            <Divider sx={{mb:1}} />
+                            <Divider sx={{ mb: 1 }} />
                             <Typography
                                 variant="subtitle1"
                                 // fontWeight={"bold"}
@@ -357,9 +402,9 @@ function Articulo({ articulo }) {
                         </Grid>
                     }
                     {// eslint-disable-next-line
-                    articulo.data.uso === "Temporal" && articulo.articulo.estado == 1 &&
+                        articulo.data.uso === "Temporal" && articulo.articulo.estado == 1 &&
                         <Grid size={{ xs: 12 }}>
-                            <Divider sx={{mb:1}} />
+                            <Divider sx={{ mb: 1 }} />
                             <Typography
                                 variant="subtitle1"
                                 // fontWeight={"bold"}
@@ -371,9 +416,9 @@ function Articulo({ articulo }) {
                         </Grid>
                     }
                     {// eslint-disable-next-line
-                    articulo.articulo.estado == 4 &&
+                        articulo.articulo.estado == 4 &&
                         <Grid size={{ xs: 12 }}>
-                            <Divider sx={{mb:1}} />
+                            <Divider sx={{ mb: 1 }} />
                             <Typography
                                 variant="subtitle1"
                                 // textAlign={"center"}
@@ -384,9 +429,9 @@ function Articulo({ articulo }) {
                         </Grid>
                     }
                     {// eslint-disable-next-line
-                    articulo.articulo.estado == 5 &&
+                        articulo.articulo.estado == 5 &&
                         <Grid size={{ xs: 12 }}>
-                            <Divider sx={{mb:1}} />
+                            <Divider sx={{ mb: 1 }} />
                             <Typography
                                 variant="subtitle1"
                                 // textAlign={"center"}
@@ -465,7 +510,7 @@ function Articulo({ articulo }) {
                                 </Typography>
                             </Grid>
                             {// eslint-disable-next-line
-                            articulo.articulo.estado == 2 &&
+                                articulo.articulo.estado == 2 &&
                                 <Grid size={{ xs: 12 }}>
                                     <Typography variant="subtitle1" fontWeight={"bold"}>
                                         Precio de Venta:
@@ -501,57 +546,57 @@ function Articulo({ articulo }) {
                     </CardContent>
 
                     {// eslint-disable-next-line
-                    articulo.articulo.estado == 0 &&
+                        articulo.articulo.estado == 0 &&
                         <CardActions style={{ display: 'flex', justifyContent: 'space-between', flexDirection: "row-reverse" }}>
                             <Button size="small" variant="contained" color={"secondary"} onClick={() => handleOpenAction("usar")}>Usar</Button>
                             {// eslint-disable-next-line
-                            articulo.data.revendible == 1 &&
+                                articulo.data.revendible == 1 &&
                                 <Button size="small" variant="contained" color={"primary"} onClick={() => handleOpenAction("vender")}>Vender</Button>
                             }
                             {// eslint-disable-next-line
-                            articulo.data.donable == 1 &&
+                                articulo.data.donable == 1 &&
                                 <Button size="small" variant="outlined" color={"primary"} onClick={() => handleOpenAction("donar")}>Donar</Button>
                             }
                         </CardActions>
                     }
                     {// eslint-disable-next-line
-                    articulo.articulo.estado == 1 && articulo.data.uso == "Fijo" &&
+                        articulo.articulo.estado == 1 && articulo.data.uso == "Fijo" &&
                         <CardActions style={{ display: 'flex', justifyContent: 'flex-end' }}>
                             <Button size="small" variant="contained" color={"secondary"} onClick={() => handleOpenAction("quitar")}>Quitar</Button>
                         </CardActions>
                     }
                     {// eslint-disable-next-line
-                    articulo.articulo.estado == 1 && articulo.data.uso == "Temporal" &&
+                        articulo.articulo.estado == 1 && articulo.data.uso == "Temporal" &&
                         <CardActions style={{ display: 'flex', justifyContent: 'center' }}>
                             Termina en: {tiempoRestante}
                         </CardActions>
                     }
                     {// eslint-disable-next-line
-                    articulo.articulo.estado == 2 &&
+                        articulo.articulo.estado == 2 &&
                         <CardActions style={{ display: 'flex', justifyContent: 'flex-end' }}>
                             <Button size="small" variant="contained" color={"secondary"} onClick={() => handleOpenAction("retirar")}>Retirar</Button>
                         </CardActions>
                     }
                     {// eslint-disable-next-line
-                    articulo.articulo.estado == 3 &&
+                        articulo.articulo.estado == 3 &&
                         <CardActions style={{ display: 'flex', justifyContent: 'center' }}>
                             Usado el: {articulo.articulo.fecha_fin}
                         </CardActions>
                     }
                     {// eslint-disable-next-line
-                    articulo.articulo.estado == 4 &&
+                        articulo.articulo.estado == 4 &&
                         <CardActions style={{ display: 'flex', justifyContent: 'center' }}>
                             Donado el: {articulo.articulo.fecha_fin}
                         </CardActions>
                     }
                     {// eslint-disable-next-line
-                    articulo.articulo.estado == 5 &&
+                        articulo.articulo.estado == 5 &&
                         <CardActions style={{ display: 'flex', justifyContent: 'center' }}>
                             Vendida el: {articulo.articulo.fecha_fin}
                         </CardActions>
                     }
                     {// eslint-disable-next-line
-                    articulo.articulo.estado == 5 &&
+                        articulo.articulo.estado == 5 &&
                         <CardActions style={{ display: 'flex', justifyContent: 'center' }}>
                             Vendida por: {articulo.articulo.precio} puntos
                         </CardActions>
@@ -569,204 +614,252 @@ function Articulo({ articulo }) {
                 aria-describedby="alert-dialog-description"
             >
                 {// eslint-disable-next-line
-                typeAction == "donar" && <>
-                    <DialogTitle id="alert-dialog-title">
-                        Seguro que quieres Donar?
-                    </DialogTitle>
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                            Asegurate de escribir correctamente la Matricula de a quien donaras.
-                        </DialogContentText>
-                        <DialogContentText id="alert-dialog-description">
-                            El articulo pasara inmediatamente a esa persona.
-                        </DialogContentText>
-                        <form onSubmit={handleSubmit} id="donacion-form">
-                            <TextField
-                                required
-                                margin="dense"
-                                id="matriculaReceptor"
-                                name="Matricula"
-                                label="Matricula"
-                                type="text"
-                                fullWidth
-                                variant="standard"
-                            />
-                        </form>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleCloseAction}> Cancelar </Button>
-                        <Button type="submit" form="donacion-form">Donar</Button>
-                    </DialogActions>
-                </>}
+                    typeAction == "donar" && <>
+                        <DialogTitle id="alert-dialog-title">
+                            Seguro que quieres Donar?
+                        </DialogTitle>
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                                Asegurate de escribir correctamente la Matricula de a quien donaras.
+                            </DialogContentText>
+                            <DialogContentText id="alert-dialog-description">
+                                El articulo pasara inmediatamente a esa persona.
+                            </DialogContentText>
+                            <form onSubmit={handleSubmit} id="donacion-form">
+                                <TextField
+                                    required
+                                    margin="dense"
+                                    id="matriculaReceptor"
+                                    name="Matricula"
+                                    label="Matricula"
+                                    type="text"
+                                    fullWidth
+                                    variant="standard"
+                                />
+                            </form>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleCloseAction}> Cancelar </Button>
+                            <Button type="submit" form="donacion-form">Donar</Button>
+                        </DialogActions>
+                    </>}
                 {// eslint-disable-next-line
-                typeAction == "vender" && <>
-                    <DialogTitle id="alert-dialog-title">
-                        Estas a punto de Vender tu articulo
-                    </DialogTitle>
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                            Puedes venderlo directamente al 'Comerciante' o ponerlo a la venta en el Mercado.
-                        </DialogContentText>
-                        <Divider sx={{ my: 1 }} />
-                        <DialogContentText id="alert-dialog-description1">
-                            El <b>Comerciante</b> te cobrar el 15% de comision sobre el precio original.
-                        </DialogContentText>
-                        <DialogContentText id="alert-dialog-description2">
-                            Precio Original: <b>{articulo.data.costo} puntos</b>
-                            <br />
-                            Precio de Compra: <b>{articulo.data.costo - (articulo.data.costo * 0.15)} puntos</b>
-                        </DialogContentText>
-                        <DialogContentText id="alert-dialog-description6">
-                            La compra es inmediata
-                        </DialogContentText>
-                        <Divider sx={{ my: 1 }} />
-                        <DialogContentText id="alert-dialog-description3">
-                            En el <b>Mercado</b> solo puedes venderlo con un margen de 50% mas caro o mas barato del precio original.
-                        </DialogContentText>
-                        <DialogContentText id="alert-dialog-description4">
-                            Costo Minimo: <b>{articulo.data.costo - (articulo.data.costo * 0.50)} puntos</b>
-                            <br />
-                            Costo Maximo: <b>{parseInt(articulo.data.costo) + (articulo.data.costo * 0.50)} puntos</b>
-                        </DialogContentText>
-                        <DialogContentText id="alert-dialog-description5">
-                            Tendras que esperar a que alguien te lo compre.
-                        </DialogContentText>
-                        <DialogContentText id="alert-dialog-description7">
-                            Se te cobrara una comicion del 10% inmediatamente. <br />
-                            Comision: <b>{Math.ceil((precioVenta * 0.1))} Puntos</b>
-                        </DialogContentText>
-                        <Divider sx={{ my: 1 }} />
-                        <Grid container spacing={1}>
-                            <Grid size={{ xs: 12 }} alignSelf={"end"}>
+                    typeAction == "vender" && <>
+                        <DialogTitle id="alert-dialog-title">
+                            Estas a punto de Vender tu articulo
+                        </DialogTitle>
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                                Puedes venderlo directamente al 'Comerciante' o ponerlo a la venta en el Mercado.
+                            </DialogContentText>
+                            <Divider sx={{ my: 1 }} />
+                            <DialogContentText id="alert-dialog-description1">
+                                El <b>Comerciante</b> te cobrar el 15% de comision sobre el precio original.
+                            </DialogContentText>
+                            <DialogContentText id="alert-dialog-description2">
+                                Precio Original: <b>{articulo.data.costo} puntos</b>
+                                <br />
+                                Precio de Compra: <b>{articulo.data.costo - (articulo.data.costo * 0.15)} puntos</b>
+                            </DialogContentText>
+                            <DialogContentText id="alert-dialog-description6">
+                                La compra es inmediata
+                            </DialogContentText>
+                            <Divider sx={{ my: 1 }} />
+                            <DialogContentText id="alert-dialog-description3">
+                                En el <b>Mercado</b> solo puedes venderlo con un margen de 50% mas caro o mas barato del precio original.
+                            </DialogContentText>
+                            <DialogContentText id="alert-dialog-description4">
+                                Costo Minimo: <b>{articulo.data.costo - (articulo.data.costo * 0.50)} puntos</b>
+                                <br />
+                                Costo Maximo: <b>{parseInt(articulo.data.costo) + (articulo.data.costo * 0.50)} puntos</b>
+                            </DialogContentText>
+                            <DialogContentText id="alert-dialog-description5">
+                                Tendras que esperar a que alguien te lo compre.
+                            </DialogContentText>
+                            <DialogContentText id="alert-dialog-description7">
+                                Se te cobrara una comicion del 10% inmediatamente. <br />
+                                Comision: <b>{Math.ceil((precioVenta * 0.1))} Puntos</b>
+                            </DialogContentText>
+                            <Divider sx={{ my: 1 }} />
+                            <Grid container spacing={1}>
+                                <Grid size={{ xs: 12 }} alignSelf={"end"}>
+                                    <FormControl fullWidth>
+                                        <InputLabel id="destino">Destino</InputLabel>
+                                        <Select
+                                            variant="standard"
+                                            required
+                                            labelId="destino"
+                                            id="destinoSelect"
+                                            value={destinoVenta}
+                                            label="Destino"
+                                            onChange={handleChangeDestinoVenta}
+                                        >
+                                            <MenuItem value={0}>Comerciante</MenuItem>
+                                            <MenuItem value={1}>Mercado</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                </Grid>
+                                <Grid size={{ xs: 12 }} alignSelf={"end"}>
+                                    <TextField
+                                        required
+                                        // eslint-disable-next-line
+                                        disabled={destinoVenta == 0 ? true : false}
+                                        id="precioVenta"
+                                        name="Precio"
+                                        label="Precio"
+                                        type="number"
+                                        fullWidth
+                                        variant="standard"
+                                        value={precioVenta}
+                                        onChange={hanndlePrecioVenta}
+                                        onBlur={handleBlurPrecio}
+                                    />
+                                </Grid>
+                            </Grid>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleCloseAction}> Cancelar </Button>
+                            <Button onClick={handleVender} >Vender</Button>
+                        </DialogActions>
+                    </>}
+                {// eslint-disable-next-line
+                    typeAction == "usar" && articulo.data.uso == "Fijo" && <>
+                        <DialogTitle id="alert-dialog-title">
+                            Te estas Equipando este Articulo
+                        </DialogTitle>
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                                Este articulo se pondra en la parte de 'Equipado / Activo'.
+                            </DialogContentText>
+                            <DialogContentText id="alert-dialog-description2">
+                                Si existe un Marco o Fondo Activo, este sera reemplazado.
+                            </DialogContentText>
+                            <DialogContentText id="alert-dialog-description3">
+                                No perderas ningun articulo.
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleCloseAction}> Cancelar </Button>
+                            <Button onClick={handleUsarArticulo} >Equipar</Button>
+                        </DialogActions>
+                    </>}
+                {// eslint-disable-next-line
+                    typeAction == "usar" && articulo.data.uso == "Temporal" && <>
+                        <DialogTitle id="alert-dialog-title">
+                            Activaras este Articulo
+                        </DialogTitle>
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                                Se iniciara el uso de este articulo, este pasara a la parte 'Equipado / Activo del inventario.
+                            </DialogContentText>
+                            <DialogContentText id="alert-dialog-description2">
+                                La duracion del efecto aparecera debajo del articulo.
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleCloseAction}> Cancelar </Button>
+                            <Button onClick={handleUsarArticulo} >Activar</Button>
+                        </DialogActions>
+                    </>}
+                {// eslint-disable-next-line
+                    typeAction == "usar" && articulo.data.uso == "Consumible" && <>
+                        <DialogTitle id="alert-dialog-title">
+                            Usaras este Articulo
+                        </DialogTitle>
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                                Gastaras este Articulo, este aparecera en la seccion de 'Consumidos'.
+                            </DialogContentText>
+                            <DialogContentText id="alert-dialog-description2">
+                                El efecto solo será valido en la fecha que marca debajo del articulo.
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleCloseAction}> Cancelar </Button>
+                            <Button onClick={handleUsarArticulo} >Usar</Button>
+                        </DialogActions>
+                    </>}
+                {// eslint-disable-next-line
+                    typeAction == "quitar" && articulo.data.uso == "Fijo" && <>
+                        <DialogTitle id="alert-dialog-title">
+                            Usaras este Articulo
+                        </DialogTitle>
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                                Al quitar un Cosmetico este pasara a la seccion Disponibles.
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleCloseAction}> Cancelar </Button>
+                            <Button onClick={handleQuitarFijo} >Quiar</Button>
+                        </DialogActions>
+                    </>}
+                {// eslint-disable-next-line
+                    typeAction == "retirar" && <>
+                        <DialogTitle id="alert-dialog-title">
+                            Retiraras este Articulo del Mercado
+                        </DialogTitle>
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                                Este pasara Nuevamente a tu Articulos Disponibles.
+                            </DialogContentText>
+                            <DialogContentText id="alert-dialog-description">
+                                La comicion del 10% NO se te regresara
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleCloseAction}> Cancelar </Button>
+                            <Button onClick={handleRetirarVenta} >Retirar</Button>
+                        </DialogActions>
+                    </>}
+
+                {// eslint-disable-next-line
+                    typeAction == "usar" && articulo.data.uso == "Oportunidad" && <>
+                        <DialogTitle id="alert-dialog-title">
+                            Usaras este Articulo
+                        </DialogTitle>
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                                Para usar este articulo, tienes que elegir una mision antes.
+                            </DialogContentText>
+                            <DialogContentText id="alert-dialog-description2">
+                                Solo tendras 24 horas para reclamar tu codigo.
+                            </DialogContentText>
+                            <DialogContentText id="alert-dialog-description3">
                                 <FormControl fullWidth>
                                     <InputLabel id="destino">Destino</InputLabel>
                                     <Select
                                         variant="standard"
                                         required
-                                        labelId="destino"
-                                        id="destinoSelect"
-                                        value={destinoVenta}
-                                        label="Destino"
-                                        onChange={handleChangeDestinoVenta}
+                                        labelId="Mision"
+                                        id="misionId"
+                                        value={idMision}
+                                        label="Mision"
+                                        onChange={handleIdMision}
                                     >
-                                        <MenuItem value={0}>Comerciante</MenuItem>
-                                        <MenuItem value={1}>Mercado</MenuItem>
+                                        <MenuItem value={0}>Escoge Una</MenuItem>
+                                        {usuario?.misiones &&
+                                            usuario.misiones
+                                                .filter(x => x.vencida)
+                                                .filter(x => x.visible)
+                                                .filter(x => x.cumplida === false)
+                                                .map((el, i) => {
+                                                    return (
+                                                        <MenuItem key={i} value={el.id}>{el.nombre}</MenuItem>
+                                                    )
+                                                })
+                                        }
                                     </Select>
                                 </FormControl>
-                            </Grid>
-                            <Grid size={{ xs: 12 }} alignSelf={"end"}>
-                                <TextField
-                                    required
-                                    // eslint-disable-next-line
-                                    disabled={destinoVenta == 0 ? true : false}
-                                    id="precioVenta"
-                                    name="Precio"
-                                    label="Precio"
-                                    type="number"
-                                    fullWidth
-                                    variant="standard"
-                                    value={precioVenta}
-                                    onChange={hanndlePrecioVenta}
-                                    onBlur={handleBlurPrecio}
-                                />
-                            </Grid>
-                        </Grid>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleCloseAction}> Cancelar </Button>
-                        <Button onClick={handleVender} >Vender</Button>
-                    </DialogActions>
-                </>}
-                {// eslint-disable-next-line
-                typeAction == "usar" && articulo.data.uso == "Fijo" && <>
-                    <DialogTitle id="alert-dialog-title">
-                        Te estas Equipando este Articulo
-                    </DialogTitle>
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                            Este articulo se pondra en la parte de 'Equipado / Activo'.
-                        </DialogContentText>
-                        <DialogContentText id="alert-dialog-description2">
-                            Si existe un Marco o Fondo Activo, este sera reemplazado.
-                        </DialogContentText>
-                        <DialogContentText id="alert-dialog-description3">
-                            No perderas ningun articulo.
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleCloseAction}> Cancelar </Button>
-                        <Button onClick={handleUsarArticulo} >Equipar</Button>
-                    </DialogActions>
-                </>}
-                {// eslint-disable-next-line
-                typeAction == "usar" && articulo.data.uso == "Temporal" && <>
-                    <DialogTitle id="alert-dialog-title">
-                        Activaras este Articulo
-                    </DialogTitle>
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                            Se iniciara el uso de este articulo, este pasara a la parte 'Equipado / Activo del inventario.
-                        </DialogContentText>
-                        <DialogContentText id="alert-dialog-description2">
-                            La duracion del efecto aparecera debajo del articulo.
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleCloseAction}> Cancelar </Button>
-                        <Button onClick={handleUsarArticulo} >Activar</Button>
-                    </DialogActions>
-                </>}
-                {// eslint-disable-next-line
-                typeAction == "usar" && articulo.data.uso == "Consumible" && <>
-                    <DialogTitle id="alert-dialog-title">
-                        Usaras este Articulo
-                    </DialogTitle>
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                            Gastaras este Articulo, este aparecera en la seccion de 'Consumidos'.
-                        </DialogContentText>
-                        <DialogContentText id="alert-dialog-description2">
-                            El efecto solo será valido en la fecha que marca debajo del articulo.
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleCloseAction}> Cancelar </Button>
-                        <Button onClick={handleUsarArticulo} >Usar</Button>
-                    </DialogActions>
-                </>}
-                {// eslint-disable-next-line
-                typeAction == "quitar" && articulo.data.uso == "Fijo" && <>
-                    <DialogTitle id="alert-dialog-title">
-                        Usaras este Articulo
-                    </DialogTitle>
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                            Al quitar un Cosmetico este pasara a la seccion Disponibles.
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleCloseAction}> Cancelar </Button>
-                        <Button onClick={handleQuitarFijo} >Quiar</Button>
-                    </DialogActions>
-                </>}
-                {// eslint-disable-next-line
-                typeAction == "retirar" && <>
-                    <DialogTitle id="alert-dialog-title">
-                        Retiraras este Articulo del Mercado
-                    </DialogTitle>
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                            Este pasara Nuevamente a tu Articulos Disponibles.
-                        </DialogContentText>
-                        <DialogContentText id="alert-dialog-description">
-                            La comicion del 10% NO se te regresara
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleCloseAction}> Cancelar </Button>
-                        <Button onClick={handleRetirarVenta} >Retirar</Button>
-                    </DialogActions>
-                </>}
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleCloseAction}> Cancelar </Button>
+                            <Button onClick={mision24} >Usar</Button>
+                        </DialogActions>
+                    </>}
+
+
             </Dialog>
         </>
     )

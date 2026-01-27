@@ -211,7 +211,7 @@ function CofreMaldito(p) {
 
             {!p.permiso && !inicio &&
                 <Grid size={{ xs: 12, md: 8 }} display="flex" justifyContent="space-evenly" alignItems="center">
-                    <Alert severity="error">Ya ganaste 1500 puntos hoy, regresa mañana.</Alert>
+                    <Alert severity="error">Ya ganaste {usuario.linaje == 1 ? "2500" : "1500"} puntos hoy, regresa mañana.</Alert>
                 </Grid>
             }
 

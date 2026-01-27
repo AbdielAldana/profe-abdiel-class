@@ -81,6 +81,47 @@ export function TablonProvider({ children, initial }) {
         }
     };
 
+    // Post Set Linaje
+    const postSetLinaje = async (data) => {
+        try {
+            const res = await toast.promise(
+                axios.post(
+                    `${process.env.REACT_APP_GREMIO_API_URL}/post_set_linaje.php`,
+                    data
+                ),
+                {
+                    pending: "Asignando Linaje...",
+                    success: "Linaje Otorgado",
+                    error: "No se pudo, no eres digno",
+                },
+                { position: "top-center" }
+            );
+
+
+            // setUsuario(prev => ({
+            //     ...prev,
+            //     linaje: res.data.data.linaje
+            // }));
+
+            getUsuario(matricula, false, true)
+
+            // notifySuccess(res.data.msg);
+            // setUsuario(res.data.usuario);
+            // setMatricula(res.data.usuario.matricula);
+            // setCookie("matricula_actual", res.data.usuario.matricula, {
+            //     path: "/",
+            //     maxAge: 60 * 60 * 24,
+            // });
+
+            // return res.data; // opcional
+        } catch (err) {
+            console.log("Error:", err?.response?.data || err.message);
+            notifyError(err?.response?.data?.msg || "Error al crear usuario");
+            return { ok: false, msg: err?.response?.data?.msg };
+        }
+    };
+
+
     // POST Usuario Nuevo
     const postUsuarioNuevo = async (data) => {
         try {
@@ -570,6 +611,38 @@ export function TablonProvider({ children, initial }) {
         }
     }
 
+    const postMision24 = async (data) => {
+        try {
+            const res = await toast.promise(
+                axios.post(
+                    `${process.env.REACT_APP_GREMIO_API_URL}/post_recompensa_mision_24.php`,
+                    data
+                ),
+                {
+                    pending: "Procesando...",
+                    success: "Mision actualizada",
+                    error: "No se pudo :(",
+                },
+                { position: "top-center" }
+            );
+            console.log(res);
+
+            // setUsuario(prev => ({
+            //     ...prev,
+            //     ...res.data.usuario
+            // }));
+
+            getUsuario(matricula, true, true);
+            getMisiones(cookies.matricula_actual);
+
+            return res.data.ok; // opcional
+        } catch (err) {
+            console.log("Error:", err?.response?.data || err.message);
+            notifyError(err?.response?.data?.msg || "Error al crear usuario");
+            return err?.response?.data.ok;
+        }
+    }
+
 
     // Actualiza Los datos
     const value = React.useMemo(() => ({
@@ -586,6 +659,7 @@ export function TablonProvider({ children, initial }) {
         // Usuario
         getUsuario,         //ok
         postUsuarioNuevo,   //ok
+        postSetLinaje,
 
         // Tienda
         getRecompensas,     //ok
@@ -597,6 +671,7 @@ export function TablonProvider({ children, initial }) {
         retirarVenta,       //ok
         usarProducto,       //ok
         quitarFijo,         //ok
+        postMision24,
 
         // Ranking
         getUsuariosR,       //ok

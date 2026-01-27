@@ -641,7 +641,7 @@ summary:hover {
   display: block;
 }
 
-
+/* Boton Medieval */
 
 .btn-medieval {
   /* Tipografía */
@@ -1031,3 +1031,160 @@ summary:hover {
   }
 
 }
+
+/* LINAJE */
+
+/* ===== Card Linaje (épico) ===== */
+
+.linaje-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 14px;
+
+  padding: 26px 22px;
+  border-radius: 14px;
+
+  /* Fondo tipo piedra clara / metal */
+  background:
+    radial-gradient(120% 120% at 50% 0%,
+      rgba(255, 255, 255, 0.65) 0%,
+      rgba(235, 235, 235, 0.45) 35%,
+      rgba(200, 200, 200, 0.85) 100%),
+    linear-gradient(to bottom,
+      rgba(245, 245, 245, 0.95) 0%,
+      rgba(220, 220, 220, 0.90) 45%,
+      rgba(200, 200, 200, 0.95) 100%);
+
+  /* Borde metal claro */
+  border: 2px solid rgba(160, 160, 160, 0.85);
+
+  /* Profundidad */
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.15),
+    0 10px 22px rgba(0, 0, 0, 0.35);
+
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  overflow: hidden;
+}
+
+/* Borde interno decorativo */
+.linaje-card::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border: 1px solid rgba(170, 170, 170, 0.6);
+  border-radius: 10px;
+  pointer-events: none;
+}
+
+/* Textura sutil */
+.linaje-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  background:
+    radial-gradient(90% 80% at 50% 40%,
+      rgba(255, 255, 255, 0.35) 0%,
+      rgba(255, 255, 255, 0.15) 35%,
+      rgba(0, 0, 0, 0.12) 100%),
+    repeating-linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.18) 0px,
+      rgba(255, 255, 255, 0.18) 2px,
+      rgba(0, 0, 0, 0) 14px,
+      rgba(0, 0, 0, 0) 20px
+    );
+
+  opacity: 0.35;
+}
+
+/* Header */
+.linaje-title {
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: rgba(60, 60, 60, 0.85);
+}
+
+/* Imagen / emblema */
+.linaje-img {
+  width: 230px;
+  max-width: 100%;
+  user-select: none;
+  filter: drop-shadow(0 0 12px rgba(0, 0, 0, 0.25));
+  transition: transform 0.18s ease, filter 0.18s ease;
+}
+
+/* Descripción */
+.linaje-desc {
+  color: rgba(80, 80, 80, 0.85);
+  font-size: 0.95rem;
+  line-height: 1.55;
+  max-width: 34ch;
+}
+
+/* Badge */
+.linaje-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+
+  color: rgba(60, 60, 60, 0.9);
+  background:
+    linear-gradient(to bottom,
+      rgba(245, 245, 245, 0.95) 0%,
+      rgba(220, 220, 220, 0.9) 100%);
+  border: 1px solid rgba(160, 160, 160, 0.8);
+  border-radius: 10px;
+  padding: 6px 10px;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.6),
+    0 6px 10px rgba(0,0,0,0.35);
+}
+
+
+/* ===== Variantes por linaje (glow) ===== */
+
+/* Salamandras: fuego */
+/* .linaje-salamandra .linaje-img {
+  filter: drop-shadow(0 0 16px rgba(255, 120, 60, 0.45));
+}
+.linaje-salamandra:hover .linaje-img {
+  filter: drop-shadow(0 0 22px rgba(255, 120, 60, 0.60));
+} */
+
+/* Dragones: poder/rojo-dorado */
+/* .linaje-dragon .linaje-img {
+  filter: drop-shadow(0 0 16px rgba(255, 80, 80, 0.50));
+}
+.linaje-dragon:hover .linaje-img {
+  filter: drop-shadow(0 0 22px rgba(255, 80, 80, 0.65));
+} */
+
+/* Mellívoras: ámbar/verde */
+/* .linaje-mellivora .linaje-img {
+  filter: drop-shadow(0 0 16px rgba(180, 160, 60, 0.55));
+}
+.linaje-mellivora:hover .linaje-img {
+  filter: drop-shadow(0 0 22px rgba(180, 160, 60, 0.70));
+} */
+
+/* Estado seleccionado (cuando ya eligió) */
+/* .linaje-selected {
+  outline: 2px solid rgba(255, 215, 130, 0.70);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    inset 0 -3px 0 rgba(0, 0, 0, 0.70),
+    0 18px 40px rgba(0, 0, 0, 0.85),
+    0 0 30px rgba(255, 215, 130, 0.16);
+} */

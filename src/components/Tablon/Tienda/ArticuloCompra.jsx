@@ -160,10 +160,10 @@ function ArticuloCompra({ articulo }) {
                                 variant="subtitle1"
                                 className="ellipsis"
                                 sx={{ m: 0, p: 0 }}
-                                color={level >= articulo.nivel_min ? "" : "error"}
+                                color={(level >= articulo.nivel_min || usuario.linaje == "2") ? "" : "error"}
                             // textAlign={"right"}
                             >
-                                Nivel min: <b>{articulo.nivel_min}</b>
+                                 {usuario.linaje == "2" ? "[Dragones]" : <>Nivel min: <b>{articulo.nivel_min}</b></>}
                             </Typography>
                         </Grid>
                     }
@@ -175,9 +175,9 @@ function ArticuloCompra({ articulo }) {
                                 className="ellipsis"
                                 sx={{ m: 0, p: 0 }}
                                 textAlign={"right"}
-                                color={puntos_disponibles >= articulo.costo ? "" : "error"}
+                                color={puntos_disponibles >= (usuario.linaje == 2 ? Math.floor(articulo.costo * 0.9) : articulo.costo) ? "" : "error"}
                             >
-                                <b>{articulo.costo}</b> pts
+                                <b>{(usuario.linaje == 2 ? Math.floor(articulo.costo * 0.9) : articulo.costo)}</b> pts
                             </Typography>
                         </Grid>
                     }
@@ -190,9 +190,9 @@ function ArticuloCompra({ articulo }) {
                                 className="ellipsis"
                                 sx={{ m: 0, p: 0 }}
                                 textAlign={"right"}
-                                color={puntos_disponibles >= ofertaMasCara.precio ? "" : "error"}
+                                color={puntos_disponibles >= (usuario.linaje == 2 ? Math.floor(ofertaMasCara.precio * 0.9) : ofertaMasCara.precio) ? "" : "error"}
                             >
-                                <b>{ofertaMasCara.precio}</b> pts
+                                <b>{(usuario.linaje == 2 ? Math.floor(ofertaMasCara.precio * 0.9) : ofertaMasCara.precio)}</b> pts
                             </Typography>
                         </Grid>
                     }
@@ -330,11 +330,11 @@ function ArticuloCompra({ articulo }) {
                                         <Typography variant="body1"  >
                                             Vendedor: <b>{ofertaMasCara.vendedor.nickname}</b>
                                         </Typography>
-                                        <Typography variant="body1" color={puntos_disponibles >= ofertaMasCara.precio ? "" : "error"} >
-                                            Costo Actual: <b>{ofertaMasCara.precio} Puntos</b>
+                                        <Typography variant="body1" color={puntos_disponibles >= (usuario.linaje == 2 ? Math.floor(ofertaMasCara.precio * 0.9) : ofertaMasCara.precio) ? "" : "error"} >
+                                            Costo Actual: <b>{(usuario.linaje == 2 ? Math.floor(ofertaMasCara.precio * 0.9) : ofertaMasCara.precio)} Puntos</b>
                                         </Typography>
-                                        <Typography variant="body1" color={puntos_disponibles >= articulo.costo ? "" : "error"} style={{textDecoration: "line-through"}} >
-                                            Costo Original: <b>{articulo.costo} Puntos</b>
+                                        <Typography variant="body1" color={puntos_disponibles >= (usuario.linaje == 2 ? Math.floor(articulo.costo * 0.9): articulo.costo) ? "" : "error"} style={{textDecoration: "line-through"}} >
+                                            Costo Original: <b>{(usuario.linaje == 2 ? Math.floor(articulo.costo * 0.9): articulo.costo)} Puntos</b>
                                         </Typography>
                                     </>
                                 ) : (
@@ -342,8 +342,8 @@ function ArticuloCompra({ articulo }) {
                                         <Typography variant="body1"  >
                                             Precio Original
                                         </Typography>
-                                        <Typography variant="body1" color={puntos_disponibles >= articulo.costo ? "" : "error"} >
-                                            Costo: <b>{articulo.costo} Puntos</b>
+                                        <Typography variant="body1" color={puntos_disponibles >= (usuario.linaje == 2 ? Math.floor(articulo.costo * 0.9): articulo.costo) ? "" : "error"} >
+                                            Costo: <b>{(usuario.linaje == 2 ? Math.floor(articulo.costo * 0.9): articulo.costo)} Puntos</b>
                                         </Typography>
                                     </>
                                 )}
@@ -356,7 +356,7 @@ function ArticuloCompra({ articulo }) {
                         </Grid>
                     </CardContent>
 
-                    {usuario && level >= articulo.nivel_min && puntos_disponibles >= articulo.costo &&
+                    {usuario && (level >= articulo.nivel_min || usuario.linaje == "2") && puntos_disponibles >= articulo.costo &&
                         <CardActions style={{ display: 'flex', justifyContent: 'space-between', flexDirection: "row-reverse" }}>
                             <Button size="small" variant="contained" color={"primary"} onClick={() => handleOpenAction("comprar")}>Comprar</Button>
                         </CardActions>

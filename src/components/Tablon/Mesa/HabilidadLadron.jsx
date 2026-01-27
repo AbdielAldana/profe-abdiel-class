@@ -284,7 +284,7 @@ function HabilidadLadron(p) {
                 ))
             }
             {!p.permiso &&
-                <Alert severity="error">Ya ganaste 1500 puntos hoy, regresa mañana.</Alert>
+                <Alert severity="error">Ya ganaste {usuario.linaje == 1 ? "2500" : "1500"} puntos hoy, regresa mañana.</Alert>
             }
         </Grid>
     );

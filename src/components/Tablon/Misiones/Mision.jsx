@@ -153,6 +153,7 @@ function Mision({ mision }) {
             shapes: ['circle']
         });
     }
+    
     return (
         <>
             {/* <button onClick={handleFeliz}>Prueba</button> */}
@@ -185,7 +186,12 @@ function Mision({ mision }) {
                             sx={{ m: 0, p: 0 }}
                             textAlign={"right"}
                         >
-                            <b>{mision.puntos}</b> pts
+                            {usuario?.linaje === "3" &&
+                                <><b>{Math.floor(mision.puntos * 1.1)}</b> pts</>
+                            }
+                            {usuario?.linaje !== "3" &&
+                                <><b>{mision.puntos}</b> pts</>
+                            }
                         </Typography>
                     </Grid>
                     <Grid size={{ xs: 12 }}>
@@ -206,35 +212,31 @@ function Mision({ mision }) {
                             <b>Lore: </b>{mision.lore}
                         </Typography>
                     </Grid>
-                    {tiempoRestante !== "Vencida" &&
-                        <Grid size={{ xs: 12 }}>
-                            <Typography variant="body1" >
-                                <b>Objetivo: </b>{mision.objetivo}
-                            </Typography>
-                        </Grid>
-                    }
-                    {tiempoRestante !== "Vencida" &&
-                        <Grid size={{ xs: 12 }}>
-                            <Typography variant="body1" >
-                                <b>Requisitos: </b>{mision.requisitos}
-                            </Typography>
-                        </Grid>
-                    }
-                    {tiempoRestante !== "Vencida" &&
-                    <Grid size={{ xs: 12 }}>
-                        <Divider />
-                    </Grid>
-}
-
-                    {tiempoRestante !== "Vencida" &&
-                        <Grid size={{ xs: 8 }} alignSelf={"center"}>
-                            <Typography variant="body1" >
-                                Termina: <b>{tiempoRestante}</b>
-                            </Typography>
-                        </Grid>
+                    {mision.canjeada !== "1" && tiempoRestante !== "Vencida" &&
+                        <>
+                            <Grid size={{ xs: 12 }}>
+                                <Typography variant="body1" >
+                                    <b>Objetivo: </b>{mision.objetivo}
+                                </Typography>
+                            </Grid>
+                            <Grid size={{ xs: 12 }}>
+                                <Typography variant="body1" >
+                                    <b>Requisitos: </b>{mision.requisitos}
+                                </Typography>
+                            </Grid>
+                            <Grid size={{ xs: 12 }}>
+                                <Divider />
+                            </Grid>
+                            <Grid size={{ xs: 8 }} alignSelf={"center"}>
+                                <Typography variant="body1" >
+                                    Termina: <b>{tiempoRestante}</b>
+                                </Typography>
+                            </Grid>
+                        </>
                     }
 
-                    {mision.frecuencia > 0  && tiempoRestante !== "Vencida" &&
+
+                    {mision.frecuencia > 0 && tiempoRestante !== "Vencida" &&
                         <Grid size={{ xs: 4 }} display={"flex"} justifyContent={"flex-end"} alignItems={"center"}>
                             <Typography variant="body1" >
                                 <b>{mision.frecuencia == 1 ? "Diaria" : mision.frecuencia == 2 ? "Semanal" : mision.frecuencia == 3 ? "Mensual" : ""}</b>

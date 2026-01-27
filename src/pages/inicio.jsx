@@ -137,7 +137,7 @@ export default function Inicio() {
 
                 <Grid size={{ xs: 12 }}>
                     <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                        Version 2.0.1 | Creada por Abdiel Aldana
+                        Version 2.4.1 | Creada por Abdiel Aldana
                     </Typography>
                 </Grid>
 

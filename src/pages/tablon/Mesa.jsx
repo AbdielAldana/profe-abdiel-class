@@ -37,9 +37,9 @@ function Mesa(p) {
                 path: "/",
                 maxAge: 60 * 60 * 24,
             });
-        } else if (cookies.puntosGanados >= 1500) {
+        } else if (cookies.puntosGanados >= (usuario.linaje == "1" ? 2500 : 1500)) {
             setPermiso(false)
-        } else if (cookies.puntosGanados < 1500) {
+        } else if (cookies.puntosGanados < (usuario.linaje == "1" ? 2500 : 1500)) {
             setPermiso(true)
         }
     }, [cookies.puntosGanados])
@@ -110,7 +110,7 @@ function Mesa(p) {
                 </Grid>
                 {!permiso &&
                     <Grid size={{ xs: 12 }}>
-                        <Alert severity="error">Ya ganaste 1500 puntos hoy, regresa mañana.</Alert>
+                        <Alert severity="error">Ya ganaste {usuario.linaje == 1 ? "2500" : "1500"} puntos hoy, regresa mañana.</Alert>
                     </Grid>
                 }
                 <Grid size={{ xs: 12 }}>
@@ -120,46 +120,56 @@ function Mesa(p) {
                 </Grid>
 
 
-                <Grid size={{ xs: 12, md: 6 }}>
-                    <Card>
-                        <CardActionArea onClick={() => setJuego("blackjack")} >
-                            <CardMedia
-                                component="img"
-                                height="180"
-                                image={blackjackImg}
-                                alt="green iguana"
-                            />
-                            <CardContent>
-                                <Typography gutterBottom variant="h5" component="div">
-                                    BlackJack
-                                </Typography>
-                                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                    Arriesga tus monedas en la mesa del gremio. Suma cartas, desafía al crupier y prueba tu suerte sin pasarte del límite.
-                                </Typography>
-                            </CardContent>
-                        </CardActionArea>
-                    </Card>
-                </Grid>
-                <Grid size={{ xs: 12, md: 6 }}>
-                    <Card>
-                        <CardActionArea onClick={() => setJuego("dice")} >
-                            <CardMedia
-                                component="img"
-                                height="180"
-                                image={dadoImg}
-                                alt="green iguana"
-                            />
-                            <CardContent>
-                                <Typography gutterBottom variant="h5" component="div">
-                                    Dados del Destino
-                                </Typography>
-                                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                    Lanza los dados encantados y deja que el azar decida. Cada tirada puede premiarte… o cobrar su precio.
-                                </Typography>
-                            </CardContent>
-                        </CardActionArea>
-                    </Card>
-                </Grid>
+                {usuario.linaje == "1" &&
+                    <Grid size={{ xs: 12, md: 6 }}>
+                        <Card style={{border:"solid 5px #405433"}}>
+                            <CardActionArea onClick={() => setJuego("blackjack")} >
+                                <CardMedia
+                                    component="img"
+                                    height="180"
+                                    image={blackjackImg}
+                                    alt="green iguana"
+                                />
+                                <CardContent>
+                                    <Typography gutterBottom variant="h5" component="div">
+                                        BlackJack
+                                    </Typography>
+                                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                                        Arriesga tus monedas en la mesa del gremio. Suma cartas, desafía al crupier y prueba tu suerte sin pasarte del límite.
+                                    </Typography>
+                                    <Typography variant="body2" sx={{ color: '#405433' }}>
+                                        Exclusivo para Linaje de Salamandras
+                                    </Typography>
+                                </CardContent>
+                            </CardActionArea>
+                        </Card>
+                    </Grid>
+                }
+                {usuario.linaje == "1" &&
+                    <Grid size={{ xs: 12, md: 6 }}>
+                        <Card style={{border:"solid 5px #405433"}}>
+                            <CardActionArea onClick={() => setJuego("dice")} >
+                                <CardMedia
+                                    component="img"
+                                    height="180"
+                                    image={dadoImg}
+                                    alt="green iguana"
+                                />
+                                <CardContent>
+                                    <Typography gutterBottom variant="h5" component="div">
+                                        Dados del Destino
+                                    </Typography>
+                                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                                        Lanza los dados encantados y deja que el azar decida. Cada tirada puede premiarte… o cobrar su precio.
+                                    </Typography>
+                                    <Typography variant="body2" sx={{ color: '#405433' }}>
+                                        Exclusivo para Linaje de Salamandras
+                                    </Typography>
+                                </CardContent>
+                            </CardActionArea>
+                        </Card>
+                    </Grid>
+                }
                 <Grid size={{ xs: 12, md: 6 }}>
                     <Card>
                         <CardActionArea onClick={() => setJuego("cofre")} >
@@ -280,7 +290,7 @@ function Mesa(p) {
                     </Grid>
 
                     <Grid size={{ xs: 12 }} display="flex" justifyContent="center">
-                        <button class="btn-medieval" onClick={handlePlay} >
+                        <button className="btn-medieval" onClick={handlePlay} >
                             JUGAR
                         </button>
                         {/* <Button variant="contained" size="large" color="secondary" onClick={handlePlay}>
@@ -300,7 +310,7 @@ function Mesa(p) {
             {play && juego === "dice" && <Dice setPlay={setPlay} setJuego={setJuego} permiso={permiso} />}
             {play && juego === "cofre" && <CofreMaldito setPlay={setPlay} setJuego={setJuego} permiso={permiso} />}
             {play && juego === "oraculo" && ui_placeholder("Cartas del Oráculo")}
-            {play && juego === "ladron" && <HabilidadLadron setPlay={setPlay} setJuego={setJuego} permiso={permiso} /> }
+            {play && juego === "ladron" && <HabilidadLadron setPlay={setPlay} setJuego={setJuego} permiso={permiso} />}
 
             <div style={{ height: "50px" }}></div>
         </div>

@@ -9,8 +9,12 @@ import {
     Button,
     Divider,
     TextField,
-
+    Alert
 } from "@mui/material";
+// import PropTypes from 'prop-types';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Box from '@mui/material/Box';
 import Input from '@mui/material/Input';
 
 // Componentes Generales
@@ -32,6 +36,13 @@ import { GiRupee } from "react-icons/gi";
 import LogoutIcon from '@mui/icons-material/Logout';
 import SettingsIcon from '@mui/icons-material/Settings';
 import CasinoIcon from '@mui/icons-material/Casino';
+
+import { GiBattleGear } from "react-icons/gi";
+import { GiChest } from "react-icons/gi";
+import { GiCash } from "react-icons/gi";
+import { GiBookmark } from "react-icons/gi";
+import { GiDna1 } from "react-icons/gi";
+import ViewTitulo from "../../components/Tablon/Perfil/ViewTitulo";
 
 
 const VisuallyHiddenInput = styled('input')({
@@ -157,11 +168,28 @@ function Perfil() {
     // console.log(usuario);
 
 
+    // Inventory 
+    const [inventoryView, setInventoryView] = useState(0)
+    const handleInventoriView = (event, newValue) => {
+        setInventoryView(newValue)
 
+    }
+
+    const tieneCuponFeriaEquipado = usuario?.inventario?.some(
+        (item) =>
+            item.articulo.id_recompensa === "37" &&
+            item.articulo.estado === "1"
+    );
 
 
     return (
         <Grid container spacing={3}>
+            <ViewTitulo
+                texto="Perfil"
+                update={() => getUsuario(user, true, true)}
+            />
+
+
 
             {/* <ModalMision openData={openDataMision} handleOpenData={handleOpenDataMision} mision={selectMision} /> */}
 
@@ -220,158 +248,210 @@ function Perfil() {
                                     </Button>
                                 </NavLink>
                             }
-                            <NavLink to="/tablon_de_misiones/mesa">
-                                <Button variant="contained" size="small" color="primary" endIcon={<CasinoIcon />}>
-                                    Suerte
-                                </Button>
-                            </NavLink>
+
+                            {/* {usuario?.matricula !== "F_12652" && */}
+                            {tieneCuponFeriaEquipado && (
+                                <NavLink to="/tablon_de_misiones/mesa">
+                                    <Button variant="contained" size="small" color="primary" endIcon={<CasinoIcon />}>
+                                        Feria
+                                    </Button>
+                                </NavLink>
+                            )}
                         </Grid>
+                        {/* {usuario?.matricula === "F_12652" &&
+                            <Grid size={{ xs: 12, md: 12 }}>
+                                <Alert variant="filled" severity="warning">
+                                    ARELYYYYYY, este mensaje namas es para usted, esta castigada esta semana por alocarce con los puntos xD... <br /> atte: La mafia del poder.
+                                </Alert>
+                            </Grid>
+                        } */}
                         <Grid size={{ xs: 12, md: 12 }}>
                             <Divider />
                         </Grid>
 
-                        {/* Inventario */}
-                        <Grid size={{ xs: 12, md: 12 }} className={"viewCompletMisions"}>
-                            <Grid container spacing={2}>
-                                <Grid size={{ xs: 12, md: 12 }}>
-                                    <Typography variant="h5" fontWeight={"bold"} textAlign="center" gutterBottom>
-                                        Inventario
-                                    </Typography>
+                        {/* New Inventario */}
+
+                        <Box sx={{ width: '100%' }}>
+                            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                                <Tabs variant="fullWidth" aria-label="basic tabs example" textColor="secondary" onChange={handleInventoriView} value={inventoryView}>
+                                    <Tab style={{ minWidth: "fit-content" }} icon={<GiBattleGear size={30} />} aria-label="phone" />
+                                    <Tab style={{ minWidth: "fit-content" }} icon={<GiChest size={30} />} aria-label="phone" />
+                                    <Tab style={{ minWidth: "fit-content" }} icon={<GiCash size={30} />} aria-label="phone" />
+                                    <Tab style={{ minWidth: "fit-content" }} icon={<GiBookmark size={30} />} aria-label="phone" />
+                                    <Tab style={{ minWidth: "fit-content" }} icon={<GiDna1 size={30} />} aria-label="phone" />
+                                </Tabs>
+                            </Box>
+                        </Box>
+                        {inventoryView == 0 &&
+                            <Grid size={{ xs: 12, md: 12 }} className={"viewCompletMisions"}>
+                                <Grid container spacing={2}>
+                                    <Grid size={{ xs: 12, md: 12 }}>
+                                        <Typography variant="h5" fontWeight={"bold"} textAlign="center" gutterBottom>
+                                            Equipados
+                                        </Typography>
+                                    </Grid>
+                                    {usuario.inventario &&
+                                        usuario.inventario
+                                            // eslint-disable-next-line
+                                            .filter(inv => inv.articulo.estado == 1)
+                                            .sort((a, b) => a.data.clase - b.data.clase)
+                                            .map((inv, e) => {
+                                                return (
+                                                    <Grid key={e} size={{ xs: 12, md: 6 }}>
+                                                        <Articulo articulo={inv} />
+                                                    </Grid>
+                                                )
+                                            })
+                                    }
                                 </Grid>
-                                {// eslint-disable-next-line
-                                    usuario.inventario.filter(inv => inv.articulo.estado == 1).length > 0 &&
+                            </Grid>
+                        }
+                        {inventoryView == 1 &&
+                            <Grid size={{ xs: 12, md: 12 }} className={"viewCompletMisions"}>
+                                <Grid container spacing={2}>
                                     <Grid size={{ xs: 12, md: 12 }}>
-                                        <Typography variant="h6" fontWeight={"bold"} >
-                                            Equipado / Activo
+                                        <Typography variant="h5" fontWeight={"bold"} textAlign="center" gutterBottom>
+                                            Inventario
                                         </Typography>
                                     </Grid>
-                                }
-                                {usuario.inventario &&
-                                    usuario.inventario
-                                        // eslint-disable-next-line
-                                        .filter(inv => inv.articulo.estado == 1)
-                                        .sort((a, b) => a.data.clase - b.data.clase)
-                                        .map((inv, e) => {
-                                            return (
-                                                <Grid key={e} size={{ xs: 12, md: 6 }}>
-                                                    <Articulo articulo={inv} />
-                                                </Grid>
-                                            )
-                                        })
-                                }
-                                {// eslint-disable-next-line
-                                    usuario.inventario.filter(inv => inv.articulo.estado == 0).length > 0 &&
+                                    {// eslint-disable-next-line
+                                        usuario.inventario &&
+                                        usuario.inventario
+                                            // eslint-disable-next-line
+                                            .filter(inv => inv.articulo.estado == 0)
+                                            .sort((a, b) => a.data.clase - b.data.clase)
+                                            .map((inv, e) => {
+                                                return (
+                                                    <Grid key={e} size={{ xs: 12, md: 6 }}>
+                                                        <Articulo articulo={inv} />
+                                                    </Grid>
+                                                )
+                                            })
+                                    }
+                                </Grid>
+                            </Grid>
+                        }
+                        {inventoryView == 2 &&
+                            <Grid size={{ xs: 12, md: 12 }} className={"viewCompletMisions"}>
+                                <Grid container spacing={2}>
                                     <Grid size={{ xs: 12, md: 12 }}>
-                                        <Typography variant="h6" fontWeight={"bold"} >
-                                            Disponibles
-                                        </Typography>
-                                    </Grid>
-                                }
-                                {// eslint-disable-next-line
-                                    usuario.inventario &&
-                                    usuario.inventario
-                                        // eslint-disable-next-line
-                                        .filter(inv => inv.articulo.estado == 0)
-                                        .sort((a, b) => a.data.clase - b.data.clase)
-                                        .map((inv, e) => {
-                                            return (
-                                                <Grid key={e} size={{ xs: 12, md: 6 }}>
-                                                    <Articulo articulo={inv} />
-                                                </Grid>
-                                            )
-                                        })
-                                }
-                                {// eslint-disable-next-line
-                                    usuario.inventario.filter(inv => inv.articulo.estado == 2).length > 0 &&
-                                    <Grid size={{ xs: 12, md: 12 }}>
-                                        <Typography variant="h6" fontWeight={"bold"} >
+                                        <Typography variant="h5" fontWeight={"bold"} textAlign="center" gutterBottom>
                                             En Venta
                                         </Typography>
                                     </Grid>
-                                }
-                                {usuario.inventario &&
-                                    usuario.inventario
-                                        // eslint-disable-next-line
-                                        .filter(inv => inv.articulo.estado == 2)
-                                        .sort((a, b) => a.data.clase - b.data.clase)
-                                        .map((inv, e) => {
-                                            return (
-                                                <Grid key={e} size={{ xs: 12, md: 6 }}>
-                                                    <Articulo articulo={inv} />
-                                                </Grid>
-                                            )
-                                        })
-                                }
-                                {// eslint-disable-next-line
-                                    usuario.inventario.filter(inv => inv.articulo.estado == 3).length > 0 &&
-                                    <Grid size={{ xs: 12, md: 12 }}>
-                                        <Typography variant="h6" fontWeight={"bold"} >
-                                            Usados
-                                        </Typography>
-                                    </Grid>
-                                }
-                                {usuario.inventario &&
-                                    usuario.inventario
-                                        // eslint-disable-next-line
-                                        .filter(inv => inv.articulo.estado == 3)
-                                        .sort((a, b) => a.data.clase - b.data.clase)
-                                        .map((inv, e) => {
-                                            return (
-                                                <Grid key={e} size={{ xs: 12, md: 6 }}>
-                                                    <Articulo articulo={inv} />
-                                                </Grid>
-                                            )
-                                        })
-                                }
-                                {// eslint-disable-next-line
-                                    usuario.inventario.filter(inv => inv.articulo.estado == 4).length > 0 &&
-                                    <Grid size={{ xs: 12, md: 12 }}>
-                                        <Typography variant="h6" fontWeight={"bold"} >
-                                            Donados
-                                        </Typography>
-                                    </Grid>
-                                }
-                                {usuario.inventario &&
-                                    usuario.inventario
-                                        // eslint-disable-next-line
-                                        .filter(inv => inv.articulo.estado == 4)
-                                        .sort((a, b) => a.data.clase - b.data.clase)
-                                        .map((inv, e) => {
-                                            return (
-                                                <Grid key={e} size={{ xs: 12, md: 6 }}>
-                                                    <Articulo articulo={inv} />
-                                                </Grid>
-                                            )
-                                        })
-                                }
-                                {// eslint-disable-next-line
-                                    usuario.inventario.filter(inv => inv.articulo.estado == 5).length > 0 &&
-                                    <Grid size={{ xs: 12, md: 12 }}>
-                                        <Typography variant="h6" fontWeight={"bold"} >
-                                            Vendidos
-                                        </Typography>
-                                    </Grid>
-                                }
-                                {usuario.inventario &&
-                                    usuario.inventario
-                                        // eslint-disable-next-line
-                                        .filter(inv => inv.articulo.estado == 5)
-                                        .sort((a, b) => a.data.clase - b.data.clase)
-                                        .map((inv, e) => {
-                                            return (
-                                                <Grid key={e} size={{ xs: 12, md: 6 }}>
-                                                    <Articulo articulo={inv} />
-                                                </Grid>
-                                            )
-                                        })
-                                }
+                                    {usuario.inventario &&
+                                        usuario.inventario
+                                            // eslint-disable-next-line
+                                            .filter(inv => inv.articulo.estado == 2)
+                                            .sort((a, b) => a.data.clase - b.data.clase)
+                                            .map((inv, e) => {
+                                                return (
+                                                    <Grid key={e} size={{ xs: 12, md: 6 }}>
+                                                        <Articulo articulo={inv} />
+                                                    </Grid>
+                                                )
+                                            })
+                                    }
+                                </Grid>
                             </Grid>
-                        </Grid>
+                        }
+                        {inventoryView == 3 &&
+                            <Grid size={{ xs: 12, md: 12 }} className={"viewCompletMisions"}>
+                                <Grid container spacing={2}>
+                                    <Grid size={{ xs: 12, md: 12 }}>
+                                        <Typography variant="h5" fontWeight={"bold"} textAlign="center" gutterBottom>
+                                            Registro
+                                        </Typography>
+                                    </Grid>
+                                    {// eslint-disable-next-line
+                                        usuario.inventario.filter(inv => inv.articulo.estado == 3).length > 0 &&
+                                        <Grid size={{ xs: 12, md: 12 }}>
+                                            <Typography variant="h6" fontWeight={"bold"} >
+                                                Usados
+                                            </Typography>
+                                        </Grid>
+                                    }
+                                    {usuario.inventario &&
+                                        usuario.inventario
+                                            // eslint-disable-next-line
+                                            .filter(inv => inv.articulo.estado == 3)
+                                            .sort((a, b) => a.data.clase - b.data.clase)
+                                            .map((inv, e) => {
+                                                return (
+                                                    <Grid key={e} size={{ xs: 12, md: 6 }}>
+                                                        <Articulo articulo={inv} />
+                                                    </Grid>
+                                                )
+                                            })
+                                    }
+                                    {// eslint-disable-next-line
+                                        usuario.inventario.filter(inv => inv.articulo.estado == 4).length > 0 &&
+                                        <Grid size={{ xs: 12, md: 12 }}>
+                                            <Typography variant="h6" fontWeight={"bold"} >
+                                                Donados
+                                            </Typography>
+                                        </Grid>
+                                    }
+                                    {usuario.inventario &&
+                                        usuario.inventario
+                                            // eslint-disable-next-line
+                                            .filter(inv => inv.articulo.estado == 4)
+                                            .sort((a, b) => a.data.clase - b.data.clase)
+                                            .map((inv, e) => {
+                                                return (
+                                                    <Grid key={e} size={{ xs: 12, md: 6 }}>
+                                                        <Articulo articulo={inv} />
+                                                    </Grid>
+                                                )
+                                            })
+                                    }
+                                    {// eslint-disable-next-line
+                                        usuario.inventario.filter(inv => inv.articulo.estado == 5).length > 0 &&
+                                        <Grid size={{ xs: 12, md: 12 }}>
+                                            <Typography variant="h6" fontWeight={"bold"} >
+                                                Vendidos
+                                            </Typography>
+                                        </Grid>
+                                    }
+                                    {usuario.inventario &&
+                                        usuario.inventario
+                                            // eslint-disable-next-line
+                                            .filter(inv => inv.articulo.estado == 5)
+                                            .sort((a, b) => a.data.clase - b.data.clase)
+                                            .map((inv, e) => {
+                                                return (
+                                                    <Grid key={e} size={{ xs: 12, md: 6 }}>
+                                                        <Articulo articulo={inv} />
+                                                    </Grid>
+                                                )
+                                            })
+                                    }
+                                </Grid>
+                            </Grid>
+                        }
+
+                        {inventoryView == 4 &&
+                            <Grid size={{ xs: 12, md: 12 }} className={"viewCompletMisions"}>
+                                <Grid container spacing={2}>
+                                    <Grid size={{ xs: 12, md: 12 }}>
+                                        <Typography variant="h5" fontWeight={"bold"} textAlign="center" gutterBottom>
+                                            Opciones
+                                        </Typography>
+                                        <Typography variant="body1" fontWeight={"bold"} textAlign="center" gutterBottom>
+                                            Proximamente
+                                        </Typography>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        }
+
 
                     </Grid>
                     {/* </Paper> */}
                 </Grid>
             }
+
+            {/* Pantalla de Carga del Usuario */}
             {usuario === null && cookies.matricula_actual &&
                 <Grid size={{ xs: 12, md: 12 }}>
                     <Grid container spacing={2}>

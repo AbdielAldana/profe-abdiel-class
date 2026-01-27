@@ -7,6 +7,7 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 import FaceRetouchingNaturalIcon from '@mui/icons-material/FaceRetouchingNatural';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import StoreIcon from '@mui/icons-material/Store';
+import { GiMoebiusTrefoil } from "react-icons/gi";
 
 import { NavLink } from "react-router";
 
@@ -41,6 +42,13 @@ function NavbarBottomTablon() {
                         icon={<EmojiEventsIcon color="primary" />}
                         component={NavLink}
                         to="ranking"
+                        className={({ isActive }) => isActive ? "active" : ""}
+                    />
+                    <BottomNavigationAction
+                        label="Linaje"
+                        icon={<GiMoebiusTrefoil size={25} color="primary" />}
+                        component={NavLink}
+                        to="linaje"
                         className={({ isActive }) => isActive ? "active" : ""}
                     />
                 </BottomNavigation>

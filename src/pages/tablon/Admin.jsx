@@ -81,6 +81,9 @@ function Admin() {
         const formData = new FormData(event.currentTarget);
         const formJson = Object.fromEntries(formData.entries());
 
+        
+        
+
         let tempJson = {
             matricula: usuario.matricula,
 
@@ -97,6 +100,7 @@ function Admin() {
             frecuencia: parseInt(formJson.frecuencia_mision),
 
             codigo: formJson.codigo_mision,
+            linaje: formJson.linaje_mision == "on" ? 3 : 0,
 
             fechaInicioGlobal: formJson.fecha_inicio_mision.replace("T", " ") + ":00",
             fechaFinGlobal: formJson.fecha_fin_mision.replace("T", " ") + ":00",
@@ -402,6 +406,11 @@ function Admin() {
                                 <Grid size={{ xs: 12, md: 12 }}>
                                     <FormGroup>
                                         <FormControlLabel control={<Checkbox defaultChecked />} disabled id="visible_mision" name="visible_mision" label="Mision Visible" />
+                                    </FormGroup>
+                                </Grid>
+                                <Grid size={{ xs: 12, md: 12 }}>
+                                    <FormGroup>
+                                        <FormControlLabel control={<Checkbox />} id="linaje_mision" name="linaje_mision" label="Tejones" />
                                     </FormGroup>
                                 </Grid>
                             </Grid>
