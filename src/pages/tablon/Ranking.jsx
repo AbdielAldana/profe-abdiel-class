@@ -43,6 +43,7 @@ function Ranking(params) {
             {usuarios !== null &&
                 usuarios
                     .filter((r) => r.activo == true)
+                    .filter((r) => r.profesor == false)
                     // .sort((a, b) => a.costo - b.costo)
                     // .sort((a, b) => a.nivel_min - b.nivel_min)
                     // .sort((a, b) => a.clase - b.clase)

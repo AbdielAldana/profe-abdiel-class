@@ -314,11 +314,9 @@ function Articulo({ articulo }) {
     const [_, setTick] = useState(0);
     useEffect(() => {
         const i = setInterval(() => setTick(t => t + 1), 1000);
-        console.log(tiempoRestante);
-        
-        if (tiempoRestante === "Vencida") {
-            getUsuario(usuario.matricula, true, true)
-        }
+        // if (tiempoRestante === "Vencida") {
+        //     getUsuario(usuario.matricula, true, true)
+        // }
         return () => clearInterval(i);
     }, []);
 

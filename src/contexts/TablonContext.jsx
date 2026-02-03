@@ -97,23 +97,35 @@ export function TablonProvider({ children, initial }) {
                 { position: "top-center" }
             );
 
+            getUsuario(matricula, false, true)            
+            
 
-            // setUsuario(prev => ({
-            //     ...prev,
-            //     linaje: res.data.data.linaje
-            // }));
+        } catch (err) {
+            console.log("Error:", err?.response?.data || err.message);
+            notifyError(err?.response?.data?.msg || "Error al crear usuario");
+            return { ok: false, msg: err?.response?.data?.msg };
+        }
+    };
 
-            getUsuario(matricula, false, true)
+    // Post Transferencia puntos
+    const postTransferir = async (data) => {
+        try {
+            const res = await toast.promise(
+                axios.post(
+                    `${process.env.REACT_APP_GREMIO_API_URL}/post_transferencia_puntos.php`,
+                    data
+                ),
+                {
+                    pending: "Procesando...",
+                    success: "Completado",
+                    error: "No se pudo, algo salio mal",
+                },
+                { position: "top-center" }
+            );
 
-            // notifySuccess(res.data.msg);
-            // setUsuario(res.data.usuario);
-            // setMatricula(res.data.usuario.matricula);
-            // setCookie("matricula_actual", res.data.usuario.matricula, {
-            //     path: "/",
-            //     maxAge: 60 * 60 * 24,
-            // });
+            getUsuario(matricula, true, true)
+            return res
 
-            // return res.data; // opcional
         } catch (err) {
             console.log("Error:", err?.response?.data || err.message);
             notifyError(err?.response?.data?.msg || "Error al crear usuario");
@@ -660,6 +672,7 @@ export function TablonProvider({ children, initial }) {
         getUsuario,         //ok
         postUsuarioNuevo,   //ok
         postSetLinaje,
+        postTransferir,
 
         // Tienda
         getRecompensas,     //ok

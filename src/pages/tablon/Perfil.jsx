@@ -43,6 +43,7 @@ import { GiCash } from "react-icons/gi";
 import { GiBookmark } from "react-icons/gi";
 import { GiDna1 } from "react-icons/gi";
 import ViewTitulo from "../../components/Tablon/Perfil/ViewTitulo";
+import Transferencias from "../../components/Tablon/Perfil/Transferencias";
 
 
 const VisuallyHiddenInput = styled('input')({
@@ -231,12 +232,12 @@ function Perfil() {
                                 Siguiente Nivel: {xpFaltante} XP
                             </Typography>
                         </Grid>
-                        <Grid size={{ xs: 12, md: 12 }} display={"flex"} justifyContent={"center"}>
+                        {/* <Grid size={{ xs: 12, md: 12 }} display={"flex"} justifyContent={"center"}>
                             <GiRupee size={30} color={usuario.color} />
                             <Typography variant="h6" >
                                 <b>{bolsa}</b> puntos
                             </Typography>
-                        </Grid>
+                        </Grid> */}
                         <Grid size={{ xs: 12, md: 12 }} display="flex" alignItems="center" justifyContent={"space-between"}>
                             <Button onClick={cerrarSesion} variant="contained" size="small" color="error" startIcon={<LogoutIcon />}>
                                 Salir
@@ -274,15 +275,15 @@ function Perfil() {
                         <Box sx={{ width: '100%' }}>
                             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                                 <Tabs variant="fullWidth" aria-label="basic tabs example" textColor="secondary" onChange={handleInventoriView} value={inventoryView}>
+                                    <Tab style={{ minWidth: "fit-content" }} icon={<GiRupee size={30} />} aria-label="phone" />
                                     <Tab style={{ minWidth: "fit-content" }} icon={<GiBattleGear size={30} />} aria-label="phone" />
                                     <Tab style={{ minWidth: "fit-content" }} icon={<GiChest size={30} />} aria-label="phone" />
                                     <Tab style={{ minWidth: "fit-content" }} icon={<GiCash size={30} />} aria-label="phone" />
                                     <Tab style={{ minWidth: "fit-content" }} icon={<GiBookmark size={30} />} aria-label="phone" />
-                                    <Tab style={{ minWidth: "fit-content" }} icon={<GiDna1 size={30} />} aria-label="phone" />
                                 </Tabs>
                             </Box>
                         </Box>
-                        {inventoryView == 0 &&
+                        {inventoryView == 1 &&
                             <Grid size={{ xs: 12, md: 12 }} className={"viewCompletMisions"}>
                                 <Grid container spacing={2}>
                                     <Grid size={{ xs: 12, md: 12 }}>
@@ -306,7 +307,7 @@ function Perfil() {
                                 </Grid>
                             </Grid>
                         }
-                        {inventoryView == 1 &&
+                        {inventoryView == 2 &&
                             <Grid size={{ xs: 12, md: 12 }} className={"viewCompletMisions"}>
                                 <Grid container spacing={2}>
                                     <Grid size={{ xs: 12, md: 12 }}>
@@ -331,7 +332,7 @@ function Perfil() {
                                 </Grid>
                             </Grid>
                         }
-                        {inventoryView == 2 &&
+                        {inventoryView == 3 &&
                             <Grid size={{ xs: 12, md: 12 }} className={"viewCompletMisions"}>
                                 <Grid container spacing={2}>
                                     <Grid size={{ xs: 12, md: 12 }}>
@@ -355,7 +356,7 @@ function Perfil() {
                                 </Grid>
                             </Grid>
                         }
-                        {inventoryView == 3 &&
+                        {inventoryView == 4 &&
                             <Grid size={{ xs: 12, md: 12 }} className={"viewCompletMisions"}>
                                 <Grid container spacing={2}>
                                     <Grid size={{ xs: 12, md: 12 }}>
@@ -430,16 +431,18 @@ function Perfil() {
                             </Grid>
                         }
 
-                        {inventoryView == 4 &&
+                        {inventoryView == 0 &&
                             <Grid size={{ xs: 12, md: 12 }} className={"viewCompletMisions"}>
                                 <Grid container spacing={2}>
                                     <Grid size={{ xs: 12, md: 12 }}>
                                         <Typography variant="h5" fontWeight={"bold"} textAlign="center" gutterBottom>
-                                            Opciones
-                                        </Typography>
-                                        <Typography variant="body1" fontWeight={"bold"} textAlign="center" gutterBottom>
-                                            Proximamente
-                                        </Typography>
+                                            Gemas/Puntos
+                                        </Typography>                                    
+                                    </Grid>
+                                    <Grid size={{ xs: 12, md: 12 }}>
+                                        <Transferencias
+                                            bolsa={bolsa}
+                                        />
                                     </Grid>
                                 </Grid>
                             </Grid>
