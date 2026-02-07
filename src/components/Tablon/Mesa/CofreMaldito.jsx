@@ -60,25 +60,25 @@ function CofreMaldito(p) {
         { min: 100, max: 100, mult: -2 },
 
         // 4%  → -98 a -99 pts
-        { min: 96, max: 99, mult: -1 },
+        { min: 86, max: 99, mult: -1 },
 
         // 5%  → 0 pts
-        { min: 91, max: 95, mult: 0 },
+        { min: 91, max: 85, mult: 0 },
 
         // 5%  → +258 a +270 pts
-        { min: 86, max: 90, mult: 3 },
+        { min: 89, max: 90, mult: 3 },
 
         // 10% → +152 a +170 pts
-        { min: 76, max: 85, mult: 2 },
+        { min: 85, max: 88, mult: 2 },
 
         // 15% → +91.5 a +112.5 pts
-        { min: 61, max: 75, mult: 1.5 },
+        { min: 61, max: 84, mult: 1.5 },
 
         // 25% → +36 a +60 pts
-        { min: 36, max: 60, mult: 1 },
+        { min: 46, max: 60, mult: 1 },
 
         // 35% → +0.5 a +17.5 pts
-        { min: 1, max: 35, mult: 0.5 },
+        { min: 1, max: 45, mult: 0.5 },
     ];
 
     const sendPayload = (pts, tipo) => {
