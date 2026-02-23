@@ -153,7 +153,7 @@ function Mision({ mision }) {
             shapes: ['circle']
         });
     }
-    
+
     return (
         <>
             {/* <button onClick={handleFeliz}>Prueba</button> */}
@@ -248,8 +248,11 @@ function Mision({ mision }) {
                     </Grid>
 
 
+                    <Grid size={{ xs: 6 }} display={"flex"} alignItems={"center"}>
+                        <Typography variant="subtitle1">Profe: {mision.creador_nombre}</Typography>
+                    </Grid>
                     {tiempoRestante !== "Vencida" && usuario !== null && mision.canjeada == 0 &&
-                        <Grid size={{ xs: 12 }} display={"flex"} justifyContent={"flex-end"}>
+                        <Grid size={{ xs: 6 }} display={"flex"} justifyContent={"flex-end"}>
                             <Button variant="contained" size="medium" color="primary" sx={{ mr: 1 }} onClick={handleOpenData} >Completar</Button>
                         </Grid>
                     }

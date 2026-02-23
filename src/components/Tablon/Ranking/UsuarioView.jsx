@@ -30,7 +30,7 @@ function UsuarioView({ user, id }) {
             className={validateUser() ? "checkUser rowUser" : " rowUser"}
         >
             <Grid size={{ xs: 1, md: 1 }} display={"flex"} alignItems={"center"}>
-                <Typography variant="h5" fontWeight={"bold"} className="textX">
+                <Typography variant="h5" fontWeight={"bold"} className="textX2">
                     {id + 1}
                 </Typography>
             </Grid>
@@ -48,12 +48,15 @@ function UsuarioView({ user, id }) {
                     {user.nickname}
                 </Typography>
                 <Typography variant="subtitle1" className="textX">
-                    <b>{user.p_totales}</b> puntos
+                    <b>{user.p_totales}</b> XP
                 </Typography>
             </Grid>
-            <Grid size={{ xs: 3, md: 3 }} display={"flex"} alignItems={"center"} justifyContent={"center"}>
-                <Typography variant="h6" fontWeight={"bold"} className="textX">
-                    {level}
+            <Grid size={{ xs: 3, md: 3 }} display={"flex"} flexDirection={"column"} alignItems={"center"} justifyContent={"center"}>
+                <Typography variant="h6" fontWeight={"bold"} className="textX2">
+                    Lvl. {level}
+                </Typography>                
+                <Typography variant="caption" fontWeight={"bold"} className="textX2">
+                    CU: {user.id}
                 </Typography>
             </Grid>
         </Grid>

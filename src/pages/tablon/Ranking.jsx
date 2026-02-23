@@ -16,11 +16,11 @@ function Ranking(params) {
     return (
 
         <Grid container spacing={1} justifyContent={"center"}>
-            <ViewTitulo 
+            <ViewTitulo
                 texto="Ranking"
-                update={()=>{getUsuariosR()}}
+                update={() => { getUsuariosR() }}
             />
-            <Grid size={{ xs: 12, md: 12 }}>
+            {/* <Grid size={{ xs: 12, md: 12 }}>
                 <Grid container spacing={2}>
                     <Grid size={{ xs: 4, md: 3 }} display={"flex"} justifyContent={"flex-start"}>
                         <Typography variant="subtitle1">
@@ -39,11 +39,87 @@ function Ranking(params) {
                         </Typography>
                     </Grid>
                 </Grid>
+            </Grid> */}
+
+            {usuarios !== null &&
+                usuarios
+                    .filter((r) => r.activo == true)
+                    .filter((r) => r.profesor == false)
+                    // .filter((r) => r.linaje == "2")
+                    // .sort((a, b) => a.costo - b.costo)
+                    // .sort((a, b) => a.nivel_min - b.nivel_min)
+                    // .sort((a, b) => a.clase - b.clase)
+                    .map((re, i) => {
+                        if (i < 3) {
+                            return (
+                                <Grid key={i} size={{ xs: 12, md: 12 }}>
+                                    <UsuarioView user={re} id={i} />
+                                </Grid>
+                            );
+                        }
+                    })
+            }
+
+            <div className="spaceRanking"></div>
+
+            <Grid size={{ xs: 12, md: 12 }}>
+                <ViewTitulo
+                    texto="Salamandras"
+                />
             </Grid>
             {usuarios !== null &&
                 usuarios
                     .filter((r) => r.activo == true)
                     .filter((r) => r.profesor == false)
+                    .filter((r) => r.linaje == "1")
+                    // .sort((a, b) => a.costo - b.costo)
+                    // .sort((a, b) => a.nivel_min - b.nivel_min)
+                    // .sort((a, b) => a.clase - b.clase)
+                    .map((re, i) => {
+                        return (
+                            <Grid key={i} size={{ xs: 12, md: 12 }}>
+                                <UsuarioView user={re} id={i} />
+                            </Grid>
+                        );
+                    })
+            }
+
+            <div className="spaceRanking"></div>
+
+            <Grid size={{ xs: 12, md: 12 }}>
+                <ViewTitulo
+                    texto="Dragones"
+                />
+            </Grid>
+            {usuarios !== null &&
+                usuarios
+                    .filter((r) => r.activo == true)
+                    .filter((r) => r.profesor == false)
+                    .filter((r) => r.linaje == "2")
+                    // .sort((a, b) => a.costo - b.costo)
+                    // .sort((a, b) => a.nivel_min - b.nivel_min)
+                    // .sort((a, b) => a.clase - b.clase)
+                    .map((re, i) => {
+                        return (
+                            <Grid key={i} size={{ xs: 12, md: 12 }}>
+                                <UsuarioView user={re} id={i} />
+                            </Grid>
+                        );
+                    })
+            }
+
+            <div className="spaceRanking"></div>
+
+            <Grid size={{ xs: 12, md: 12 }}>
+                <ViewTitulo
+                    texto="Mellívoras"
+                />
+            </Grid>
+            {usuarios !== null &&
+                usuarios
+                    .filter((r) => r.activo == true)
+                    .filter((r) => r.profesor == false)
+                    .filter((r) => r.linaje == "3")
                     // .sort((a, b) => a.costo - b.costo)
                     // .sort((a, b) => a.nivel_min - b.nivel_min)
                     // .sort((a, b) => a.clase - b.clase)

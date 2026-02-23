@@ -522,11 +522,30 @@ summary:hover {
   align-items: center;
 }
 
+.spaceRanking {
+  height: 50px;
+  width: 100%;
+}
+
+.textX2 {
+  /* filter: brightness(.1) invert(1); */
+  font-weight: bold;
+  margin: 0px !important;
+  padding: 0px o !important;
+  /* white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; */
+  
+}
 .textX {
   /* filter: brightness(.1) invert(1); */
   font-weight: bold;
   margin: 0px !important;
   padding: 0px o !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  
 }
 
 .rowUser {
@@ -1188,3 +1207,8 @@ summary:hover {
     0 18px 40px rgba(0, 0, 0, 0.85),
     0 0 30px rgba(255, 215, 130, 0.16);
 } */
+
+
+.MuiTabs-scrollButtons.Mui-disabled {
+  opacity: 0.3;
+}

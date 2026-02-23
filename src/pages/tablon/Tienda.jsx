@@ -71,7 +71,7 @@ function Tienda() {
                 texto="Tienda"
                 update={getRecompensas}
             />
-            {usuario?.linaje === 2 &&
+            {usuario?.linaje == "2" &&
                 <Grid size={{ xs: 12 }}>
                     <Typography variant="h6" fontWeight={"bold"}>
                         Ventajas Dragones
@@ -79,7 +79,7 @@ function Tienda() {
                 </Grid>
             }
             {/* Articulos */}
-            {usuario?.linaje === 2 && recompensas !== null &&
+            {usuario?.linaje == "2" && recompensas !== null &&
                 recompensas
                     .filter((r) => r.visible !== false)
                     .filter((r) => r.tipo !== "Cosmetico")

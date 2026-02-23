@@ -492,7 +492,7 @@ export function TablonProvider({ children, initial }) {
             const res = await toast.promise(
                 axios.get(
                     `${process.env.REACT_APP_GREMIO_API_URL}/get_admin_info.php`,
-                    { params: { matricula: usuario.matricula } }
+                    { params: { profe: usuario.profesor } }
                 ),
                 {
                     pending: "Cargando Data",

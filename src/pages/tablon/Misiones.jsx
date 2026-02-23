@@ -44,7 +44,7 @@ function Misiones() {
 		// Si quieres que se recargue cuando cambie la matrícula:
 	}, [misiones, usuario, getMisiones]);
 
-	const usuarioLinaje = usuario?.linaje; 
+	const usuarioLinaje = usuario?.linaje;
 
 	// Tick para refrescar "tiempo restante" cada segundo
 	const [tick, setTick] = useState(0);
@@ -76,7 +76,7 @@ function Misiones() {
 
 		const unicasActivas = normales
 			.slice() // para no mutar
-			
+
 			.filter((m) => m.linaje !== "3")
 			.filter((m) => noCanjeada(m) && m.frecuencia === "0" && !isVencida(m));
 
@@ -95,17 +95,23 @@ function Misiones() {
 
 	return (
 		<Grid container spacing={3}>
-
 			<ViewTitulo texto="Misiones" update={() => getMisiones(usuario?.matricula)} />
-			<SeccionMisiones title="Misiones Periódicas" items={periodicasActivas} />
-			<SeccionMisiones title="Misiones Unicas" items={unicasActivas} />
-			<SeccionMisiones title="Misiones Completadas" items={completadas} />
-			<SeccionMisiones title="Misiones Vencidas" items={vencidas} />
 			{usuarioEsLinaje3 && (
 				<>
 					<SeccionMisiones title="Misiones Secretas" items={secretas} />
+					{/* <SeccionMisiones title="Misiones Secretas Completadas" items={secretasCompletadas} /> */}
+					{/* <SeccionMisiones title="Misiones Secretas Vencidas" items={secretasVencidas} /> */}
+				</>
+			)}
+			<SeccionMisiones title="Misiones Periódicas" items={periodicasActivas} />
+			<SeccionMisiones title="Misiones Unicas" items={unicasActivas} />
+			<SeccionMisiones title="Misiones Completadas" items={completadas} />
+			{/* <SeccionMisiones title="Misiones Vencidas" items={vencidas} /> */}
+			{usuarioEsLinaje3 && (
+				<>
+					{/* <SeccionMisiones title="Misiones Secretas" items={secretas} /> */}
 					<SeccionMisiones title="Misiones Secretas Completadas" items={secretasCompletadas} />
-					<SeccionMisiones title="Misiones Secretas Vencidas" items={secretasVencidas} />
+					{/* <SeccionMisiones title="Misiones Secretas Vencidas" items={secretasVencidas} /> */}
 				</>
 			)}
 

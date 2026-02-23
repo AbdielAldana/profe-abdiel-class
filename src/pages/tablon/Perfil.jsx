@@ -242,7 +242,7 @@ function Perfil() {
                             <Button onClick={cerrarSesion} variant="contained" size="small" color="error" startIcon={<LogoutIcon />}>
                                 Salir
                             </Button>
-                            {usuario.admin &&
+                            {usuario.profesor == 1 &&
                                 <NavLink to="/tablon_de_misiones/admin">
                                     <Button variant="contained" size="small" color="secondary" endIcon={<SettingsIcon />}>
                                         Admin

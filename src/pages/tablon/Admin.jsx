@@ -2,6 +2,12 @@ import { useEffect, useState } from "react"
 import { useTablon } from "../../contexts/TablonContext"
 import { Button, Grid, Modal, TextField, Typography } from "@mui/material";
 
+import PropTypes from 'prop-types';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Box from '@mui/material/Box';
+
+
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -55,6 +61,30 @@ const styleModal = {
     p: 1,
 };
 
+function CustomTabPanel(props) {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`simple-tabpanel-${index}`}
+            aria-labelledby={`simple-tab-${index}`}
+            {...other}
+        >
+            {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+        </div>
+    );
+}
+
+CustomTabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.number.isRequired,
+    value: PropTypes.number.isRequired,
+};
+
+
+
 function Admin() {
     const { adminInfo, getAdminData, usuario, postAddMisionAdmin } = useTablon();
 
@@ -81,11 +111,12 @@ function Admin() {
         const formData = new FormData(event.currentTarget);
         const formJson = Object.fromEntries(formData.entries());
 
-        
-        
+
+
 
         let tempJson = {
-            matricula: usuario.matricula,
+            profesor: usuario.profesor,
+            profe_id: usuario.id,
 
             nombre: formJson.nombre_mision,
             subNombre: formJson.subnombre_mision,
@@ -121,7 +152,20 @@ function Admin() {
     };
 
 
+    // Pestanas View
 
+    function a11yProps(index) {
+        return {
+            id: `simple-tab-${index}`,
+            'aria-controls': `simple-tabpanel-${index}`,
+        };
+    }
+
+    const [value, setValue] = useState(0);
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
 
     return (
         <>
@@ -131,7 +175,244 @@ function Admin() {
                 </Grid>
 
                 <Grid size={{ xs: 12, md: 12 }}>
-                    <Grid container spacing={2}>
+
+                    <Box sx={{ width: '100%' }}>
+                        <Box sx={{ maxWidth: { xs: "100%" }, bgcolor: 'background.paper', borderBottom: 1, borderColor: 'divider' }}>
+                            <Tabs
+                                value={value}
+                                onChange={handleChange}
+                                aria-label="basic tabs example"
+                                variant="scrollable"
+                                scrollButtons="auto"
+                                allowScrollButtonsMobile
+                            >
+                                <Tab label="Temp. Vencidas" {...a11yProps(0)} />
+                                <Tab label="Temp. Activas" {...a11yProps(1)} />
+                                <Tab label="Gral. Activas" {...a11yProps(2)} />
+                                <Tab label="Mellivoras Gral." {...a11yProps(3)} />
+                                <Tab label="Gral. Vencidas" {...a11yProps(4)} />
+                                <Tab label="Ocultas" {...a11yProps(5)} />
+                            </Tabs>
+                        </Box>
+                        <CustomTabPanel value={value} index={0}>
+                            <Grid container spacing={2}>
+                                {/* Periodicas Vencidas */}
+                                {adminInfo !== null &&
+                                    adminInfo?.misiones
+                                        .sort((a, b) => a.dificultad - b.dificultad)
+                                        .filter(x => x.visible == 1)
+                                        .filter(x => x.frecuencia != 0)
+                                        .filter(x => x.linaje != 3)
+                                        .filter(x => getTiempoRestante(x.fechaFinGlobal) === "Vencida")
+                                        .map((miso, i) => {
+                                            return (
+                                                <Grid key={i} size={{ xs: 12, md: 6 }}>
+                                                    <MisionAdmin mision={miso} />
+
+                                                </Grid>
+                                            )
+                                        })
+
+                                }
+                            </Grid>
+                        </CustomTabPanel>
+                        <CustomTabPanel value={value} index={1}>
+                            <Grid container spacing={2}>
+                                {/* Periodicas Activas */}
+                                {adminInfo !== null &&
+                                    adminInfo?.misiones
+                                        .sort((a, b) => a.dificultad - b.dificultad)
+                                        .filter(x => x.visible == 1)
+                                        .filter(x => getTiempoRestante(x.fechaFinGlobal) !== "Vencida")
+                                        .filter(x => x.frecuencia != 0)
+                                        .filter(x => x.linaje != 3)
+                                        .map((miso, i) => {
+                                            return (
+                                                <Grid key={i} size={{ xs: 12, md: 6 }}>
+                                                    <MisionAdmin mision={miso} />
+
+                                                </Grid>
+                                            )
+                                        })
+
+                                }
+
+                            </Grid>
+                        </CustomTabPanel>
+                        <CustomTabPanel value={value} index={2}>
+                            <Grid container spacing={2}>
+                                {/* General Activas */}
+                                {adminInfo !== null &&
+                                    adminInfo?.misiones
+                                        .sort((a, b) => a.dificultad - b.dificultad)
+                                        .filter(x => x.visible == 1)
+                                        .filter(x => getTiempoRestante(x.fechaFinGlobal) !== "Vencida")
+                                        .filter(x => x.frecuencia == 0)
+                                        .filter(x => x.linaje != 3)
+                                        .map((miso, i) => {
+                                            return (
+                                                <Grid key={i} size={{ xs: 12, md: 6 }}>
+                                                    <MisionAdmin mision={miso} />
+
+                                                </Grid>
+                                            )
+                                        })
+
+                                }
+                            </Grid>
+                        </CustomTabPanel>
+                        <CustomTabPanel value={value} index={3}>
+                            <Grid container spacing={2}>
+                                {/* Mallivoras */}
+                                <Grid size={{ xs: 12, md: 6 }}>
+                                    <Typography variant="h6">Vencidas Frecuentes</Typography>
+                                </Grid>
+                                {adminInfo !== null &&
+                                    adminInfo?.misiones
+                                        .sort((a, b) => a.dificultad - b.dificultad)
+                                        .filter(x => x.visible == 1)
+                                        .filter(x => x.frecuencia > 0)
+                                        .filter(x => x.linaje == 3)
+                                        .filter(x => getTiempoRestante(x.fechaFinGlobal) === "Vencida")
+                                        .map((miso, i) => {
+                                            return (
+                                                <Grid key={i} size={{ xs: 12, md: 6 }}>
+                                                    <MisionAdmin mision={miso} />
+
+                                                </Grid>
+                                            )
+                                        })
+
+                                }
+                                <Grid size={{ xs: 12, md: 6 }}>
+                                    <Typography variant="h6">Frecuentes</Typography>
+                                </Grid>
+                                {adminInfo !== null &&
+                                    adminInfo?.misiones
+                                        .sort((a, b) => a.dificultad - b.dificultad)
+                                        .filter(x => x.visible == 1)
+                                        .filter(x => x.frecuencia > 0)
+                                        .filter(x => x.linaje == 3)
+                                        .filter(x => getTiempoRestante(x.fechaFinGlobal) != "Vencida")
+                                        .map((miso, i) => {
+                                            return (
+                                                <Grid key={i} size={{ xs: 12, md: 6 }}>
+                                                    <MisionAdmin mision={miso} />
+
+                                                </Grid>
+                                            )
+                                        })
+
+                                }
+                                <Grid size={{ xs: 12, md: 6 }}>
+                                    <Typography variant="h6">Generales Activas</Typography>
+                                </Grid>
+                                {adminInfo !== null &&
+                                    adminInfo?.misiones
+                                        .sort((a, b) => a.dificultad - b.dificultad)
+                                        .filter(x => x.visible == 1)
+                                        .filter(x => x.frecuencia == 0)
+                                        .filter(x => x.linaje == 3)
+                                        .filter(x => getTiempoRestante(x.fechaFinGlobal) != "Vencida")
+                                        .map((miso, i) => {
+                                            return (
+                                                <Grid key={i} size={{ xs: 12, md: 6 }}>
+                                                    <MisionAdmin mision={miso} />
+
+                                                </Grid>
+                                            )
+                                        })
+
+                                }
+
+                                <Grid size={{ xs: 12, md: 6 }}>
+                                    <Typography variant="h6">Generales Vencidas</Typography>
+                                </Grid>
+                                {adminInfo !== null &&
+                                    adminInfo?.misiones
+                                        .sort((a, b) => a.dificultad - b.dificultad)
+                                        .filter(x => x.visible == 1)
+                                        .filter(x => x.frecuencia == 0)
+                                        .filter(x => x.linaje == 3)
+                                        .filter(x => getTiempoRestante(x.fechaFinGlobal) == "Vencida")
+                                        .map((miso, i) => {
+                                            return (
+                                                <Grid key={i} size={{ xs: 12, md: 6 }}>
+                                                    <MisionAdmin mision={miso} />
+
+                                                </Grid>
+                                            )
+                                        })
+
+                                }
+                                <Grid size={{ xs: 12, md: 6 }}>
+                                    <Typography variant="h6">Ocultas</Typography>
+                                </Grid>
+                                {adminInfo !== null &&
+                                    adminInfo?.misiones
+                                        .sort((a, b) => a.dificultad - b.dificultad)
+                                        .filter(x => x.visible == 0)
+                                        // .filter(x => x.frecuencia == 0)
+                                        .filter(x => x.linaje == 3)
+                                        // .filter(x => getTiempoRestante(x.fechaFinGlobal) == "Vencida")
+                                        .map((miso, i) => {
+                                            return (
+                                                <Grid key={i} size={{ xs: 12, md: 6 }}>
+                                                    <MisionAdmin mision={miso} />
+
+                                                </Grid>
+                                            )
+                                        })
+
+                                }
+
+                            </Grid>
+                        </CustomTabPanel>
+                        <CustomTabPanel value={value} index={4}>
+                            <Grid container spacing={2}>
+                                {/* Visibles Vencidas */}
+                                {adminInfo !== null &&
+                                    adminInfo?.misiones
+                                        .sort((a, b) => a.dificultad - b.dificultad)
+                                        .filter(x => x.visible == 1)
+                                        .filter(x => x.frecuencia == 0)
+                                        .filter(x => x.linaje != 3)
+                                        .filter(x => getTiempoRestante(x.fechaFinGlobal) === "Vencida")
+                                        .map((miso, i) => {
+                                            return (
+                                                <Grid key={i} size={{ xs: 12, md: 6 }}>
+                                                    <MisionAdmin mision={miso} />
+
+                                                </Grid>
+                                            )
+                                        })
+
+                                }
+                            </Grid>
+                        </CustomTabPanel>
+
+                        <CustomTabPanel value={value} index={5}>
+                            <Grid container spacing={2}>
+                                {/* Ocultas */}
+                                {adminInfo !== null &&
+                                    adminInfo?.misiones
+                                        .sort((a, b) => a.dificultad - b.dificultad)
+                                        .filter(x => x.visible == 0)
+                                        .map((miso, i) => {
+                                            return (
+                                                <Grid key={i} size={{ xs: 12, md: 6 }}>
+                                                    <MisionAdmin mision={miso} />
+                                                </Grid>
+                                            )
+                                        })
+
+                                }
+                            </Grid>
+                        </CustomTabPanel>
+                    </Box>
+
+
+                    {/* <Grid container spacing={2}>
                         <Grid size={{ xs: 12, md: 12 }}>
                             <Typography fontWeight={"bold"}>Visibles Vencidas Periodicas</Typography>
                         </Grid>
@@ -145,7 +426,7 @@ function Admin() {
                                     return (
                                         <Grid key={i} size={{ xs: 12, md: 6 }}>
                                             <MisionAdmin mision={miso} />
-                                            
+
                                         </Grid>
                                     )
                                 })
@@ -163,7 +444,7 @@ function Admin() {
                                     return (
                                         <Grid key={i} size={{ xs: 12, md: 6 }}>
                                             <MisionAdmin mision={miso} />
-                                            
+
                                         </Grid>
                                     )
                                 })
@@ -182,7 +463,7 @@ function Admin() {
                                     return (
                                         <Grid key={i} size={{ xs: 12, md: 6 }}>
                                             <MisionAdmin mision={miso} />
-                                            
+
                                         </Grid>
                                     )
                                 })
@@ -204,7 +485,7 @@ function Admin() {
                                 })
 
                         }
-                    </Grid>
+                    </Grid> */}
                 </Grid>
             </Grid>
 

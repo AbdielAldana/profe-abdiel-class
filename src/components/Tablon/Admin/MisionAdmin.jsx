@@ -22,6 +22,7 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormLabel from '@mui/material/FormLabel';
 import { getFechaFinPorFrecuencia } from "../../../utils/misionAdminUtils";
+import { toast } from "react-toastify";
 
 const style = {
     p: 2,
@@ -77,6 +78,9 @@ function MisionAdmin({ mision }) {
         return () => clearInterval(i);
     }, []);
 
+    const notifySuccess = (txt) =>
+        toast.success(txt, { position: "top-center" });
+
 
     // Modal Reset Mision
     const [openAddMisionReset, setOpenAddMisionReset] = useState(false)
@@ -93,7 +97,7 @@ function MisionAdmin({ mision }) {
         const formJson = Object.fromEntries(formData.entries());
 
         let tempJson = {
-            matricula: usuario.matricula,
+            matricula: usuario.profesor,
             id_mision: mision.id,
             codigo: formJson.codigo_mision_reset,
             codigo_contador: parseInt(mision.codigo_contador) + 1,
@@ -122,7 +126,7 @@ function MisionAdmin({ mision }) {
 
         // Base obligatoria
         let payload = {
-            matricula: usuario.matricula, // 1527700
+            matricula: usuario.profesor, // 1527700
             id_mision: mision.id,
         };
 
@@ -140,6 +144,7 @@ function MisionAdmin({ mision }) {
             "fechaInicioGlobal",
             "fechaFinGlobal",
             "visible",
+            "linaje",
         ];
 
         // Agregar SOLO lo que venga en el form
@@ -167,6 +172,25 @@ function MisionAdmin({ mision }) {
             console.error(err.msg);
         }
     }
+
+    const copiar = async () => {
+        const texto =
+            "Misión completada\n" +
+            "Mision: " + mision.nombre + " - " + mision.subNombre + " \n" +
+            "Codigo: " + mision.codigo + " ";
+
+        try {
+            await navigator.clipboard.writeText(texto);
+            notifySuccess("Codigo Copiado")
+        } catch (err) {
+            console.error("Error al copiar:", err);
+        }
+
+
+    };
+
+
+
     return (
         <>
             <Paper
@@ -230,8 +254,16 @@ function MisionAdmin({ mision }) {
                     <Grid size={{ xs: 12 }}>
                         <Divider />
                     </Grid>
+                    <Grid size={{ xs: 12 }}>
+                        <Typography variant="body1">
+                            Creado por: <b>{mision.creador_nombre}</b>
+                        </Typography>
+                    </Grid>
+                    <Grid size={{ xs: 12 }}>
+                        <Divider />
+                    </Grid>
                     <Grid size={{ xs: 6 }}>
-                        <Typography variant="body1" >
+                        <Typography variant="body1" onClick={copiar} color="secondary" style={{ cursor: "pointer" }}>
                             Codigo: <b>{mision.codigo}</b>
                         </Typography>
                     </Grid>
@@ -548,6 +580,20 @@ function MisionAdmin({ mision }) {
                                         >
                                             <FormControlLabel value={0} control={<Radio />} label="No" />
                                             <FormControlLabel value={1} control={<Radio />} label="Si" />
+                                        </RadioGroup>
+                                    </FormControl>
+                                </Grid>
+                                <Grid size={{ xs: 12, md: 12 }}>
+                                    <FormControl>
+                                        <FormLabel id="mision-linaje-editar">Mision Visible</FormLabel>
+                                        <RadioGroup
+                                            row
+                                            aria-labelledby="mision-linaje-editar"
+                                            name="linaje"
+                                            defaultValue={parseInt(mision.linaje)}
+                                        >
+                                            <FormControlLabel value={0} control={<Radio />} label="General" />
+                                            <FormControlLabel value={3} control={<Radio />} label="Mallivoras" />
                                         </RadioGroup>
                                     </FormControl>
                                 </Grid>

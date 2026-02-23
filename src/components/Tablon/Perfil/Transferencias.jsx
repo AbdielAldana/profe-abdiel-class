@@ -11,6 +11,7 @@ import {
     TextField,
     Alert,
     Modal,
+    Pagination,
 } from "@mui/material";
 
 import Card from '@mui/material/Card';
@@ -128,12 +129,33 @@ function Transferencias(p) {
     };
 
 
+    // PAginacion
+
+    const itemsPerPage = 5;
+
+    const [page, setPage] = useState(1);
+
+    const transferencias = usuario?.transferencias || [];
+    const totalItems = transferencias.length;
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+    const handleChange = (event, value) => {
+        setPage(value);
+    };
+
+    const startIndex = (page - 1) * itemsPerPage;
+    const currentItems = transferencias.slice(
+        startIndex,
+        startIndex + itemsPerPage
+    );
+
+
     return (
         <>
             <Grid container spacing={2}>
                 <Grid size={{ xs: 12, md: 12 }} display={"flex"} justifyContent={"center"}>
                     <Typography variant="h6" >
-                        Codigo Unico: <b>{usuario.codigoPublico}</b>
+                        Codigo Unico: <b>{usuario.id}</b>
                     </Typography>
                 </Grid>
                 <Grid size={{ xs: 12, md: 12 }} display={"flex"} justifyContent={"center"}>
@@ -160,7 +182,18 @@ function Transferencias(p) {
                     <Divider />
                 </Grid>
 
-                {usuario?.transferencias
+                <Grid size={{ xs: 12, md: 12 }} display={"flex"} justifyContent={"center"}>
+                    {totalPages > 1 && (
+                        <Pagination
+                            count={totalPages}
+                            page={page}
+                            onChange={handleChange}
+                        />                        
+                    )}
+                </Grid>
+
+
+                {currentItems
                     .map((el, i) => {
                         return (
                             <Grid size={{ xs: 12, md: 12 }} key={i}>
@@ -178,11 +211,14 @@ function Transferencias(p) {
                                         <Typography variant="subtitle2" textAlign={"right"}>Enviado  el {el.fecha}</Typography>
                                     </>
                                 }
-                                <Divider/>
+                                <Divider />
                             </Grid>
                         )
                     })
                 }
+
+                
+
 
             </Grid>
 
