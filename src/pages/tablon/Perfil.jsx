@@ -118,6 +118,7 @@ function Perfil() {
     const [errorMatriculaMsg, setErrorMatriculaMsg] = useState("")
 
     const handleRegistrarUsuario = async () => {
+        // console.log(imageFileForm)
         if (!imageFileForm)
             return setErrorMatriculaMsg("Falta una Imagen")
         // eslint-disable-next-line
@@ -144,7 +145,18 @@ function Perfil() {
             imagen: imageFileForm,
         }
 
-        const resp = await postUsuarioNuevo(tempData)
+
+        const formData = new FormData();
+        formData.append("matricula", tempData.matricula);
+        formData.append("nombre", tempData.nombre);
+        formData.append("nickname", tempData.nickname);
+        formData.append("color", tempData.color);
+        formData.append("imagen", imageFileForm);
+
+        // console.log(formData);
+
+
+        const resp = await postUsuarioNuevo(formData)
         if (!resp.ok) { setErrorMatriculaMsg(resp.msg) }
 
     }
@@ -437,7 +449,7 @@ function Perfil() {
                                     <Grid size={{ xs: 12, md: 12 }}>
                                         <Typography variant="h5" fontWeight={"bold"} textAlign="center" gutterBottom>
                                             Gemas/Puntos
-                                        </Typography>                                    
+                                        </Typography>
                                     </Grid>
                                     <Grid size={{ xs: 12, md: 12 }}>
                                         <Transferencias

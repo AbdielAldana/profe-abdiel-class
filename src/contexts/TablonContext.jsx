@@ -97,8 +97,8 @@ export function TablonProvider({ children, initial }) {
                 { position: "top-center" }
             );
 
-            getUsuario(matricula, false, true)            
-            
+            getUsuario(matricula, false, true)
+
 
         } catch (err) {
             console.log("Error:", err?.response?.data || err.message);
@@ -137,19 +137,20 @@ export function TablonProvider({ children, initial }) {
     // POST Usuario Nuevo
     const postUsuarioNuevo = async (data) => {
         try {
-            const fd = new FormData();
+            let fd = new FormData();
             fd.append("matricula", data.matricula);
             fd.append("nombre", data.nombre);
             fd.append("nickname", data.nickname);
             fd.append("color", data.color);
 
-            // data.imagen debe ser File (de input type="file")
+            // data.imagen debe ser File (de input type="file")            
             fd.append("imagen", data.imagen);
 
+            // return
             const res = await toast.promise(
                 axios.post(
                     `${process.env.REACT_APP_GREMIO_API_URL}/post_usuario.php`,
-                    fd
+                    data
                 ),
                 {
                     pending: "Creando Usuario...",
